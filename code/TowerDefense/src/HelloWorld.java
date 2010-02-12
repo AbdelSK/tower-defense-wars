@@ -4,6 +4,6 @@ public class HelloWorld
 	{
 		System.out.println("Hello World lol");
 		System.out.println("And boom goes the dynamite");
-		System.out.println("one more test");
+		System.out.println("two more tests");
 	}
 }
