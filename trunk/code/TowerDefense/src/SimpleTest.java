@@ -42,17 +42,10 @@ public class SimpleTest extends BasicGame
 			int loc[] = { (mx / 40) * 40 + 15, (my / 40) * 40 + 12 };
 			
 			if (towers.size() == 0)
-			{
 				towers.add(loc);
-			}
-			else
-			{
-				if (towers.get(towers.size() - 1)[0] != loc[0]
-						|| towers.get(towers.size() - 1)[1] != loc[1])
-				{
+			else if (towers.get(towers.size() - 1)[0] != loc[0]
+					|| towers.get(towers.size() - 1)[1] != loc[1])
 					towers.add(loc);
-				}
-			}
 		}
 
 	}
@@ -66,14 +59,10 @@ public class SimpleTest extends BasicGame
 		int height = container.getHeight();
 		
 		for (int i = 0; i < height; i += 40)
-		{
 			g.drawLine(0, i + 40, width, i + 40);
-		}
 		
 		for (int i = 0; i < width; i += 40)
-		{
 			g.drawLine(i + 40, 0, i + 40, height);
-		}
 		
 		int row = (my / 40);
 		int col = (mx / 40);
@@ -84,9 +73,7 @@ public class SimpleTest extends BasicGame
 		g.fillRect(col * 40, row * 40, 40, 40);
 		
 		for (int[] i : towers)
-		{
 			g.drawString("A", i[0], i[1]);
-		}
 
 	}
 	
