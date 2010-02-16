@@ -28,8 +28,7 @@ public class SimpleTest extends BasicGame
 	}
 	
 	@Override
-	public void update(GameContainer container, int delta)
-			throws SlickException
+	public void update(GameContainer container, int delta) throws SlickException
 	{
 		
 		Input input = container.getInput();
@@ -43,16 +42,14 @@ public class SimpleTest extends BasicGame
 			
 			if (towers.size() == 0)
 				towers.add(loc);
-			else if (towers.get(towers.size() - 1)[0] != loc[0]
-					|| towers.get(towers.size() - 1)[1] != loc[1])
-					towers.add(loc);
+			else if (towers.get(towers.size() - 1)[0] != loc[0] || towers.get(towers.size() - 1)[1] != loc[1])
+				towers.add(loc);
 		}
 
 	}
 	
 	@Override
-	public void render(GameContainer container, Graphics g)
-			throws SlickException
+	public void render(GameContainer container, Graphics g) throws SlickException
 	{
 
 		int width = container.getWidth();
