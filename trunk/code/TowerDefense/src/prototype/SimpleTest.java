@@ -10,7 +10,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 import org.newdawn.slick.util.pathfinding.Path;
-import org.newdawn.slick.util.pathfinding.Path.Step;
 
 public class SimpleTest extends BasicGame
 {
@@ -66,10 +65,10 @@ public class SimpleTest extends BasicGame
 		}
 		else if (input.isMouseButtonDown(1))
 		{
-			if (!searchMap.blocked(null, mrow, mcol))
+			if ((delta < 20) && !searchMap.blocked(null, mrow, mcol))
 			{
 				Mob temp = new Mob('x', mrow, mcol);
-				Path path = pathFinder.findPath(temp, mrow, mcol, 0, 0);
+				Path path = pathFinder.findPath(temp, mrow, mcol, 1, 1);
 				temp.path = path;
 				if (mobs.size() == 0)
 					mobs.add(temp);
@@ -83,7 +82,19 @@ public class SimpleTest extends BasicGame
 			this.currMillseconds = 0;
 			for (Mob job : mobs)
 			{
-				job.step++;
+				if (job.path != null && job.path.getLength() != 0)
+				{
+					job.step++;
+					if (job.step < job.path.getLength())
+					{
+						job.xLoc = job.path.getX(job.step);
+						job.yLoc = job.path.getY(job.step);
+					}
+					else
+					{
+						job.path = new Path();
+					}
+				}
 			}
 		}
 	}
@@ -103,18 +114,8 @@ public class SimpleTest extends BasicGame
 		g.setColor(Color.white);
 		for (Tower i : towers)
 			g.drawString("" + i.ch, i.xLoc * 16, i.yLoc * 16);
-		for (Mob job : mobs)
-		{
-			if (job.step < job.path.getLength())
-			{
-				Step temp = job.path.getStep(job.step);
-				g.drawString("" + job.ch, temp.getX() * 16, temp.getY() * 16);
-			}
-			else
-			{
-				g.drawString("" + job.ch, job.path.getX(job.path.getLength() - 1) * 16, job.path.getY(job.path.getLength() - 1) * 16);
-			}
-		}
+		for (Mob i : mobs)
+			g.drawString("" + i.ch, i.xLoc * 16, i.yLoc * 16);
 
 	}
 	
