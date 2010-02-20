@@ -18,7 +18,9 @@ public class PrototypeMap implements TileBasedMap
 		{
 			for (int y = 0; y < m.getHeight(); y++)
 			{
-				int property = Integer.parseInt(m.getTileProperty(m.getTileId(x, y, 1), "Passable", "1"));
+				int tileID = m.getTileId(x, y, 1);
+				String prop = m.getTileProperty(tileID, "Passable", "0");
+				int property = Integer.parseInt(prop);
 				if (property == 2)
 					collisionMap[x][y] = true;
 				else
