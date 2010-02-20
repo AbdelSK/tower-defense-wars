@@ -2,6 +2,11 @@
 <map version="1.0" orientation="orthogonal" width="40" height="30" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="collision" tilewidth="16" tileheight="16">
   <image source="platform:collision.png"/>
+  <tile id="0">
+   <properties>
+    <property name="Passable" value="2"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="25" name="tile" tilewidth="16" tileheight="16">
   <image source="platform:tiles.png"/>
@@ -11,7 +16,7 @@
    H4sIAAAAAAAAA+3WuQqAMBCE4byGR+OB4NFofP9ncwKpwjZZyTLFFj+2H2GF6UIIPWkj2tBM2krk6/KbDfnd2HxT/i7Zxebb0YFOdBH6bvSgiF5Cn1StT7phJp90w0w+6YaZfNINM/msc5/73Oc+97VPsy0sfZptUfpa7ifNtih9LfeTZluUPuv9VOuz3k+1Prbc99+Xbi6Slv6BDxW11YDAEgAA
   </data>
  </layer>
- <layer name="Collision" width="40" height="30">
+ <layer name="Collision" width="40" height="30" opacity="0.41">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAA+3YQQoAIAgFUb3/pbtAC+uXacyA+4cQQm5mXnyqVsk32xm+ePjOt+rLfvf4tH7zZYdPC58WPi18Wpm+ndvTzXfzvuLLr5uvWvi0ov8zL2cAPE9B3sASAAA=
   </data>
