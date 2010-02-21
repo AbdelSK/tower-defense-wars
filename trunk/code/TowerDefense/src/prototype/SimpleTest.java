@@ -36,7 +36,7 @@ public class SimpleTest extends BasicGame
 		towers = new ArrayList<Tower>();
 		mobs = new ArrayList<Mob>();
 		
-		map = new TiledMap("data/map01.tmx");
+		map = new TiledMap("prototype-data/map01.tmx");
 		searchMap = new PrototypeMap(this.map);
 		pathFinder = new AStarPathFinder(searchMap, 10000, true);
 		this.currMillseconds = 0;
