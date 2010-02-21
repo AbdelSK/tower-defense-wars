@@ -14,7 +14,8 @@ import org.newdawn.slick.util.pathfinding.Path;
 
 public class SimpleTest extends BasicGame
 {
-	
+
+	boolean showVerbose;
 	int mx;
 	int my;
 	ArrayList<Tower> towers;
@@ -36,7 +37,8 @@ public class SimpleTest extends BasicGame
 		my = 0;
 		towers = new ArrayList<Tower>();
 		mobs = new ArrayList<Mob>();
-		
+		showVerbose = true;
+
 		map = new TiledMap("prototype-data/map01.tmx");
 		searchMap = new PrototypeMap(this.map);
 		pathFinder = new AStarPathFinder(searchMap, 10000, true);
@@ -85,6 +87,10 @@ public class SimpleTest extends BasicGame
 			}
 
 		}
+		if (input.isKeyPressed(Input.KEY_V))
+		{
+			showVerbose = !showVerbose;
+		}
 		if (this.currMillseconds / 100 > 1)
 		{
 			this.currMillseconds = 0;
@@ -115,15 +121,18 @@ public class SimpleTest extends BasicGame
 		int row = (my / 16);
 		int col = (mx / 16);
 		
-		g.setColor(Color.cyan);
-		g.drawString("row = " + row, 0, 100);
-		g.drawString("col = " + col, 0, 200);
+        if (showVerbose)
+        {
+    		g.setColor(Color.cyan);
+    		g.drawString("row = " + row, 0, 100);
+    		g.drawString("col = " + col, 0, 200);
+   		}
 
 		g.setColor(Color.white);
 		for (Tower i : towers)
-			g.drawString("" + i.ch, i.xLoc * 16, i.yLoc * 16);
+			g.drawString("" + i.ch, i.xLoc * 16 + 4, i.yLoc * 16 - 2);
 		for (Mob i : mobs)
-			g.drawString("" + i.ch, i.xLoc * 16, i.yLoc * 16);
+			g.drawString("" + i.ch, i.xLoc * 16 + 3, i.yLoc * 16 - 3);
 
 	}
 	
@@ -132,6 +141,7 @@ public class SimpleTest extends BasicGame
 		try
 		{
 			AppGameContainer app = new AppGameContainer(new SimpleTest());
+			app.setShowFPS(false);
 			app.start();
 		}
 		catch (SlickException e)
