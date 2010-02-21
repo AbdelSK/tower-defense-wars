@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="40" height="30" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="collision" tilewidth="16" tileheight="16">
-  <image source="platform:collision.png"/>
+  <image source="collision.png"/>
   <tile id="0">
    <properties>
     <property name="Passable" value="2"/>
@@ -9,7 +9,7 @@
   </tile>
  </tileset>
  <tileset firstgid="25" name="tile" tilewidth="16" tileheight="16">
-  <image source="platform:tiles.png"/>
+  <image source="tiles.png"/>
  </tileset>
  <layer name="Tiles" width="40" height="30">
   <data encoding="base64" compression="gzip">
