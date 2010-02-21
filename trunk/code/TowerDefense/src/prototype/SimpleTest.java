@@ -1,4 +1,5 @@
 package prototype;
+
 import java.util.ArrayList;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
@@ -57,10 +58,17 @@ public class SimpleTest extends BasicGame
 		{
 			if (!searchMap.blocked(null, mrow, mcol))
 			{
+				Tower temp = new Tower('A', mrow, mcol);
 				if (towers.size() == 0)
-					towers.add(new Tower('A', mrow, mcol));
+				{
+					towers.add(temp);
+					searchMap.addBlocker(mrow, mcol);
+				}
 				else if (towers.get(towers.size() - 1).xLoc != mrow || towers.get(towers.size() - 1).yLoc != mcol)
-					towers.add(new Tower('A', mrow, mcol));
+				{
+					towers.add(temp);
+					searchMap.addBlocker(mrow, mcol);
+				}
 			}
 		}
 		else if (input.isMouseButtonDown(1))

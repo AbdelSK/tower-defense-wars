@@ -64,4 +64,30 @@ public class PrototypeMap implements TileBasedMap
 		
 	}
 	
+	/**
+	 * Set a tile as blocked
+	 * 
+	 * @param tx
+	 *            the x-coordinate
+	 * @param ty
+	 *            the y-coordinate
+	 */
+	public void addBlocker(int tx, int ty)
+	{
+		this.collisionMap[tx][ty] = true;
+	}
+	
+	/**
+	 * Remove a block from a tile
+	 * 
+	 * @param tx
+	 *            the x-coordinate
+	 * @param ty
+	 *            the y-coordinate
+	 */
+	public void removeBlocker(int tx, int ty)
+	{
+		this.collisionMap[tx][ty] = false;
+	}
+
 }
