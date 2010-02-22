@@ -132,8 +132,10 @@ public class SimpleTest extends BasicGame
         if (showVerbose)
         {
     		g.setColor(Color.cyan);
-    		g.drawString("row = " + row, 0, 100);
-    		g.drawString("col = " + col, 0, 200);
+			g.drawString("row    = " + row, 0, 100);
+			g.drawString("col    = " + col, 0, 120);
+			// g.drawString("towers = " + towers.size(), 0, 140);
+			// g.drawString("mobs   = " + mobs.size(), 0, 160);
 			container.setShowFPS(true);
    		}
 		else
