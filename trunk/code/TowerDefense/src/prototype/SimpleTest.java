@@ -65,11 +65,19 @@ public class SimpleTest extends BasicGame
 				{
 					towers.add(temp);
 					searchMap.addBlocker(mrow, mcol);
+					for (Mob m : mobs)
+					{
+						m.updatePath(pathFinder.findPath(m, m.xLoc, m.yLoc, 1, 1));
+					}
 				}
 				else if (towers.get(towers.size() - 1).xLoc != mrow || towers.get(towers.size() - 1).yLoc != mcol)
 				{
 					towers.add(temp);
 					searchMap.addBlocker(mrow, mcol);
+					for (Mob m : mobs)
+					{
+						m.updatePath(pathFinder.findPath(m, m.xLoc, m.yLoc, 1, 1));
+					}
 				}
 			}
 		}
@@ -126,7 +134,12 @@ public class SimpleTest extends BasicGame
     		g.setColor(Color.cyan);
     		g.drawString("row = " + row, 0, 100);
     		g.drawString("col = " + col, 0, 200);
+			container.setShowFPS(true);
    		}
+		else
+		{
+			container.setShowFPS(false);
+		}
 
 		g.setColor(Color.white);
 		for (Tower i : towers)
@@ -141,7 +154,6 @@ public class SimpleTest extends BasicGame
 		try
 		{
 			AppGameContainer app = new AppGameContainer(new SimpleTest());
-			app.setShowFPS(false);
 			app.start();
 		}
 		catch (SlickException e)

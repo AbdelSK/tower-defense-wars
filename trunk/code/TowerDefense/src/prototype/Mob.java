@@ -21,4 +21,10 @@ public class Mob implements Mover
 		this.path = new Path();
 		this.step = 0;
 	}
+	
+	public void updatePath(Path p)
+	{
+		path = p;
+		step = 0;
+	}
 }
