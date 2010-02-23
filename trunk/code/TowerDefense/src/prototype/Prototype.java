@@ -24,6 +24,7 @@ public class Prototype extends BasicGame
 	TiledMap map;
 	AStarPathFinder pathFinder;
 	int currMillseconds;
+	int currMillis;
 
 	public Prototype()
 	{
@@ -43,12 +44,14 @@ public class Prototype extends BasicGame
 		searchMap = new PrototypeMap(this.map);
 		pathFinder = new AStarPathFinder(searchMap, 10000, false);
 		this.currMillseconds = 0;
+		this.currMillis = 0;
 	}
 	
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException
 	{
 		this.currMillseconds += delta;
+		this.currMillis += delta;
 		Input input = container.getInput();
 		
 		mx = input.getMouseX();
@@ -130,6 +133,18 @@ public class Prototype extends BasicGame
 				if (mobs.get(i).hitPoints <= 0)
 					mobs.remove(i--);
 			}
+		}
+
+		if (this.currMillis / 500 > 1)
+		{
+			this.currMillis = 0;
+
+			for (Tower t : towers)
+				for (Mob m : mobs)
+				{
+					if (Math.sqrt(Math.pow(m.xLoc - t.xLoc, 2) + Math.pow(m.yLoc - t.yLoc, 2)) < t.radius)
+						m.hitPoints -= t.damage;
+				}
 		}
 	}
 	

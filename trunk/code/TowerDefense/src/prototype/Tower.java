@@ -8,10 +8,12 @@ public class Tower
 	public Character ch;
 	public int radius;
 	public int attackSpeed;
+	public int damage;
 	
 	public Tower(Character ch, int xLoc, int yLoc)
 	{
 		this.attackSpeed = 2;
+		this.damage = 10;
 		this.ch = ch;
 		this.radius = 10;
 		this.xLoc = xLoc;
