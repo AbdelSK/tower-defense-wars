@@ -5,9 +5,9 @@ public class Tower
 	public boolean alive;
 	public int xLoc;
 	public int yLoc;
-	public char ch;
+	public Character ch;
 	
-	public Tower(char ch, int xLoc, int yLoc)
+	public Tower(Character ch, int xLoc, int yLoc)
 	{
 		this.ch = ch;
 		this.xLoc = xLoc;
