@@ -115,6 +115,16 @@ public class Prototype extends BasicGame
 						mobs.get(i).path = new Path();
 				}
 				
+				if (mobs.get(i).path == null)
+				{
+					for (int k = 0; k < towers.size(); k++)
+					{
+						searchMap.removeBlocker(towers.get(k).xLoc, towers.get(k).yLoc);
+					}
+					towers.clear();
+					mobs.get(i).updatePath(pathFinder.findPath(mobs.get(i), mobs.get(i).xLoc, mobs.get(i).yLoc, 1, 1));
+				}
+
 				if (mobs.get(i).xLoc == 1 && mobs.get(i).yLoc == 1)
 					mobs.get(i).hitPoints = 0;
 				if (mobs.get(i).hitPoints <= 0)
