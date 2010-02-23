@@ -8,13 +8,13 @@ public class Mob implements Mover
 	public boolean alive;
 	public int xLoc;
 	public int yLoc;
-	public char ch;
+	public Character ch;
 	public Path path;
 	public int step;
 	
-	public Mob(char ch, int xLoc, int yLoc)
+	public Mob(Character ch, int xLoc, int yLoc)
 	{
-		this.ch = ch;
+		this.ch = new Character(ch);
 		this.xLoc = xLoc;
 		this.yLoc = yLoc;
 		this.alive = true;
