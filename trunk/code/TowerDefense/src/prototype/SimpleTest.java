@@ -41,7 +41,7 @@ public class SimpleTest extends BasicGame
 
 		map = new TiledMap("prototype-data/map01.tmx");
 		searchMap = new PrototypeMap(this.map);
-		pathFinder = new AStarPathFinder(searchMap, 10000, true);
+		pathFinder = new AStarPathFinder(searchMap, 10000, false);
 		this.currMillseconds = 0;
 	}
 	
@@ -60,24 +60,23 @@ public class SimpleTest extends BasicGame
 		{
 			if (!searchMap.blocked(null, mrow, mcol))
 			{
-				Tower temp = new Tower('A', mrow, mcol);
+				Tower temp = new Tower('#', mrow, mcol);
+
 				if (towers.size() == 0)
 				{
 					towers.add(temp);
 					searchMap.addBlocker(mrow, mcol);
+
 					for (Mob m : mobs)
-					{
 						m.updatePath(pathFinder.findPath(m, m.xLoc, m.yLoc, 1, 1));
-					}
 				}
 				else if (towers.get(towers.size() - 1).xLoc != mrow || towers.get(towers.size() - 1).yLoc != mcol)
 				{
 					towers.add(temp);
 					searchMap.addBlocker(mrow, mcol);
+
 					for (Mob m : mobs)
-					{
 						m.updatePath(pathFinder.findPath(m, m.xLoc, m.yLoc, 1, 1));
-					}
 				}
 			}
 		}
@@ -85,9 +84,11 @@ public class SimpleTest extends BasicGame
 		{
 			if ((delta < 20) && !searchMap.blocked(null, mrow, mcol))
 			{
-				Mob temp = new Mob('x', mrow, mcol);
+				Character lol = new Character('@'); // \uF8FF = Apple logo: ð
+				Mob temp = new Mob(lol, mrow, mcol);
 				Path path = pathFinder.findPath(temp, mrow, mcol, 1, 1);
 				temp.path = path;
+
 				if (mobs.size() == 0)
 					mobs.add(temp);
 				else if (mobs.get(mobs.size() - 1).xLoc != mrow || mobs.get(mobs.size() - 1).yLoc != mcol)
@@ -96,12 +97,15 @@ public class SimpleTest extends BasicGame
 
 		}
 		if (input.isKeyPressed(Input.KEY_V))
-		{
 			showVerbose = !showVerbose;
-		}
 		if (this.currMillseconds / 100 > 1)
 		{
 			this.currMillseconds = 0;
+
+			for (Mob job : mobs)
+				if (job.xLoc == 1 && job.yLoc == 1)
+					mobs.remove(job);
+
 			for (Mob job : mobs)
 			{
 				if (job.path != null && job.path.getLength() != 0)
@@ -139,16 +143,15 @@ public class SimpleTest extends BasicGame
 			container.setShowFPS(true);
    		}
 		else
-		{
 			container.setShowFPS(false);
-		}
 
 		g.setColor(Color.white);
 		for (Tower i : towers)
 			g.drawString("" + i.ch, i.xLoc * 16 + 4, i.yLoc * 16 - 2);
-		for (Mob i : mobs)
-			g.drawString("" + i.ch, i.xLoc * 16 + 3, i.yLoc * 16 - 3);
 
+		g.setColor(Color.red);
+		for (Mob i : mobs)
+			g.drawString(i.ch.toString(), i.xLoc * 16 + 3, i.yLoc * 16 - 3);
 	}
 	
 	public static void main(String[] args)
