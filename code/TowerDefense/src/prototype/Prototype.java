@@ -58,26 +58,24 @@ public class Prototype extends BasicGame
 		
 		if (input.isMouseButtonDown(0))
 		{
-			if (!searchMap.blocked(null, mrow, mcol))
+			if (input.isKeyDown(Input.KEY_LSHIFT) && searchMap.blocked(null, mrow, mcol))
+			{
+				for (int i = 0; i < towers.size(); i++)
+					if (towers.get(i).xLoc == mrow && towers.get(i).yLoc == mcol)
+					{
+						towers.remove(i--);
+						searchMap.removeBlocker(mrow, mcol);
+					}
+			}
+			
+			if (!searchMap.blocked(null, mrow, mcol) && !input.isKeyDown(Input.KEY_LSHIFT))
 			{
 				Tower temp = new Tower('#', mrow, mcol);
+				towers.add(temp);
+				searchMap.addBlocker(mrow, mcol);
 
-				if (towers.size() == 0)
-				{
-					towers.add(temp);
-					searchMap.addBlocker(mrow, mcol);
-
-					for (Mob m : mobs)
-						m.updatePath(pathFinder.findPath(m, m.xLoc, m.yLoc, 1, 1));
-				}
-				else if (towers.get(towers.size() - 1).xLoc != mrow || towers.get(towers.size() - 1).yLoc != mcol)
-				{
-					towers.add(temp);
-					searchMap.addBlocker(mrow, mcol);
-
-					for (Mob m : mobs)
-						m.updatePath(pathFinder.findPath(m, m.xLoc, m.yLoc, 1, 1));
-				}
+				for (Mob m : mobs)
+					m.updatePath(pathFinder.findPath(m, m.xLoc, m.yLoc, 1, 1));
 			}
 		}
 		else if (input.isMouseButtonDown(1))
