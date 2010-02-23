@@ -1,6 +1,6 @@
 package prototype;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
@@ -18,8 +18,8 @@ public class SimpleTest extends BasicGame
 	boolean showVerbose;
 	int mx;
 	int my;
-	ArrayList<Tower> towers;
-	ArrayList<Mob> mobs;
+	LinkedList<Tower> towers;
+	LinkedList<Mob> mobs;
 	PrototypeMap searchMap;
 	TiledMap map;
 	AStarPathFinder pathFinder;
@@ -35,8 +35,8 @@ public class SimpleTest extends BasicGame
 	{
 		mx = 0;
 		my = 0;
-		towers = new ArrayList<Tower>();
-		mobs = new ArrayList<Mob>();
+		towers = new LinkedList<Tower>();
+		mobs = new LinkedList<Mob>();
 		showVerbose = true;
 
 		map = new TiledMap("prototype-data/map01.tmx");
@@ -103,26 +103,28 @@ public class SimpleTest extends BasicGame
 			this.currMillseconds = 0;
 
 			for (Mob job : mobs)
-				if (job.xLoc == 1 && job.yLoc == 1)
-					mobs.remove(job);
-
-			for (Mob job : mobs)
 			{
 				if (job.path != null && job.path.getLength() != 0)
 				{
 					job.step++;
+
 					if (job.step < job.path.getLength())
 					{
 						job.xLoc = job.path.getX(job.step);
 						job.yLoc = job.path.getY(job.step);
 					}
 					else
-					{
 						job.path = new Path();
-					}
 				}
+				
+				if (job.xLoc == 1 && job.yLoc == 1)
+					job.hitPoints = 0;
 			}
 		}
+		
+		for (int i = 0; i < mobs.size(); i++)
+			if (mobs.get(i).hitPoints == 0)
+				mobs.remove(i--);
 	}
 	
 	@Override
