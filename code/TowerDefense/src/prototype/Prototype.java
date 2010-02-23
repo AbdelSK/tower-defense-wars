@@ -102,29 +102,27 @@ public class Prototype extends BasicGame
 		{
 			this.currMillseconds = 0;
 
-			for (Mob job : mobs)
+			for (int i = 0; i < mobs.size(); i++)
 			{
-				if (job.path != null && job.path.getLength() != 0)
+				if (mobs.get(i).path != null && mobs.get(i).path.getLength() != 0)
 				{
-					job.step++;
+					mobs.get(i).step++;
 
-					if (job.step < job.path.getLength())
+					if (mobs.get(i).step < mobs.get(i).path.getLength())
 					{
-						job.xLoc = job.path.getX(job.step);
-						job.yLoc = job.path.getY(job.step);
+						mobs.get(i).xLoc = mobs.get(i).path.getX(mobs.get(i).step);
+						mobs.get(i).yLoc = mobs.get(i).path.getY(mobs.get(i).step);
 					}
 					else
-						job.path = new Path();
+						mobs.get(i).path = new Path();
 				}
 				
-				if (job.xLoc == 1 && job.yLoc == 1)
-					job.hitPoints = 0;
+				if (mobs.get(i).xLoc == 1 && mobs.get(i).yLoc == 1)
+					mobs.get(i).hitPoints = 0;
+				if (mobs.get(i).hitPoints == 0)
+					mobs.remove(i--);
 			}
 		}
-		
-		for (int i = 0; i < mobs.size(); i++)
-			if (mobs.get(i).hitPoints == 0)
-				mobs.remove(i--);
 	}
 	
 	@Override
