@@ -119,7 +119,7 @@ public class Prototype extends BasicGame
 				
 				if (mobs.get(i).xLoc == 1 && mobs.get(i).yLoc == 1)
 					mobs.get(i).hitPoints = 0;
-				if (mobs.get(i).hitPoints == 0)
+				if (mobs.get(i).hitPoints <= 0)
 					mobs.remove(i--);
 			}
 		}
