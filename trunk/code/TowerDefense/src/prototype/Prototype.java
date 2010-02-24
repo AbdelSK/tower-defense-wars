@@ -140,15 +140,11 @@ public class Prototype extends BasicGame
 
 			for (Tower t : towers)
 				for (Mob m : mobs)
-				{
 					if (Math.sqrt(Math.pow(m.xLoc - t.xLoc, 2) + Math.pow(m.yLoc - t.yLoc, 2)) < t.radius)
 					{
 						m.hitPoints -= t.damage;
-						m.hit = true;
+						break;
 					}
-					else
-						m.hit = false;
-				}
 		}
 	}
 	
@@ -176,13 +172,33 @@ public class Prototype extends BasicGame
 		for (Tower i : towers)
 			g.drawString("" + i.ch, i.xLoc * 16 + 4, i.yLoc * 16 - 2);
 
-
+		g.setColor(Color.blue);
 		for (Mob i : mobs)
 		{
-			if (i.hit)
-				g.setColor(Color.red);
-			else
+			if (i.hitPoints > 90)
+			{
 				g.setColor(Color.blue);
+			}
+			else if (i.hitPoints > 80)
+			{
+				g.setColor(Color.cyan);
+			}
+			else if (i.hitPoints > 70)
+			{
+				g.setColor(Color.yellow);
+			}
+			else if (i.hitPoints > 60)
+			{
+				g.setColor(Color.orange);
+			}
+			else if (i.hitPoints > 50)
+			{
+				g.setColor(Color.pink);
+			}
+			else
+			{
+				g.setColor(Color.red);
+			}
 			g.drawString(i.ch.toString(), i.xLoc * 16 + 3, i.yLoc * 16 - 3);
 		}
 	}
