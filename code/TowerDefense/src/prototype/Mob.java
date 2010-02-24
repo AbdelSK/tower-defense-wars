@@ -11,7 +11,6 @@ public class Mob implements Mover
 	public Character ch;
 	public Path path;
 	public int step;
-	public boolean hit;
 	
 	public Mob(Character ch, int xLoc, int yLoc)
 	{
@@ -21,7 +20,6 @@ public class Mob implements Mover
 		this.yLoc = yLoc;
 		this.path = new Path();
 		this.step = 0;
-		this.hit = false;
 	}
 	
 	public void updatePath(Path p)
