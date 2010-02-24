@@ -143,6 +143,10 @@ public class Prototype extends BasicGame
 					if (Math.sqrt(Math.pow(m.xLoc - t.xLoc, 2) + Math.pow(m.yLoc - t.yLoc, 2)) < t.radius)
 					{
 						m.hitPoints -= t.damage;
+						if (m.hitPoints <= 0)
+						{
+							mobs.remove(m);
+						}
 						break;
 					}
 		}
