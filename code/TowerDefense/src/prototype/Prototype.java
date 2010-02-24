@@ -121,9 +121,8 @@ public class Prototype extends BasicGame
 				if (mobs.get(i).path == null)
 				{
 					for (int k = 0; k < towers.size(); k++)
-					{
 						searchMap.removeBlocker(towers.get(k).xLoc, towers.get(k).yLoc);
-					}
+
 					towers.clear();
 					mobs.get(i).updatePath(pathFinder.findPath(mobs.get(i), mobs.get(i).xLoc, mobs.get(i).yLoc, 1, 1));
 				}
@@ -141,10 +140,8 @@ public class Prototype extends BasicGame
 
 			for (Tower t : towers)
 				for (Mob m : mobs)
-				{
 					if (Math.sqrt(Math.pow(m.xLoc - t.xLoc, 2) + Math.pow(m.yLoc - t.yLoc, 2)) < t.radius)
 						m.hitPoints -= t.damage;
-				}
 		}
 	}
 	
