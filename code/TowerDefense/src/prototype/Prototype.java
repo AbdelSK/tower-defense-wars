@@ -83,7 +83,7 @@ public class Prototype extends BasicGame
 		}
 		else if (input.isMouseButtonDown(1))
 		{
-			if ((delta < 20) && !searchMap.blocked(null, mrow, mcol))
+			if ((delta < 200) && !searchMap.blocked(null, mrow, mcol))
 			{
 				Character lol = new Character('@'); // \uF8FF = Apple logo: ð
 				Mob temp = new Mob(lol, mrow, mcol);
