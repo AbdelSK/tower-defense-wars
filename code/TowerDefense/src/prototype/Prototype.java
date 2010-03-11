@@ -14,6 +14,19 @@ import org.newdawn.slick.util.pathfinding.Path;
 
 public class Prototype extends BasicGame
 {
+	/*
+	 * @MobMover referencing these constants
+	 * 
+	 * max number of towers and mobs, assume we can cover the map for now
+	 * MAX_COLS, MAX_ROWS, MIN_COL, MIN_ROW should probably be moved to the map
+	 * but leaving here for now
+	 */
+	public static final int MAX_COLS = 38;
+	public static final int MAX_ROWS = 28;
+	public static final int MIN_COL = 1;
+	public static final int MIN_ROW = 1;
+	public static final int MAX_TOWERS = MAX_COLS * MAX_ROWS;
+	public static final int MAX_MOBS = MAX_COLS * MAX_ROWS;
 
 	boolean showVerbose;
 	int mx;
@@ -23,6 +36,7 @@ public class Prototype extends BasicGame
 	PrototypeMap searchMap;
 	TiledMap map;
 	AStarPathFinder pathFinder;
+	MobMover mobMover;
 	int currMillseconds;
 	int currMillis;
 
@@ -45,6 +59,7 @@ public class Prototype extends BasicGame
 		pathFinder = new AStarPathFinder(searchMap, 10000, false);
 		this.currMillseconds = 0;
 		this.currMillis = 0;
+		mobMover = new MobMover(this, searchMap);
 	}
 	
 	@Override
@@ -56,50 +71,52 @@ public class Prototype extends BasicGame
 		
 		mx = input.getMouseX();
 		my = input.getMouseY();
-		int mrow = mx / 16;
-		int mcol = my / 16;
+		int mCow = mx / 16;
+		int mRow = my / 16;
 		
 		if (input.isMouseButtonDown(0))
 		{
-			if (input.isKeyDown(Input.KEY_LSHIFT) && searchMap.blocked(null, mrow, mcol))
+			if (input.isKeyDown(Input.KEY_LSHIFT) && searchMap.blocked(null, mCow, mRow))
 			{
 				for (int i = 0; i < towers.size(); i++)
-					if (towers.get(i).xLoc == mrow && towers.get(i).yLoc == mcol)
+					if (towers.get(i).tileCol == mCow && towers.get(i).tileRow == mRow)
 					{
+						mobMover.unregisterTower(towers.get(i));
 						towers.remove(i--);
-						searchMap.removeBlocker(mrow, mcol);
+						searchMap.removeBlocker(mCow, mRow);
 					}
 			}
 			
-			if (!searchMap.blocked(null, mrow, mcol) && !input.isKeyDown(Input.KEY_LSHIFT))
+			if (!searchMap.blocked(null, mCow, mRow) && !input.isKeyDown(Input.KEY_LSHIFT))
 			{
-				Tower temp = new Tower('#', mrow, mcol);
+				Tower temp = new Tower('#', mCow, mRow);
+				mobMover.registerTower(temp);
 				towers.add(temp);
-				searchMap.addBlocker(mrow, mcol);
+				searchMap.addBlocker(mCow, mRow);
 
 				for (Mob m : mobs)
-					m.updatePath(pathFinder.findPath(m, m.xLoc, m.yLoc, 1, 1));
+					m.updatePath(pathFinder.findPath(m, m.tileCol, m.tileRow, 1, 1));
 			}
 		}
 		else if (input.isMouseButtonDown(1))
 		{
-			if ((delta < 200) && !searchMap.blocked(null, mrow, mcol))
+			if ((delta < 200) && !searchMap.blocked(null, mCow, mRow))
 			{
 				Character lol = new Character('@'); // \uF8FF = Apple logo: ð
-				Mob temp = new Mob(lol, mrow, mcol);
-				Path path = pathFinder.findPath(temp, mrow, mcol, 1, 1);
+				Mob temp = new Mob(lol, mCow, mRow);
+				Path path = pathFinder.findPath(temp, mCow, mRow, 1, 1);
 				temp.path = path;
 
 				if (mobs.size() == 0)
 					mobs.add(temp);
-				else if (mobs.get(mobs.size() - 1).xLoc != mrow || mobs.get(mobs.size() - 1).yLoc != mcol)
+				else if (mobs.get(mobs.size() - 1).tileCol != mCow || mobs.get(mobs.size() - 1).tileRow != mRow)
 					mobs.add(temp);
 			}
 
 		}
 		if (input.isKeyPressed(Input.KEY_V))
 			showVerbose = !showVerbose;
-		if (this.currMillseconds / 100 > 1)
+		if (this.currMillseconds / 5 > 1)
 		{
 			this.currMillseconds = 0;
 
@@ -107,12 +124,9 @@ public class Prototype extends BasicGame
 			{
 				if (mobs.get(i).path != null && mobs.get(i).path.getLength() != 0)
 				{
-					mobs.get(i).step++;
-
 					if (mobs.get(i).step < mobs.get(i).path.getLength())
 					{
-						mobs.get(i).xLoc = mobs.get(i).path.getX(mobs.get(i).step);
-						mobs.get(i).yLoc = mobs.get(i).path.getY(mobs.get(i).step);
+						mobMover.moveMob(mobs.get(i));
 					}
 					else
 						mobs.get(i).path = new Path();
@@ -121,34 +135,36 @@ public class Prototype extends BasicGame
 				if (mobs.get(i).path == null)
 				{
 					for (int k = 0; k < towers.size(); k++)
-						searchMap.removeBlocker(towers.get(k).xLoc, towers.get(k).yLoc);
+						searchMap.removeBlocker(towers.get(k).tileCol, towers.get(k).tileRow);
 
 					towers.clear();
-					mobs.get(i).updatePath(pathFinder.findPath(mobs.get(i), mobs.get(i).xLoc, mobs.get(i).yLoc, 1, 1));
+					mobs.get(i).updatePath(pathFinder.findPath(mobs.get(i), mobs.get(i).tileCol, mobs.get(i).tileRow, 1, 1));
 				}
 
-				if (mobs.get(i).xLoc == 1 && mobs.get(i).yLoc == 1)
+				if (mobs.get(i).tileCol == 1 && mobs.get(i).tileRow == 1)
 					mobs.get(i).hitPoints = 0;
 				if (mobs.get(i).hitPoints <= 0)
 					mobs.remove(i--);
 			}
 		}
 
-		if (this.currMillis / 500 > 1)
+		if (this.currMillis / 100 > 1)
 		{
 			this.currMillis = 0;
 
 			for (Tower t : towers)
-				for (Mob m : mobs)
-					if (Math.sqrt(Math.pow(m.xLoc - t.xLoc, 2) + Math.pow(m.yLoc - t.yLoc, 2)) < t.radius)
+			{
+				Mob m = t.getMobsInRange().peekFirst();
+				if (m != null)
+				{
+					m.hitPoints -= t.damage;
+					if (m.hitPoints <= 0)
 					{
-						m.hitPoints -= t.damage;
-						if (m.hitPoints <= 0)
-						{
-							mobs.remove(m);
-						}
-						break;
+						mobs.remove(m);
+						t.getMobsInRange().removeFirst();
 					}
+				}
+			}
 		}
 	}
 	
@@ -165,8 +181,8 @@ public class Prototype extends BasicGame
     		g.setColor(Color.cyan);
 			g.drawString("row    = " + row, 0, 100);
 			g.drawString("col    = " + col, 0, 120);
-			// g.drawString("towers = " + towers.size(), 0, 140);
-			// g.drawString("mobs   = " + mobs.size(), 0, 160);
+			g.drawString("towers = " + towers.size(), 0, 140);
+			g.drawString("mobs   = " + mobs.size(), 0, 160);
 			container.setShowFPS(true);
    		}
 		else
@@ -174,7 +190,7 @@ public class Prototype extends BasicGame
 
 		g.setColor(Color.white);
 		for (Tower i : towers)
-			g.drawString("" + i.ch, i.xLoc * 16 + 4, i.yLoc * 16 - 2);
+			g.drawString("" + i.ch, i.tileCol * 16 + 4, i.tileRow * 16 - 2);
 
 		g.setColor(Color.blue);
 		for (Mob i : mobs)
@@ -203,7 +219,7 @@ public class Prototype extends BasicGame
 			{
 				g.setColor(Color.red);
 			}
-			g.drawString(i.ch.toString(), i.xLoc * 16 + 3, i.yLoc * 16 - 3);
+			g.drawString(i.ch.toString(), i.getXPixelLoc(), i.getYPixelLoc());
 		}
 	}
 	

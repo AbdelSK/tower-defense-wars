@@ -45,18 +45,32 @@ public class PrototypeMap implements TileBasedMap
 		return 1;
 	}
 	
+	/*
+	 * @MobMover referencing this method
+	 */
 	@Override
 	public int getHeightInTiles()
 	{
 		return map.getHeight();
 	}
 	
+	/*
+	 * @MobMover referencing this method
+	 */
 	@Override
 	public int getWidthInTiles()
 	{
 		return map.getWidth();
 	}
 	
+	/*
+	 * @MobMover referencing this method
+	 */
+	public TiledMap getMap()
+	{
+		return map;
+	}
+
 	@Override
 	public void pathFinderVisited(int x, int y)
 	{
@@ -89,5 +103,20 @@ public class PrototypeMap implements TileBasedMap
 	{
 		this.collisionMap[tx][ty] = false;
 	}
+	
+	/*
+	 * @MobMover referencing this method
+	 */
+	public static int centerXInTile(int tileCol)
+	{
+		return tileCol * 16 + 3;
+	}
 
+	/*
+	 * @MobMover referencing this method
+	 */
+	public static int centerYInTile(int tileRow)
+	{
+		return tileRow * 16 - 3;
+	}
 }
