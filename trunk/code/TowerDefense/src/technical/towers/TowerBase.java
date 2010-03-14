@@ -23,7 +23,7 @@ public abstract class TowerBase extends GameObject implements Tower
 
 		this.price = price;
 		this.type = type;
-		Random gen = new Random(); 
+		Random gen = new Random();
 		
 		if (type.equals(TowerFactory.type.diceOne))
 		{
