@@ -8,16 +8,14 @@ public class MobMover
 {
 	HashMap<TileLocation, HashMap<Tower, Tower>> regTowerLists;
 	Prototype basicGame;
-	PrototypeMap gameMap; // could just have a getter in Prototype for the map
 	
-	public MobMover(Prototype tBasicGame, PrototypeMap tMap)
+	public MobMover(Prototype tBasicGame)
 	{
 		basicGame = tBasicGame;
-		gameMap = tMap;
-		regTowerLists = new HashMap<TileLocation, HashMap<Tower, Tower>>((gameMap.getHeightInTiles() + 1) * (gameMap.getWidthInTiles() + 1));
-		for (int row = 1; row <= gameMap.getHeightInTiles(); row++)
+		regTowerLists = new HashMap<TileLocation, HashMap<Tower, Tower>>((tBasicGame.getMap().getHeightInTiles() + 1) * (tBasicGame.getMap().getWidthInTiles() + 1));
+		for (int row = 1; row <= tBasicGame.getMap().getHeightInTiles(); row++)
 		{
-			for (int col = 1; col <= gameMap.getWidthInTiles(); col++)
+			for (int col = 1; col <= tBasicGame.getMap().getWidthInTiles(); col++)
 			{
 				regTowerLists.put(new TileLocation(col, row), new HashMap<Tower, Tower>(Prototype.MAX_TOWERS));
 			}

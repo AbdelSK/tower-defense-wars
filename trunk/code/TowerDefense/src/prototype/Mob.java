@@ -7,7 +7,7 @@ public class Mob implements Mover
 {
 	public int tileCol;
 	public int tileRow;
-	public int hitPoints;
+	private int hitPoints;
 	public Character ch;
 	public Path path;
 	public int step;
@@ -97,5 +97,14 @@ public class Mob implements Mover
 	{
 		this.tileRow = tTileRow;
 	}
-
+	
+	public int getHP()
+	{
+		return hitPoints;
+	}
+	
+	public void setHP(int hp)
+	{
+		this.hitPoints = hp;
+	}
 }
