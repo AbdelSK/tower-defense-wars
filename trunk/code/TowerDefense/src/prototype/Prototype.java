@@ -28,6 +28,13 @@ public class Prototype extends BasicGame
 	public static final int MAX_TOWERS = MAX_COLS * MAX_ROWS;
 	public static final int MAX_MOBS = MAX_COLS * MAX_ROWS;
 
+	// private FengWrapper _fengWrapper;
+	
+	public enum States
+	{
+		SplashState, MainMenuState, GameplayState, GameOverState,
+	};
+
 	boolean showVerbose;
 	int mx;
 	int my;
@@ -42,7 +49,7 @@ public class Prototype extends BasicGame
 
 	public Prototype()
 	{
-		super("Prototype");
+		super("Unicode Wars - Prototype");
 	}
 	
 	@Override
@@ -227,7 +234,17 @@ public class Prototype extends BasicGame
 	{
 		return searchMap;
 	}
-
+	
+	/*
+	 * @Override public void initStatesList(GameContainer container) throws
+	 * SlickException { _fengWrapper = new FengWrapper(container);
+	 * 
+	 * addState(new SplashState()); addState(new MainMenuState()); addState(new
+	 * GameplayState()); addState(new GameOverState()); for (States s :
+	 * States.values()) { GameState state = getState(s.ordinal());
+	 * ((BHGameState) state).setFengWrapper(_fengWrapper); }
+	 * enterState(States.SplashState.ordinal()); }
+	 */
 	public static void main(String[] args)
 	{
 		try
