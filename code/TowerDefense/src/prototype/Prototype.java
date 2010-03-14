@@ -59,7 +59,7 @@ public class Prototype extends BasicGame
 		pathFinder = new AStarPathFinder(searchMap, 10000, false);
 		this.currMillseconds = 0;
 		this.currMillis = 0;
-		mobMover = new MobMover(this, searchMap);
+		mobMover = new MobMover(this);
 	}
 	
 	@Override
@@ -102,8 +102,7 @@ public class Prototype extends BasicGame
 		{
 			if ((delta < 200) && !searchMap.blocked(null, mCow, mRow))
 			{
-				Character lol = new Character('@'); // \uF8FF = Apple logo: ð
-				Mob temp = new Mob(lol, mCow, mRow);
+				Mob temp = new Mob('@', mCow, mRow);
 				Path path = pathFinder.findPath(temp, mCow, mRow, 1, 1);
 				temp.path = path;
 
@@ -142,8 +141,8 @@ public class Prototype extends BasicGame
 				}
 
 				if (mobs.get(i).tileCol == 1 && mobs.get(i).tileRow == 1)
-					mobs.get(i).hitPoints = 0;
-				if (mobs.get(i).hitPoints <= 0)
+					mobs.get(i).setHP(0);
+				if (mobs.get(i).getHP() <= 0)
 					mobs.remove(i--);
 			}
 		}
@@ -155,10 +154,11 @@ public class Prototype extends BasicGame
 			for (Tower t : towers)
 			{
 				Mob m = t.getMobsInRange().peekFirst();
+
 				if (m != null)
 				{
-					m.hitPoints -= t.damage;
-					if (m.hitPoints <= 0)
+					m.setHP(m.getHP() - t.getDamage());
+					if (m.getHP() <= 0)
 					{
 						mobs.remove(m);
 						t.getMobsInRange().removeFirst();
@@ -195,23 +195,23 @@ public class Prototype extends BasicGame
 		g.setColor(Color.blue);
 		for (Mob i : mobs)
 		{
-			if (i.hitPoints > 90)
+			if (i.getHP() > 90)
 			{
 				g.setColor(Color.blue);
 			}
-			else if (i.hitPoints > 80)
+			else if (i.getHP() > 80)
 			{
 				g.setColor(Color.cyan);
 			}
-			else if (i.hitPoints > 70)
+			else if (i.getHP() > 70)
 			{
 				g.setColor(Color.yellow);
 			}
-			else if (i.hitPoints > 60)
+			else if (i.getHP() > 60)
 			{
 				g.setColor(Color.orange);
 			}
-			else if (i.hitPoints > 50)
+			else if (i.getHP() > 50)
 			{
 				g.setColor(Color.pink);
 			}
@@ -223,6 +223,11 @@ public class Prototype extends BasicGame
 		}
 	}
 	
+	public PrototypeMap getMap()
+	{
+		return searchMap;
+	}
+
 	public static void main(String[] args)
 	{
 		try

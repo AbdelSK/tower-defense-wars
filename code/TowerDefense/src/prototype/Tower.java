@@ -12,7 +12,7 @@ public class Tower
 	public Character ch;
 	public int radius;
 	public int attackSpeed;
-	public int damage;
+	private int damage;
 	public LinkedList<Mob> mobsInRange;
 	
 	public Tower(Character ch, int tTileCol, int tTileRow)
@@ -102,5 +102,16 @@ public class Tower
 	public int hashCode()
 	{
 		return tileCol * Prototype.MAX_COLS + tileRow;
+	}
+	
+	public int getDamage()
+	{
+		return this.damage;
+	}
+	
+	public void setDamage(int dmg)
+	{
+		if (dmg > 0)
+			this.damage = dmg;
 	}
 }
