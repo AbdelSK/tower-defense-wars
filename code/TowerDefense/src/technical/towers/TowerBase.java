@@ -1,8 +1,10 @@
 package technical.towers;
 
 import java.util.Random;
+import com.teamamerica.games.unicodewars.object.GameObject;
+import com.teamamerica.games.unicodewars.system.BB;
 
-public abstract class TowerBase implements Tower
+public abstract class TowerBase extends GameObject implements Tower
 {
 	int boardX;
 	int boardY;
@@ -17,6 +19,8 @@ public abstract class TowerBase implements Tower
 	
 	public TowerBase(TowerFactory.type type, int attack, int price, int radius, int speed)
 	{
+		super("Tower", BB.inst().getNextId(), 100);
+
 		this.price = price;
 		this.type = type;
 		Random gen = new Random(); 
