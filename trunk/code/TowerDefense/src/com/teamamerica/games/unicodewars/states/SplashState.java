@@ -23,8 +23,8 @@ public class SplashState extends BHGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		_splashImage = new Image("data/images/splash.png");		
-		_timer = 2000;
+		_splashImage = new Image("data/images/teamamerica_1024.png");
+		_timer = 5000;
 	}
 
 	@Override

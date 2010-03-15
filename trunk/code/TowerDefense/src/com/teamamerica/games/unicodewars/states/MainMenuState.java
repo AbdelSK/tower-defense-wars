@@ -37,7 +37,7 @@ public class MainMenuState extends BHGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		_game = game;
-		_backgroundImage = new Image("data/images/main-screen.png");
+		_backgroundImage = new Image("data/images/main-menu.png");
 		
 		_centerX = container.getWidth() / 2;
 		_centerY = container.getHeight() / 2;
@@ -92,9 +92,9 @@ public class MainMenuState extends BHGameState {
 		display.setLayoutManager(new StaticLayout());
 
 		Button btn = FengGUI.createWidget(Button.class);
-		btn.setText("start");
+		btn.setText("Play Game");
 	    btn.setPosition(new Point(700, _centerY));
-		btn.setSize(100, 25);
+		btn.setSize(200, 50);
 		btn.addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0) {
 				_game.enterState(Main.States.GameplayState.ordinal());
@@ -103,9 +103,9 @@ public class MainMenuState extends BHGameState {
 		display.addWidget(btn);
 		
 		btn = FengGUI.createWidget(Button.class);
-		btn.setText("exit");
+		btn.setText("Exit Game");
 	    btn.setPosition(new Point(700, _centerY-25));
-		btn.setSize(100, 25);
+		btn.setSize(200, 50);
 		btn.addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0) {
 				container.exit();
