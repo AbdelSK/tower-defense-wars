@@ -58,7 +58,7 @@ public class GameSystem {
 		
 		g.pushTransform();
 		g.resetTransform();
-		g.translate(-controlled.getPosition()[0] + centerX, -controlled.getPosition()[1] + centerY);
+		g.translate(-controlled.getPosition().x + centerX, -controlled.getPosition().y + centerY);
 
 		for (GameObject obj : BB.inst().getAll()) { 
 			obj.render(g);

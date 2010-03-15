@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.newdawn.slick.Graphics;
 import com.teamamerica.games.unicodewars.component.Component;
+import com.teamamerica.games.unicodewars.utils.Location;
 
 public class GameObject {
     private static Logger logger = Logger.getLogger( GameObject.class );
@@ -27,7 +28,7 @@ public class GameObject {
 	protected String _name;
 	
 	/** Location of this entity */
-	protected int[] _position;
+	protected Location _position;
 	
 	
 	private int _renderPriority;
@@ -41,7 +42,7 @@ public class GameObject {
 		_name = name;
 		_id = id;
 		
-		_position = new int[1];
+		_position = new Location(0, 0);
 		
 		_updateQueue = new LinkedList<Component>();
 		_renderQueue = new LinkedList<Component>();
@@ -108,7 +109,7 @@ public class GameObject {
 	 * Return the position of this GameObject
 	 * @return
 	 */
-	public int[] getPosition()
+	public Location getPosition()
 	{
 		return _position;
 	}
@@ -117,12 +118,21 @@ public class GameObject {
 	 * Sets the position of this GameObject
 	 * @param v
 	 */
-	public void setPosition(int[] x)
+	public void setPosition(Location x)
 	{
 		_position = x;
 	}
 	
-
+	/**
+	 * Sets the position of this GameObject
+	 * 
+	 * @param v
+	 */
+	public void setPosition(int row, int column)
+	{
+		_position.x = row;
+		_position.y = column;
+	}
 	
 	/**
 	 * Set some user data specific to this GameObject
