@@ -20,7 +20,7 @@ public class Main extends StateBasedGame {
 	};
 	
 	public Main() {
-		super("Unicode Wars");
+		super("Unicode Wars - Prototype");
 
 	}
 	
@@ -37,17 +37,17 @@ public class Main extends StateBasedGame {
 		}
 		enterState(States.SplashState.ordinal());
 	}
-	
+
 	public static void main(String[] args) { 
         try {
             AppGameContainer app = new AppGameContainer(new Main());
-		    app.setDisplayMode(1000,600,false); 
+			app.setDisplayMode(1024, 768, false);
 		    app.setMaximumLogicUpdateInterval(20);
 		    app.setMinimumLogicUpdateInterval(16);
-		    app.setTargetFrameRate(80);
+			app.setTargetFrameRate(80);
             app.start();
         } catch (SlickException e) {
             e.printStackTrace();
-        }		
+		}
 	}
 }
