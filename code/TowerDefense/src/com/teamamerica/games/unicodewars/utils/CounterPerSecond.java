@@ -1,22 +1,27 @@
 package com.teamamerica.games.unicodewars.utils;
 
-public class CounterPerSecond {
+public class CounterPerSecond
+{
 	
 	private long _start;
 	private float _value;
 	private float _counter;
 	
-	public CounterPerSecond() {
+	public CounterPerSecond()
+	{
 		_start = System.currentTimeMillis();
 	}
 	
-	public void increment() { 
+	public void increment()
+	{
 		++_counter;
 	}
 	
-	public float getValue() { 
+	public float getValue()
+	{
 		long currentTime = System.currentTimeMillis();
-		if (currentTime - _start > 1000) { 
+		if (currentTime - _start > 1000)
+		{
 			_value = (_counter / (float) (currentTime - _start)) * 1000f;
 			_counter = 0;
 			_start = currentTime;

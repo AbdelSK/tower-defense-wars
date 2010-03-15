@@ -43,7 +43,6 @@ public class GameplayState extends BHGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		_gameSystem = new GameSystem(container.getWidth(), container.getHeight());
-		_gameSystem.loadLevel("data/levels/TestLevel.xml");
 	}
 
 	@Override 

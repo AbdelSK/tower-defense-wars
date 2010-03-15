@@ -29,6 +29,8 @@ public class GameObject {
 	
 	/** Location of this entity */
 	protected Location _position;
+	/** Size (in tiles) of this entity */
+	protected short _size;
 	
 	
 	private int _renderPriority;
@@ -134,6 +136,11 @@ public class GameObject {
 		_position.y = column;
 	}
 	
+	public short getSize()
+	{
+		return this._size;
+	}
+
 	/**
 	 * Set some user data specific to this GameObject
 	 * @param name

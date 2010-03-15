@@ -5,13 +5,12 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 import org.newdawn.slick.Graphics;
 import com.teamamerica.games.unicodewars.object.GameObject;
-import com.teamamerica.games.unicodewars.utils.Variable;
 
 public class GameSystem {
     private static Logger logger = Logger.getLogger( GameSystem.class );
 
 	public enum Systems { 
-		PhysicsSubystem, SpawnSubsystem
+		SpawnSubsystem
 	};
 	
 	public long _frameCount;
@@ -36,7 +35,9 @@ public class GameSystem {
 	}
 	
 	public void loadLevel(String levelName) { 
-		
+		BB.inst();
+		EventManager.inst();
+		GameMap.inst();
 	}
 	
 	public void update(int elapsed) {
@@ -45,6 +46,7 @@ public class GameSystem {
 		}
 		
 		EventManager.inst().update(elapsed);
+		GameMap.inst().update(elapsed);
 		
 		for (GameObject obj : BB.inst().getAll()) { 
 			obj.update(elapsed);
@@ -52,14 +54,16 @@ public class GameSystem {
 	}
 	
 	public void render(Graphics g) { 
-		int centerX = (Integer) BB.inst().getVariableObject(Variable.centerX);
-		int centerY = (Integer) BB.inst().getVariableObject(Variable.centerY);
-		GameObject controlled = (GameObject) BB.inst().getVariableObject(Variable.controlledObject);
+		// GameObject controlled = (GameObject)
+		// BB.inst().getVariableObject(Variable.controlledObject);
 		
 		g.pushTransform();
 		g.resetTransform();
-		g.translate(-controlled.getPosition().x + centerX, -controlled.getPosition().y + centerY);
+		// g.translate(-controlled.getPosition().x + centerX,
+		// -controlled.getPosition().y + centerY);
 
+
+		GameMap.inst().render(g);
 		for (GameObject obj : BB.inst().getAll()) { 
 			obj.render(g);
 		}
