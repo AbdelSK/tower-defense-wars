@@ -1,7 +1,6 @@
 package com.teamamerica.games.unicodewars.component;
 
 import java.util.Comparator;
-import org.dom4j.Element;
 import org.newdawn.slick.Graphics;
 import com.teamamerica.games.unicodewars.object.GameObject;
 
@@ -45,13 +44,6 @@ public abstract class Component {
 	 * @param elapsed
 	 */
 	public abstract void update(int elapsed);
-	
-	/**
-	 * Fill the data in the component with the information
-	 * found in the given Element
-	 * @param e
-	 */
-	public abstract void fromXML(Element e);
 	
 	/**
 	 * Override this method if the component is

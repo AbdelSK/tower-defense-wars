@@ -1,7 +1,6 @@
 package com.teamamerica.games.unicodewars.system;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,6 +10,7 @@ import java.util.Random;
 import org.apache.log4j.Logger;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.utils.KeyListener;
+import com.teamamerica.games.unicodewars.utils.Team;
 import com.teamamerica.games.unicodewars.utils.Variable;
 
 /**
@@ -31,7 +31,7 @@ public class BB {
     
     private Map<Variable,Object> _variableMap;
     
-	private List<GameObject>      _objects;	
+	private List<List<GameObject>> _objects;
 	
 	private List<KeyListener>     _keysPressed;
 		
@@ -40,11 +40,13 @@ public class BB {
 		_nextId = 0;
 		_variableMap = new HashMap<Variable,Object>();
 		
-		_objects = new LinkedList<GameObject>();
+		_objects = new ArrayList<List<GameObject>>();
+		_objects.add(new LinkedList<GameObject>()); // Player 1's objects
+		_objects.add(new LinkedList<GameObject>()); // Player 2's objects
 		
 		_keysPressed = new ArrayList<KeyListener>();
 		
-		_variableMap.put(Variable.maxAnglularAcceleration, 2.0f);
+		// _variableMap.put(Variable.maxAnglularAcceleration, 2.0f);
 	}
 		
 	public static BB inst() { 
@@ -55,7 +57,8 @@ public class BB {
 	}
 	
 	public void doneLoading() { 
-		Collections.sort(_objects, GameObject.render);
+		for (List<GameObject> team : this._objects)
+			Collections.sort(team, GameObject.render);
 	}
 	
 	public Random getRandom() { 
@@ -98,11 +101,13 @@ public class BB {
 		_variableMap.put(name, value);
 	}
 	
-	public void add(GameObject obj) { 
-		_objects.add(obj);
+	public void addTeamObject(GameObject obj, Team player)
+	{
+		_objects.get(player.index()).add(obj);
 	}
 	
-	public Collection<GameObject> getAll() { 
+	public List<List<GameObject>> getAll()
+	{
 		return _objects;
 	}
 	

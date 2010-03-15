@@ -1,8 +1,9 @@
-package technical.towers;
+package com.teamamerica.games.unicodewars.object.towers;
 
 import java.util.Random;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.system.BB;
+import com.teamamerica.games.unicodewars.utils.Team;
 
 public abstract class TowerBase extends GameObject implements Tower
 {
@@ -19,7 +20,10 @@ public abstract class TowerBase extends GameObject implements Tower
 	
 	public TowerBase(TowerFactory.type type, int attack, int price, int radius, int speed)
 	{
-		super("Tower", BB.inst().getNextId(), 100);
+		super("Tower", BB.inst().getNextId(), Team.Player1, 100); // We'll need
+																	// to update
+																	// the team
+																	// bit
 
 		this.price = price;
 		this.type = type;
