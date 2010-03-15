@@ -116,6 +116,11 @@ public class GameMap implements TileBasedMap
 	{
 		listeners.get(obj.getPosition()).add(callback);
 	}
+	
+	public void unregisterSpace(GameObject obj, EventListener callback)
+	{
+		listeners.get(obj.getPosition()).remove(callback);
+	}
 
 	public void removeTower(GameObject obj)
 	{
