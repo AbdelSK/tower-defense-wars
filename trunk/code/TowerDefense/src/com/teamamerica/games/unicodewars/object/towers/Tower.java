@@ -1,4 +1,4 @@
-package technical.towers;
+package com.teamamerica.games.unicodewars.object.towers;
 
 public interface Tower
 {

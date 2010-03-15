@@ -9,13 +9,17 @@ import java.util.Queue;
 import org.apache.log4j.Logger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.util.pathfinding.AStarPathFinder;
+import org.newdawn.slick.util.pathfinding.PathFinder;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 import com.teamamerica.games.unicodewars.object.GameObject;
+import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.utils.Event;
 import com.teamamerica.games.unicodewars.utils.EventListener;
 import com.teamamerica.games.unicodewars.utils.EventType;
 import com.teamamerica.games.unicodewars.utils.Location;
+import com.teamamerica.games.unicodewars.utils.Team;
 
 public class GameMap implements TileBasedMap
 {
@@ -28,8 +32,10 @@ public class GameMap implements TileBasedMap
 	
 	private static Logger logger = Logger.getLogger(GameMap.class);
 	private TileType[][] map;
+	private Team[][] teamMap;
 	private Map<Location, List<EventListener>> listeners;
 	private Queue<Event> eventQueue;
+	private PathFinder pathFinder;
 	public final int rows = 40; // height
 	public final int columns = 64; // width
 	public final int tileSize = 16;
@@ -45,9 +51,17 @@ public class GameMap implements TileBasedMap
 			{
 				this.listeners.put(new Location(x, y), new ArrayList<EventListener>());
 				this.map[x][y] = TileType.Free; // This will change
+				if (x < columns / 2)
+				{
+					this.teamMap[x][y] = Team.Player1;
+				}
+				else
+				{
+					this.teamMap[x][y] = Team.Player2;
+				}
 			}
 		}
-
+		this.pathFinder = new AStarPathFinder(this, 10000, false);
 	}
 	
 	public static GameMap inst()
@@ -62,6 +76,16 @@ public class GameMap implements TileBasedMap
 	@Override
 	public boolean blocked(PathFindingContext context, int tx, int ty)
 	{
+		if (context.getMover().getClass() != MobObject.class)
+		{
+			return false;
+		}
+		MobObject temp = (MobObject) context.getMover();
+		if (teamMap[tx][ty] != temp.getTeam())
+		{
+			return false;
+		}
+
 		if (map[tx][ty] == TileType.Base)
 		{
 			return false;
@@ -81,7 +105,10 @@ public class GameMap implements TileBasedMap
 	@Override
 	public float getCost(PathFindingContext context, int tx, int ty)
 	{
-		return 1;
+		if (context.getMover().getClass() == MobObject.class)
+			return 1;
+		else
+			return 0;
 	}
 	
 	@Override
@@ -101,6 +128,11 @@ public class GameMap implements TileBasedMap
 	{
 	}
 	
+	public PathFinder getPathFinder()
+	{
+		return this.pathFinder;
+	}
+
 	public void buildTower(GameObject obj)
 	{
 		for (int i = obj.getPosition().x; i < (obj.getPosition().x + obj.getSize()); i++)
