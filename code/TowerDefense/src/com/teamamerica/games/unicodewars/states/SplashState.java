@@ -4,6 +4,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -13,6 +14,7 @@ import com.teamamerica.games.unicodewars.Main;
 public class SplashState extends BHGameState {
 
 	private Image _splashImage;
+	private Music _splashTheme;
 	private int   _timer;
 	
 	@Override
@@ -24,7 +26,9 @@ public class SplashState extends BHGameState {
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		_splashImage = new Image("data/images/teamamerica_1024.png");
-		_timer = 5000;
+		_splashTheme = new Music("data/sounds/America, Fuck Yeah.ogg");
+		_splashTheme.play();
+		_timer = 16000;
 	}
 
 	@Override
@@ -40,9 +44,15 @@ public class SplashState extends BHGameState {
 	public void update(GameContainer container, StateBasedGame game, int millis) throws SlickException {
 		_timer -= millis;
 		
-		if (_timer < 0) { 
+		if (!_splashTheme.playing())
+		{
 			game.enterState(Main.States.MainMenuState.ordinal(), 
 					new FadeOutTransition(), new FadeInTransition());
 		}
+		
+		// if (_timer < 0) {
+		// game.enterState(Main.States.MainMenuState.ordinal(),
+		// new FadeOutTransition(), new FadeInTransition());
+		// }
 	}
 }
