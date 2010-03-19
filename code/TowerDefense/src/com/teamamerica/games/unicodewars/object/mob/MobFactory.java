@@ -7,7 +7,7 @@ public class MobFactory
 		chinese, latin, greek, cyrillic;
 	}
 	
-	public static Mob createMob(type t, int level)
+	public static MobBase createMob(type t, int level)
 	{
 		switch (t)
 		{
