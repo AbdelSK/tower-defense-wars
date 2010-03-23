@@ -28,7 +28,7 @@ public class SplashState extends BHGameState {
 		_splashImage = new Image("data/images/teamamerica_1024.png");
 		_splashTheme = new Music("data/sounds/America, Fuck Yeah.ogg");
 		_splashTheme.play();
-		_timer = 16000;
+		_timer = 160;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class SplashState extends BHGameState {
 	public void update(GameContainer container, StateBasedGame game, int millis) throws SlickException {
 		_timer -= millis;
 		
-		if (!_splashTheme.playing())
+		if (!_splashTheme.playing() || _timer < 0)
 		{
 			game.enterState(Main.States.MainMenuState.ordinal(), 
 					new FadeOutTransition(), new FadeInTransition());
