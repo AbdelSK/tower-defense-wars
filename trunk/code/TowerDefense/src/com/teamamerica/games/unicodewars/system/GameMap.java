@@ -20,6 +20,7 @@ import com.teamamerica.games.unicodewars.utils.EventListener;
 import com.teamamerica.games.unicodewars.utils.EventType;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
+import com.teamamerica.games.unicodewars.utils.Timer;
 
 public class GameMap implements TileBasedMap
 {
@@ -36,13 +37,19 @@ public class GameMap implements TileBasedMap
 	private Map<Location, List<EventListener>> listeners;
 	private Queue<Event> eventQueue;
 	private PathFinder pathFinder;
-	public final int rows = 40; // height
+	private Color gridColor;
+	private Timer colorTimer;
+	private int colorStage;
+
+	public final int rows = 32; // height
 	public final int columns = 64; // width
 	public final int tileSize = 16;
 
 	private GameMap()
 	{
 		this.map = new TileType[columns][rows];
+		this.teamMap = new Team[columns][rows];
+
 		eventQueue = new LinkedList<Event>();
 		this.listeners = new HashMap<Location, List<EventListener>>();
 		for (int y = 0; y < rows; y++)
@@ -62,6 +69,10 @@ public class GameMap implements TileBasedMap
 			}
 		}
 		this.pathFinder = new AStarPathFinder(this, 10000, false);
+		
+		this.gridColor = new Color(1.0f, 0, 0);
+		this.colorTimer = new Timer();
+		this.colorStage = 0;
 	}
 	
 	public static GameMap inst()
@@ -133,6 +144,12 @@ public class GameMap implements TileBasedMap
 		return this.pathFinder;
 	}
 
+	/**
+	 * Sets the tiles covered by a towers location to having a tower
+	 * 
+	 * @param obj
+	 *            the tower just built. Must have location set.
+	 */
 	public void buildTower(GameObject obj)
 	{
 		for (int i = obj.getPosition().x; i < (obj.getPosition().x + obj.getSize()); i++)
@@ -144,16 +161,38 @@ public class GameMap implements TileBasedMap
 		}
 	}
 	
-	public void registerSpace(GameObject obj, EventListener callback)
+	/**
+	 * Register to listen for any event to happen in that location
+	 * 
+	 * @param loc
+	 *            the location to listen to
+	 * @param callback
+	 *            the EventListener to call
+	 */
+	public void registerSpace(Location loc, EventListener callback)
 	{
-		listeners.get(obj.getPosition()).add(callback);
+		listeners.get(loc).add(callback);
 	}
 	
-	public void unregisterSpace(GameObject obj, EventListener callback)
+	/**
+	 * Unregister listening to that location.
+	 * 
+	 * @param loc
+	 *            the location being listened to
+	 * @param callback
+	 *            the EventListener registered with this space to unregister
+	 */
+	public void unregisterSpace(Location loc, EventListener callback)
 	{
-		listeners.get(obj.getPosition()).remove(callback);
+		listeners.get(loc).remove(callback);
 	}
-
+	
+	/**
+	 * Sets the area once occupied by a tower to free space
+	 * 
+	 * @param obj
+	 *            the tower being removed
+	 */
 	public void removeTower(GameObject obj)
 	{
 		for (int i = obj.getPosition().x; i < (obj.getPosition().x + obj.getSize()); i++)
@@ -165,7 +204,18 @@ public class GameMap implements TileBasedMap
 			}
 		}
 	}
-
+	
+	/**
+	 * Checks to see whether or not it is possible to build a tower at that
+	 * location
+	 * 
+	 * @param loc
+	 *            the location to see if the tower can be built. (The upper left
+	 *            tile)
+	 * @param size
+	 *            the size, in tiles, of one side of a tower
+	 * @return true: If the tower can be built. false: otherwise
+	 */
 	public boolean canBuildTower(Location loc, short size)
 	{
 		for (int i = loc.x; i < (loc.x + size); i++)
@@ -184,17 +234,35 @@ public class GameMap implements TileBasedMap
 		}
 		return true;
 	}
-
-	public void visitSpace(GameObject obj)
+	
+	/**
+	 * Meant to be called by Mobs or other moving objects. Notifies listeners of
+	 * that space that that object is entering that space.
+	 * 
+	 * @param obj
+	 *            the object entering the location
+	 * @param loc
+	 *            the location being visited
+	 */
+	public void visitSpace(GameObject obj, Location loc)
 	{
-		Event event = new Event(EventType.ENTER_SPACE, obj.getPosition());
+		Event event = new Event(EventType.ENTER_SPACE, loc);
 		event.addParameter("id", obj.getId());
 		dispatch(event);
 	}
 	
-	public void leaveSpace(GameObject obj)
+	/**
+	 * Meant to be called by Mobs or other moving objects. Notifies listeners of
+	 * that space that that object is leaving that space.
+	 * 
+	 * @param obj
+	 *            the object entering the location
+	 * @param loc
+	 *            the location being left
+	 */
+	public void leaveSpace(GameObject obj, Location loc)
 	{
-		Event event = new Event(EventType.LEAVE_SPACE, obj.getPosition());
+		Event event = new Event(EventType.LEAVE_SPACE, loc);
 		event.addParameter("id", obj.getId());
 		dispatch(event);
 	}
@@ -203,7 +271,13 @@ public class GameMap implements TileBasedMap
 	{
 		eventQueue.add(e);
 	}
-
+	
+	/**
+	 * The update method for the map, handles firing the queued events.
+	 * 
+	 * @param elapsed
+	 *            the milliseconds elapsed from the last update
+	 */
 	public void update(int elapsed)
 	{
 		List<Event> copy = new LinkedList<Event>(eventQueue);
@@ -225,28 +299,78 @@ public class GameMap implements TileBasedMap
 		}
 		
 		eventQueue.addAll(keep);
+		
+		if (this.colorTimer.xMilisecondsPassed(99))
+		{
+			if (this.colorStage == 0)
+			{
+				this.gridColor.g += 0.05f;
+				if (this.gridColor.g > 0.95f)
+					this.colorStage++;
+			}
+			else if (this.colorStage == 1)
+			{
+				this.gridColor.r -= 0.1f;
+				if (this.gridColor.r < 0.05f)
+					this.colorStage++;
+			}
+			else if (this.colorStage == 2)
+			{
+				this.gridColor.b += 0.1f;
+				if (this.gridColor.b > 0.95f)
+					this.colorStage++;
+			}
+			else if (this.colorStage == 3)
+			{
+				this.gridColor.g -= 0.1f;
+				if (this.gridColor.g < 0.05f)
+					this.colorStage++;
+			}
+			else if (this.colorStage == 4)
+			{
+				this.gridColor.r += 0.1f;
+				if (this.gridColor.r > 0.95f)
+					this.colorStage++;
+			}
+			else if (this.colorStage == 5)
+			{
+				this.gridColor.b -= 0.1f;
+				if (this.gridColor.b < 0.05f)
+					this.colorStage = 0;
+			}
+		}
 	}
 	
+	/**
+	 * The render method for the map, handles drawing the grid.
+	 * 
+	 * @param g
+	 *            the graphics object to draw to
+	 */
 	public void render(Graphics g)
 	{
-		// Draw borders;
 		g.setColor(Color.white);
-		g.drawLine(0, 0, columns * tileSize, 0); // Top
-		g.drawLine(0, rows * tileSize, columns * tileSize, rows * tileSize); // Bottom
-		g.drawLine(0, 0, 0, rows * tileSize); // Left
-		g.drawLine(columns * tileSize, 0, columns * tileSize, rows * tileSize); // Right
-
-		g.setColor(Color.cyan);
+		g.fillRect(0, 0, (columns * tileSize) / 2, rows * tileSize);
+		g.setColor(Color.darkGray);
+		g.fillRect((columns * tileSize) / 2, 0, (columns * tileSize) / 2, rows * tileSize);
 		for (int i = 1; i < rows; i++)
 		{
+			g.setColor(this.gridColor);
 			g.drawLine(0, i * tileSize, columns * tileSize, i * tileSize);
 		}
 		
 		for (int i = 1; i < columns; i++)
 		{
+			g.setColor(this.gridColor);
 			g.drawLine(i * tileSize, 0, i * tileSize, rows * tileSize);
 		}
-
+		
+		// Draw borders;
+		g.setColor(Color.gray);
+		g.drawLine(0, 0, columns * tileSize, 0); // Top
+		g.drawLine(0, rows * tileSize, columns * tileSize, rows * tileSize); // Bottom
+		g.drawLine(0, 0, 0, rows * tileSize); // Left
+		g.drawLine(columns * tileSize, 0, columns * tileSize, rows * tileSize); // Right
 	}
 
 }
