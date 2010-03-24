@@ -46,6 +46,7 @@ public class SplashState extends BHGameState {
 		
 		if (!_splashTheme.playing() || _timer < 0)
 		{
+			_splashTheme.stop();
 			game.enterState(Main.States.MainMenuState.ordinal(), 
 					new FadeOutTransition(), new FadeInTransition());
 		}
