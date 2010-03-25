@@ -18,15 +18,16 @@ public abstract class TowerBase extends GameObject implements Tower
 	int speed = 0;
 	int price = 0;
 	
-	public TowerBase(TowerFactory.type type, int attack, int price, int radius, int speed)
+	public TowerBase(TowerFactory.type type, int attack, int price, int radius, int speed, Team team)
 	{
-		super("Tower", BB.inst().getNextId(), Team.Player1, 100); // We'll need
+		super("Tower", BB.inst().getNextId(), team, 100); // We'll need
 																	// to update
 																	// the team
 																	// bit
 
 		this.price = price;
 		this.type = type;
+		this._size = 2;
 		Random gen = new Random();
 		
 		if (type.equals(TowerFactory.type.diceOne))

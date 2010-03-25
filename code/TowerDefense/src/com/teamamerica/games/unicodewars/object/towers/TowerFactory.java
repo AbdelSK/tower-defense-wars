@@ -1,5 +1,7 @@
 package com.teamamerica.games.unicodewars.object.towers;
 
+import com.teamamerica.games.unicodewars.utils.Team;
+
 public class TowerFactory
 {
 	
@@ -15,12 +17,12 @@ public class TowerFactory
 		}
 	}
 	
-	public static Tower createTower(type t, int gridX, int gridY)
+	public static Tower createTower(type t, int gridX, int gridY, Team team)
 	{
 		switch (t)
 		{
 			case diceOne:
-				return new DiceOne(gridX, gridY);
+				return new DiceOne(gridX, gridY, team);
 		}
 		return null;
 	}

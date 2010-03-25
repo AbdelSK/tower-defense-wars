@@ -27,6 +27,7 @@ public abstract class MobObject extends GameObject implements Mover
 		super(name, id, Team.Player1, renderPriority);
 		
 		this._position = loc;
+		this._size = 1;
 		
 		this.level = level;
 		this.type = type;

@@ -1,6 +1,7 @@
 package com.teamamerica.games.unicodewars.object.towers;
 
 import java.util.ArrayList;
+import com.teamamerica.games.unicodewars.utils.Team;
 
 public class TowerTest
 {
@@ -8,7 +9,7 @@ public class TowerTest
 	public static void main(String args[])
 	{
 		ArrayList<Tower> TowerList = new ArrayList<Tower>();
-		TowerList.add(TowerFactory.createTower(TowerFactory.type.diceOne, 5, 6));
+		TowerList.add(TowerFactory.createTower(TowerFactory.type.diceOne, 5, 6, Team.Player1));
 		
 		while (TowerList.get(0).canUpgrade())
 		{
