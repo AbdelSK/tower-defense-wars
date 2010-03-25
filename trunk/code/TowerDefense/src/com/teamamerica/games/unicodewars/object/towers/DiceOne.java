@@ -1,6 +1,7 @@
 package com.teamamerica.games.unicodewars.object.towers;
 
 import java.util.Random;
+import com.teamamerica.games.unicodewars.utils.Team;
 
 public class DiceOne extends TowerBase
 {
@@ -10,9 +11,9 @@ public class DiceOne extends TowerBase
 	private int enemyX = 0;
 	private int enemyY = 0;
 	
-	public DiceOne(int gridX, int gridY)
+	public DiceOne(int gridX, int gridY, Team team)
 	{
-		super(TowerFactory.type.diceOne, 0, price, 0, 0);
+		super(TowerFactory.type.diceOne, 0, price, 0, 0, team);
 	}
 
 	public boolean canUpgrade()
