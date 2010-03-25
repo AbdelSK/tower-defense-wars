@@ -14,12 +14,12 @@ import com.teamamerica.games.unicodewars.utils.Team;
 import com.teamamerica.games.unicodewars.utils.Variable;
 
 /**
- * This class is a shared memory between all of
- * the different subsystems and Objects in the
- * game world.
+ * This class is a shared memory between all of the different subsystems and
+ * Objects in the game world.
  * 
  * @author wkerr
- *
+ * @author coby
+ * 
  */
 public class BB {
     private static Logger logger = Logger.getLogger( BB.class );

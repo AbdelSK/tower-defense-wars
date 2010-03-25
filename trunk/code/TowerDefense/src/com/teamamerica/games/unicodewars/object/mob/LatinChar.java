@@ -1,11 +1,13 @@
 package com.teamamerica.games.unicodewars.object.mob;
 
-import com.teamamerica.games.unicodewars.object.mob.MobFactory.type;
+import com.teamamerica.games.unicodewars.system.BB;
+import com.teamamerica.games.unicodewars.utils.Location;
+import com.teamamerica.games.unicodewars.utils.Team;
 
-public class LatinChar extends MobBase
+public class LatinChar extends MobObject
 {
-	public LatinChar(type type, int level)
+	public LatinChar(Location loc, Team side, int level, Type type)
 	{
-		super(type, level);
+		super("Latin Mob", BB.inst().getNextId(), 10, loc, side, level, MobObject.Type.latin);
 	}
 }

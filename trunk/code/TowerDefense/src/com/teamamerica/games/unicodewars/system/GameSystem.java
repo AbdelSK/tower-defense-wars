@@ -6,10 +6,12 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 import org.newdawn.slick.Graphics;
 import com.teamamerica.games.unicodewars.object.GameObject;
+import com.teamamerica.games.unicodewars.utils.Timer;
 
 public class GameSystem
 {
 	private static Logger logger = Logger.getLogger(GameSystem.class);
+	private static final long tickTime = 30000;
 	
 	public enum Systems
 	{
@@ -18,6 +20,7 @@ public class GameSystem
 	
 	public long _frameCount;
 	private Map<Systems, Subsystem> _systems;
+	private Timer tickTimer;
 	
 	public GameSystem(int width, int height)
 	{
@@ -25,7 +28,7 @@ public class GameSystem
 		BB.inst().setScreen(width, height);
 		
 		_systems = new TreeMap<Systems, Subsystem>();
-
+		this.tickTimer = new Timer();
 	}
 
 	/**
@@ -63,6 +66,11 @@ public class GameSystem
 				obj.update(elapsed);
 			}
 		}
+		
+		if (this.tickTimer.xMilisecondsPassed(GameSystem.tickTime))
+		{
+			// Tick has passed. Update what is needed.
+		}
 	}
 	
 	public void render(Graphics g)
@@ -83,7 +91,8 @@ public class GameSystem
 				obj.render(g);
 			}
 		}
-		
+		String tickCountdown = "Time unitl the next tick: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
+		g.drawString(tickCountdown, 10, 520);
 		g.popTransform();
 	}
 }

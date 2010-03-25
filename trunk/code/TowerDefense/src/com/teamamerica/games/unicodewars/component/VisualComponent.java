@@ -1,7 +1,12 @@
 package com.teamamerica.games.unicodewars.component;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import com.teamamerica.games.unicodewars.object.GameObject;
+import com.teamamerica.games.unicodewars.object.mob.MobObject;
+import com.teamamerica.games.unicodewars.object.towers.TowerBase;
+import com.teamamerica.games.unicodewars.system.GameMap;
+import com.teamamerica.games.unicodewars.utils.Location;
 
 public class VisualComponent extends Component
 {
@@ -22,7 +27,18 @@ public class VisualComponent extends Component
 	@Override
 	public void render(Graphics g)
 	{
+		Location renderLocTL = GameMap.inst().getLocationInPixels(this._parent.getPosition());
+		int size = this._parent.getSize() * GameMap.inst().tileSize;
+		if (this._parent.getClass() == MobObject.class)
+		{
+			g.setColor(Color.blue);
+		}
+		else if (this._parent.getClass() == TowerBase.class)
+		{
+			g.setColor(Color.red);
+		}
 		
+		g.fillRect(renderLocTL.x, renderLocTL.y, size, size);
 	}
 
 }
