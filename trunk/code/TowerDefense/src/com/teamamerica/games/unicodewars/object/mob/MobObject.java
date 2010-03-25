@@ -5,7 +5,7 @@ import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
 
-public class MobObject extends GameObject implements Mover
+public abstract class MobObject extends GameObject implements Mover
 {
 	public static enum Type
 	{
