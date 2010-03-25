@@ -20,7 +20,7 @@ public class Timer
 		return false;
 	}
 	
-	public boolean xMilisecondsPassed(int interval)
+	public boolean xMilisecondsPassed(long interval)
 	{
 		long currentTime = System.currentTimeMillis();
 		if (currentTime - this._start > interval)
@@ -29,5 +29,16 @@ public class Timer
 			return true;
 		}
 		return false;
+	}
+	
+	public long getStartTime()
+	{
+		return this._start;
+	}
+	
+	public long timeUntilXMilisecondsPass(long interval)
+	{
+		long currentTime = System.currentTimeMillis();
+		return interval - (currentTime - this._start);
 	}
 }

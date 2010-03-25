@@ -37,6 +37,7 @@ public class GameMap implements TileBasedMap
 	private Map<Location, List<EventListener>> listeners;
 	private Queue<Event> eventQueue;
 	private PathFinder pathFinder;
+	private ArrayList<Location> spawnPoints;
 	private Color gridColor;
 	private Timer colorTimer;
 	private int colorStage;
@@ -49,6 +50,11 @@ public class GameMap implements TileBasedMap
 	{
 		this.map = new TileType[columns][rows];
 		this.teamMap = new Team[columns][rows];
+		this.spawnPoints = new ArrayList<Location>();
+		for (Team team : Team.values())
+		{
+			this.spawnPoints.add(new Location(-1, -1));
+		}
 
 		eventQueue = new LinkedList<Event>();
 		this.listeners = new HashMap<Location, List<EventListener>>();
@@ -68,6 +74,12 @@ public class GameMap implements TileBasedMap
 				}
 			}
 		}
+		// Set up the spawn points
+		this.map[(columns / 2) - 1][(rows / 2)] = TileType.Spawn;
+		this.spawnPoints.set(Team.Player2.index(), new Location((columns / 2) - 1, rows / 2));
+		this.map[(columns / 2)][(rows / 2)] = TileType.Spawn;
+		this.spawnPoints.set(Team.Player1.index(), new Location(columns / 2, rows / 2));
+
 		this.pathFinder = new AStarPathFinder(this, 10000, false);
 		
 		this.gridColor = new Color(1.0f, 0, 0);
@@ -75,6 +87,11 @@ public class GameMap implements TileBasedMap
 		this.colorStage = 0;
 	}
 	
+	/**
+	 * Returns the single instance of GameMap
+	 * 
+	 * @return the GameMap instance
+	 */
 	public static GameMap inst()
 	{
 		if (_instance == null)
@@ -139,6 +156,11 @@ public class GameMap implements TileBasedMap
 	{
 	}
 	
+	/**
+	 * Returns the path finder for the map
+	 * 
+	 * @return
+	 */
 	public PathFinder getPathFinder()
 	{
 		return this.pathFinder;
@@ -265,6 +287,27 @@ public class GameMap implements TileBasedMap
 		Event event = new Event(EventType.LEAVE_SPACE, loc);
 		event.addParameter("id", obj.getId());
 		dispatch(event);
+	}
+	
+	/**
+	 * Returns a location object, with the location relative to pixels instead
+	 * of rows and columns.
+	 * 
+	 * @param loc
+	 *            initial location in rows and columns
+	 * @return the location in pixel format
+	 */
+	public Location getLocationInPixels(Location loc)
+	{
+		Location temp = new Location(loc.x, loc.y);
+		temp.x *= this.tileSize;
+		temp.y *= this.tileSize;
+		return temp;
+	}
+	
+	public Location getTeamSpawnPoint(Team team)
+	{
+		return this.spawnPoints.get(team.index());
 	}
 
 	private void dispatch(Event e)
