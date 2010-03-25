@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import org.apache.log4j.Logger;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.utils.Timer;
@@ -46,7 +47,7 @@ public class GameSystem
 	{
 		BB.inst();
 		EventManager.inst();
-		GameMap.inst();
+		GameMap.inst().LoadMap();
 	}
 	
 	public void update(int elapsed)
@@ -91,6 +92,7 @@ public class GameSystem
 				obj.render(g);
 			}
 		}
+		g.setColor(Color.white);
 		String tickCountdown = "Time unitl the next tick: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
 		g.drawString(tickCountdown, 10, 520);
 		g.popTransform();

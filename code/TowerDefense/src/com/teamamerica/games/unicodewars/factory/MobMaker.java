@@ -7,6 +7,7 @@ import com.teamamerica.games.unicodewars.object.mob.CyrillicChar;
 import com.teamamerica.games.unicodewars.object.mob.GreekChar;
 import com.teamamerica.games.unicodewars.object.mob.LatinChar;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
+import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.system.GameMap;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
@@ -20,7 +21,7 @@ public class MobMaker
 	}
 	
 	
-	public static MobObject MakeMob(MobObject.Type type, int level, Team team)
+	public static void MakeMob(MobObject.Type type, int level, Team team)
 	{
 		Location loc = GameMap.inst().getTeamSpawnPoint(team);
 		MobObject temp;
@@ -47,31 +48,31 @@ public class MobMaker
 		temp.addComponent(pathPart);
 		VisualComponent visualPart = new VisualComponent(temp);
 		temp.addComponent(visualPart);
-		return temp;
+		BB.inst().addTeamObject(temp, team);
 	}
 	
-	public static MobObject MakeMobChinese1(Team team)
+	public static void MakeMobChinese1(Team team)
 	{
-		return MakeMob(MobObject.Type.chinese, 1, team);
+		MakeMob(MobObject.Type.chinese, 1, team);
 	}
 	
-	public static MobObject MakeMobChinese2(Team team)
+	public static void MakeMobChinese2(Team team)
 	{
-		return MakeMob(MobObject.Type.chinese, 2, team);
+		MakeMob(MobObject.Type.chinese, 2, team);
 	}
 	
-	public static MobObject MakeMobChinese3(Team team)
+	public static void MakeMobChinese3(Team team)
 	{
-		return MakeMob(MobObject.Type.chinese, 3, team);
+		MakeMob(MobObject.Type.chinese, 3, team);
 	}
 	
-	public static MobObject MakeMobChinese4(Team team)
+	public static void MakeMobChinese4(Team team)
 	{
-		return MakeMob(MobObject.Type.chinese, 4, team);
+		MakeMob(MobObject.Type.chinese, 4, team);
 	}
 	
-	public static MobObject MakeMobChinese5(Team team)
+	public static void MakeMobChinese5(Team team)
 	{
-		return MakeMob(MobObject.Type.chinese, 5, team);
+		MakeMob(MobObject.Type.chinese, 5, team);
 	}
 }

@@ -19,18 +19,20 @@ public class Event
 	private EventType _id;
 	private Location _loc;
 	private List<GameObject> _recipients;
+	public final GameObject sender;
 	
 	// TODO We may want to dispacth an event in the future.
 	// private long _dispatchTime;
 	
 	private Map<String, Object> _parameters;
 	
-	public Event(EventType id, Location loc)
+	public Event(EventType id, Location loc, GameObject sender)
 	{
 		_id = id;
 		_loc = loc;
 		_recipients = new ArrayList<GameObject>();
 		_parameters = new HashMap<String, Object>();
+		this.sender = sender;
 	}
 	
 	public Event(EventType id)
@@ -39,6 +41,7 @@ public class Event
 		_loc = null;
 		_recipients = new ArrayList<GameObject>();
 		_parameters = new HashMap<String, Object>();
+		this.sender = null;
 	}
 
 	/**

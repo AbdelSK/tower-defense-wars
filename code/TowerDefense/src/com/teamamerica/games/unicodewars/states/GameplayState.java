@@ -43,6 +43,7 @@ public class GameplayState extends BHGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		_gameSystem = new GameSystem(container.getWidth(), container.getHeight());
+		_gameSystem.loadLevel("Hello world");
 	}
 
 	@Override 
@@ -69,6 +70,9 @@ public class GameplayState extends BHGameState {
 		
 		_gameSystem.render(g);
 		_feng.render(container, game, g);
+		container.setShowFPS(false);
+		g.setColor(Color.black);
+		g.drawString(container.getFPS() + "", 2, 2);
 	}
 
 	@Override
