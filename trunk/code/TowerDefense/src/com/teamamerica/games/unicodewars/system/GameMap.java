@@ -13,7 +13,9 @@ import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 import org.newdawn.slick.util.pathfinding.PathFinder;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
+import com.teamamerica.games.unicodewars.factory.BaseMaker;
 import com.teamamerica.games.unicodewars.object.GameObject;
+import com.teamamerica.games.unicodewars.object.base.BaseObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.utils.Event;
 import com.teamamerica.games.unicodewars.utils.EventListener;
@@ -38,6 +40,7 @@ public class GameMap implements TileBasedMap
 	private Queue<Event> eventQueue;
 	private PathFinder pathFinder;
 	private ArrayList<Location> spawnPoints;
+	private ArrayList<Location> baseLocations;
 	private Color gridColor;
 	private Timer colorTimer;
 	private int colorStage;
@@ -51,13 +54,40 @@ public class GameMap implements TileBasedMap
 		this.map = new TileType[columns][rows];
 		this.teamMap = new Team[columns][rows];
 		this.spawnPoints = new ArrayList<Location>();
+		this.baseLocations = new ArrayList<Location>();
+
 		for (Team team : Team.values())
 		{
 			this.spawnPoints.add(new Location(-1, -1));
+			this.baseLocations.add(new Location(-1, -1));
 		}
 
 		eventQueue = new LinkedList<Event>();
 		this.listeners = new HashMap<Location, List<EventListener>>();
+		
+		this.pathFinder = new AStarPathFinder(this, 10000, false);
+		
+		this.gridColor = new Color(1.0f, 0, 0);
+		this.colorTimer = new Timer();
+		this.colorStage = 0;
+	}
+	
+	/**
+	 * Returns the single instance of GameMap
+	 * 
+	 * @return the GameMap instance
+	 */
+	public static GameMap inst()
+	{
+		if (_instance == null)
+		{
+			_instance = new GameMap();
+		}
+		return _instance;
+	}
+	
+	public void LoadMap()
+	{
 		for (int y = 0; y < rows; y++)
 		{
 			for (int x = 0; x < columns; x++)
@@ -79,26 +109,12 @@ public class GameMap implements TileBasedMap
 		this.spawnPoints.set(Team.Player2.index(), new Location((columns / 2) - 1, rows / 2));
 		this.map[(columns / 2)][(rows / 2)] = TileType.Spawn;
 		this.spawnPoints.set(Team.Player1.index(), new Location(columns / 2, rows / 2));
-
-		this.pathFinder = new AStarPathFinder(this, 10000, false);
 		
-		this.gridColor = new Color(1.0f, 0, 0);
-		this.colorTimer = new Timer();
-		this.colorStage = 0;
-	}
-	
-	/**
-	 * Returns the single instance of GameMap
-	 * 
-	 * @return the GameMap instance
-	 */
-	public static GameMap inst()
-	{
-		if (_instance == null)
-		{
-			_instance = new GameMap();
-		}
-		return _instance;
+		// Set up the bases
+		BaseObject b1 = BaseMaker.MakeBase(Team.Player1, new Location(0, (rows / 2) - 2));
+		b1.RegisterMapListeners();
+		BaseObject b2 = BaseMaker.MakeBase(Team.Player2, new Location(columns - 4, (rows / 2) - 2));
+		b2.RegisterMapListeners();
 	}
 	
 	@Override
@@ -165,6 +181,17 @@ public class GameMap implements TileBasedMap
 	{
 		return this.pathFinder;
 	}
+	
+	private void buildBase(BaseObject obj)
+	{
+		for (int i = obj.getPosition().x; i < (obj.getPosition().x + obj.getSize()); i++)
+		{
+			for (int j = obj.getPosition().y; j < (obj.getPosition().y + obj.getSize()); j++)
+			{
+				this.map[i][j] = TileType.Base;
+			}
+		}
+	}
 
 	/**
 	 * Sets the tiles covered by a towers location to having a tower
@@ -193,6 +220,10 @@ public class GameMap implements TileBasedMap
 	 */
 	public void registerSpace(Location loc, EventListener callback)
 	{
+		if (listeners.get(loc) == null)
+		{
+			listeners.put(loc, new ArrayList<EventListener>());
+		}
 		listeners.get(loc).add(callback);
 	}
 	
@@ -238,12 +269,14 @@ public class GameMap implements TileBasedMap
 	 *            the size, in tiles, of one side of a tower
 	 * @return true: If the tower can be built. false: otherwise
 	 */
-	public boolean canBuildTower(Location loc, short size)
+	public boolean canBuildTower(Location loc, short size, Team team)
 	{
 		for (int i = loc.x; i < (loc.x + size); i++)
 		{
 			for (int j = loc.y; j < (loc.y + size); j++)
 			{
+				if (this.teamMap[i][j] != team)
+					return false;
 				if (this.map[i][j] == TileType.Tower)
 					return false;
 				if (this.map[i][j] == TileType.Base)
@@ -268,7 +301,7 @@ public class GameMap implements TileBasedMap
 	 */
 	public void visitSpace(GameObject obj, Location loc)
 	{
-		Event event = new Event(EventType.ENTER_SPACE, loc);
+		Event event = new Event(EventType.ENTER_SPACE, loc, obj);
 		event.addParameter("id", obj.getId());
 		dispatch(event);
 	}
@@ -284,7 +317,7 @@ public class GameMap implements TileBasedMap
 	 */
 	public void leaveSpace(GameObject obj, Location loc)
 	{
-		Event event = new Event(EventType.LEAVE_SPACE, loc);
+		Event event = new Event(EventType.LEAVE_SPACE, loc, obj);
 		event.addParameter("id", obj.getId());
 		dispatch(event);
 	}

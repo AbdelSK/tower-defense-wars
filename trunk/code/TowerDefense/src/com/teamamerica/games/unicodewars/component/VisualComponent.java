@@ -3,6 +3,7 @@ package com.teamamerica.games.unicodewars.component;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import com.teamamerica.games.unicodewars.object.GameObject;
+import com.teamamerica.games.unicodewars.object.base.BaseObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.system.GameMap;
@@ -36,6 +37,10 @@ public class VisualComponent extends Component
 		else if (this._parent.getClass() == TowerBase.class)
 		{
 			g.setColor(Color.red);
+		}
+		else if (this._parent.getClass() == BaseObject.class)
+		{
+			g.setColor(Color.pink);
 		}
 		
 		g.fillRect(renderLocTL.x, renderLocTL.y, size, size);
