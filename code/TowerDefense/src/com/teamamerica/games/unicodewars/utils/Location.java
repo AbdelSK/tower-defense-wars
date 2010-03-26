@@ -1,6 +1,6 @@
 package com.teamamerica.games.unicodewars.utils;
 
-public class Location implements Comparable
+public class Location implements Comparable<Object>
 {
 	public int x;
 	public int y;
@@ -18,7 +18,7 @@ public class Location implements Comparable
 		{
 			return false;
 		}
-		else if (o.getClass() == Location.class)
+		else if (o instanceof Location)
 		{
 			Location temp = (Location) o;
 			return (temp.x == this.x && temp.y == this.y);
@@ -33,7 +33,7 @@ public class Location implements Comparable
 		{
 			return 1;
 		}
-		else if (o.getClass() == Location.class)
+		else if (o instanceof Location)
 		{
 			Location temp = (Location) o;
 			if (this.y < temp.y)
@@ -61,5 +61,16 @@ public class Location implements Comparable
 			}
 		}
 		return 1;
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return x + (y * 100);
+	}
+
+	public Location copy()
+	{
+		return new Location(x, y);
 	}
 }

@@ -1,6 +1,7 @@
 package com.teamamerica.games.unicodewars.object.towers;
 
 import java.util.Random;
+import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
 
 public class DiceOne extends TowerBase
@@ -8,12 +9,10 @@ public class DiceOne extends TowerBase
 	
 	public static int price = 10;
 	
-	private int enemyX = 0;
-	private int enemyY = 0;
 	
-	public DiceOne(int gridX, int gridY, Team team)
+	public DiceOne(Location loc, Team team)
 	{
-		super(TowerFactory.type.diceOne, 0, price, 0, 0, team);
+		super(TowerBase.Type.diceOne, 0, price, 0, 0, team, loc);
 	}
 
 	public boolean canUpgrade()
@@ -79,19 +78,5 @@ public class DiceOne extends TowerBase
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	@Override
-	public void registerTower()
-	{
-		// TODO Auto-generated method stub
 		
-	}
-	
-	@Override
-	public void unregisterTower()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-	
 }

@@ -10,6 +10,7 @@ import java.util.Random;
 import org.apache.log4j.Logger;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.utils.KeyListener;
+import com.teamamerica.games.unicodewars.utils.MouseListener;
 import com.teamamerica.games.unicodewars.utils.Team;
 import com.teamamerica.games.unicodewars.utils.Variable;
 
@@ -34,6 +35,8 @@ public class BB {
 	private List<List<GameObject>> _objects;
 	
 	private List<KeyListener>     _keysPressed;
+	
+	private List<MouseListener> _mouseClicked;
 		
 	private BB() { 
 		_random = new Random(System.currentTimeMillis());
@@ -45,6 +48,7 @@ public class BB {
 		_objects.add(new LinkedList<GameObject>()); // Player 2's objects
 		
 		_keysPressed = new ArrayList<KeyListener>();
+		_mouseClicked = new ArrayList<MouseListener>();
 		
 		// _variableMap.put(Variable.maxAnglularAcceleration, 2.0f);
 	}
@@ -111,6 +115,16 @@ public class BB {
 		return _objects;
 	}
 	
+	public void removeTeamObject(GameObject obj)
+	{
+		for (int i = 0; i < _objects.get(obj.getTeam().index()).size(); i++)
+		{
+			if (_objects.get(obj.getTeam().index()).get(i).getId() == obj.getId())
+			{
+				_objects.get(obj.getTeam().index()).remove(i);
+			}
+		}
+	}
 	
 	public void keyPressed(int key) { 
 		for (KeyListener c : _keysPressed) 
@@ -129,5 +143,27 @@ public class BB {
 	
 	public void removeKeyListener(KeyListener c) { 
 		_keysPressed.remove(c);
+	}
+	
+	public void mouseClicked(int button, int x, int y)
+	{
+		for (MouseListener c : _mouseClicked)
+			c.MouseClicked(button, x, y);
+	}
+	
+	public void mouseReleased(int button, int x, int y)
+	{
+		for (MouseListener c : _mouseClicked)
+			c.MouseReleased(button, x, y);
+	}
+	
+	public void addMouseListenerListener(MouseListener c)
+	{
+		_mouseClicked.add(c);
+	}
+	
+	public void removeMouseListener(MouseListener c)
+	{
+		_mouseClicked.remove(c);
 	}
 }

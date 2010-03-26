@@ -3,34 +3,134 @@ package com.teamamerica.games.unicodewars.component;
 import org.newdawn.slick.util.pathfinding.Path;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
+import com.teamamerica.games.unicodewars.system.EventManager;
 import com.teamamerica.games.unicodewars.system.GameMap;
+import com.teamamerica.games.unicodewars.utils.Event;
+import com.teamamerica.games.unicodewars.utils.EventListener;
+import com.teamamerica.games.unicodewars.utils.EventType;
+import com.teamamerica.games.unicodewars.utils.Location;
+import com.teamamerica.games.unicodewars.utils.Team;
+import com.teamamerica.games.unicodewars.utils.Timer;
 
 public class MoverComponent extends Component
 {
 	private Path path;
+	private int pathStep;
+	private Timer stopwatch;
 	
 	public MoverComponent(GameObject owner)
 	{
 		super(owner);
 		// TODO Auto-generated constructor stub
+		this.stopwatch = new Timer();
+		
+		EventListener temp = new EventListener() {
+			
+			@Override
+			public void onEvent(Event e)
+			{
+				// TODO Auto-generated method stub
+				checkAndUpdate(e.sender);
+			}
+		};
+		EventType type;
+		switch (owner.getTeam())
+		{
+			case Player1:
+				type = EventType.P2_TOWER_BUILT;
+				break;
+			case Player2:
+				type = EventType.P1_TOWER_BUILT;
+				break;
+			default:
+				type = EventType.P2_TOWER_BUILT;
+				break;
+		}
+		EventManager.inst().registerForAll(type, temp);
+		pathStep = 0;
 	}
-	
 	
 	@Override
 	public void update(int elapsed)
 	{
-		// TODO Auto-generated method stub
+		if (stopwatch.xMilisecondsPassed(300))
+		{
+			this.pathStep++;
+			if (this.pathStep < this.path.getLength())
+			{
+				GameMap.inst().leaveSpace(_parent, _parent.getPosition());
+				Path.Step temp = this.path.getStep(pathStep);
+				Location newLoc = new Location(temp.getX(), temp.getY());
+				this._parent.setPosition(newLoc);
+				GameMap.inst().visitSpace(_parent, _parent.getPosition());
+			}
+		}
 		
 	}
 	
 	public void updatePath()
 	{
-		GameMap.inst().getPathFinder().findPath((MobObject) this._parent, this._parent.getPosition().x, this._parent.getPosition().y, 1, 1);
+		if (this._parent instanceof MobObject)
+		{
+			MobObject temp = (MobObject) this._parent;
+			Location startLoc = this._parent.getPosition();
+			Location endLoc = null;
+			switch (temp.getTeam())
+			{
+				case Player1:
+					endLoc = GameMap.inst().getTeamBaseLocation(Team.Player2);
+					break;
+				case Player2:
+					endLoc = GameMap.inst().getTeamBaseLocation(Team.Player1);
+					break;
+			}
+			if (startLoc.equals(GameMap.inst().getTeamSpawnPoint(_parent.getTeam())))
+				this.path = GameMap.inst().getSpawnPath(_parent.getTeam());
+			else
+				this.path = GameMap.inst().getPathFinder().findPath(temp, startLoc.x, startLoc.y, endLoc.x, endLoc.y);
+			this.pathStep = 0;
+		}
+
 	}
 	
 	public Path getPath()
 	{
 		return path;
+	}
+	
+	public void setPath(Path path)
+	{
+		this.path = path;
+	}
+
+	private void checkAndUpdate(GameObject obj)
+	{
+		Path oldPath = this.path;
+		int oldPathStep = this.pathStep;
+
+		updatePath();
+		if (this.path == null)
+		{
+			for (int i = 0; i < oldPath.getLength(); i++)
+			{
+				Path.Step step = oldPath.getStep(i);
+				if (step.getX() == obj.getPosition().x && step.getY() == obj.getPosition().y)
+				{
+					if (i < this.pathStep)
+						return;
+					obj.deleteObject();
+					this.pathStep = oldPathStep;
+					this.path = oldPath;
+					return;
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void deleteComponent()
+	{
+		GameMap.inst().leaveSpace(_parent, _parent.getPosition());
 	}
 
 }

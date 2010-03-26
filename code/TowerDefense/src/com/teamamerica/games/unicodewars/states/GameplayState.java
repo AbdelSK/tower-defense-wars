@@ -90,6 +90,18 @@ public class GameplayState extends BHGameState {
 		BB.inst().keyReleased(key);
 	}
 	
+	@Override
+	public void mousePressed(int button, int x, int y)
+	{
+		BB.inst().mouseClicked(button, x, y);
+	}
+	
+	@Override
+	public void mouseReleased(int button, int x, int y)
+	{
+		BB.inst().mouseReleased(button, x, y);
+	}
+
 	/**
 	 * Layout the GUI for this game state.  We definitely need some sliders to 
 	 * modify values, etc.
