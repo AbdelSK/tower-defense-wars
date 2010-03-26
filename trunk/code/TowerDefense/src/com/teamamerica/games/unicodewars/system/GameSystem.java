@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import com.teamamerica.games.unicodewars.object.GameObject;
+import com.teamamerica.games.unicodewars.utils.Team;
 import com.teamamerica.games.unicodewars.utils.Timer;
 
 public class GameSystem
@@ -16,7 +17,7 @@ public class GameSystem
 	
 	public enum Systems
 	{
-		SpawnSubsystem
+		SpawnSubsystem, PrototypeSubsytem
 	};
 	
 	public long _frameCount;
@@ -29,7 +30,10 @@ public class GameSystem
 		BB.inst().setScreen(width, height);
 		
 		_systems = new TreeMap<Systems, Subsystem>();
+		_systems.put(Systems.PrototypeSubsytem, new PrototypeScriptingSystem());
 		this.tickTimer = new Timer();
+		
+
 	}
 
 	/**
@@ -94,7 +98,9 @@ public class GameSystem
 		}
 		g.setColor(Color.white);
 		String tickCountdown = "Time unitl the next tick: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
+		String player1ObjectCount = "Player1 has " + BB.inst().getAll().get(Team.Player1.index()).size() + " objects.";
 		g.drawString(tickCountdown, 10, 520);
+		g.drawString(player1ObjectCount, 10, 540);
 		g.popTransform();
 	}
 }

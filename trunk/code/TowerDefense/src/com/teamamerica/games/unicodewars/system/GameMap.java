@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import org.apache.log4j.Logger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
+import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFinder;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
@@ -36,10 +36,11 @@ public class GameMap implements TileBasedMap
 	private static Logger logger = Logger.getLogger(GameMap.class);
 	private TileType[][] map;
 	private Team[][] teamMap;
-	private Map<Location, List<EventListener>> listeners;
+	private HashMap<Location, List<EventListener>> listeners;
 	private Queue<Event> eventQueue;
 	private PathFinder pathFinder;
 	private ArrayList<Location> spawnPoints;
+	private ArrayList<Path> spawnPaths;
 	private ArrayList<Location> baseLocations;
 	private Color gridColor;
 	private Timer colorTimer;
@@ -55,11 +56,13 @@ public class GameMap implements TileBasedMap
 		this.teamMap = new Team[columns][rows];
 		this.spawnPoints = new ArrayList<Location>();
 		this.baseLocations = new ArrayList<Location>();
+		this.spawnPaths = new ArrayList<Path>();
 
 		for (Team team : Team.values())
 		{
 			this.spawnPoints.add(new Location(-1, -1));
 			this.baseLocations.add(new Location(-1, -1));
+			this.spawnPaths.add(null);
 		}
 
 		eventQueue = new LinkedList<Event>();
@@ -111,36 +114,66 @@ public class GameMap implements TileBasedMap
 		this.spawnPoints.set(Team.Player1.index(), new Location(columns / 2, rows / 2));
 		
 		// Set up the bases
-		BaseObject b1 = BaseMaker.MakeBase(Team.Player1, new Location(0, (rows / 2) - 2));
-		b1.RegisterMapListeners();
-		BaseObject b2 = BaseMaker.MakeBase(Team.Player2, new Location(columns - 4, (rows / 2) - 2));
-		b2.RegisterMapListeners();
+		BaseObject b1 = BaseMaker.MakeBase(Team.Player1, new Location(0, (rows / 2) - (BaseObject.size / 2)));
+		buildBase(b1);
+		this.baseLocations.set(Team.Player1.index(), new Location(0, (rows / 2) - 2));
+		BaseObject b2 = BaseMaker.MakeBase(Team.Player2, new Location(columns - 4, (rows / 2) - (BaseObject.size / 2)));
+		buildBase(b2);
+		this.baseLocations.set(Team.Player2.index(), new Location(columns - 4, (rows / 2) - 2));
+		
+		// Set up the spawn paths
+		for (Team team : Team.values())
+		{
+			Location spawn;
+			Location base;
+			
+			switch (team)
+			{
+				case Player1:
+					spawn = this.spawnPoints.get(Team.Player1.index());
+					base = this.baseLocations.get(Team.Player2.index());
+					break;
+				case Player2:
+					spawn = this.spawnPoints.get(Team.Player2.index());
+					base = this.baseLocations.get(Team.Player1.index());
+					break;
+				default:
+					spawn = this.spawnPoints.get(Team.Player1.index());
+					base = this.baseLocations.get(Team.Player2.index());
+					break;
+			}
+			Path path = this.pathFinder.findPath(null, spawn.x, spawn.y, base.x, base.y);
+			this.spawnPaths.set(team.index(), path);
+		}
+
 	}
 	
 	@Override
 	public boolean blocked(PathFindingContext context, int tx, int ty)
 	{
-		if (context.getMover().getClass() != MobObject.class)
-		{
-			return false;
-		}
-		MobObject temp = (MobObject) context.getMover();
-		if (teamMap[tx][ty] != temp.getTeam())
-		{
-			return false;
-		}
+		if (tx < 0 && tx >= columns && ty < 0 && ty >= rows)
+			return true;
 
-		if (map[tx][ty] == TileType.Base)
+		if ((context.getMover() instanceof MobObject))
 		{
-			return false;
-		}
-		else if (map[tx][ty] == TileType.Tower)
-		{
-			return true;
-		}
-		else if (map[tx][ty] == TileType.Blocked)
-		{
-			return true;
+			MobObject temp = (MobObject) context.getMover();
+			if (teamMap[tx][ty] == temp.getTeam())
+			{
+				return true;
+			}
+
+			if (map[tx][ty] == TileType.Base)
+			{
+				return false;
+			}
+			else if (map[tx][ty] == TileType.Tower)
+			{
+				return true;
+			}
+			else if (map[tx][ty] == TileType.Blocked)
+			{
+				return true;
+			}
 		}
 
 		return false;
@@ -149,7 +182,9 @@ public class GameMap implements TileBasedMap
 	@Override
 	public float getCost(PathFindingContext context, int tx, int ty)
 	{
-		if (context.getMover().getClass() == MobObject.class)
+		if (context.getMover() instanceof MobObject)
+			return 1;
+		else if (context.getMover() == null)
 			return 1;
 		else
 			return 0;
@@ -182,6 +217,11 @@ public class GameMap implements TileBasedMap
 		return this.pathFinder;
 	}
 	
+	public Path getSpawnPath(Team team)
+	{
+		return this.spawnPaths.get(team.index());
+	}
+
 	private void buildBase(BaseObject obj)
 	{
 		for (int i = obj.getPosition().x; i < (obj.getPosition().x + obj.getSize()); i++)
@@ -208,6 +248,34 @@ public class GameMap implements TileBasedMap
 				this.map[i][j] = TileType.Tower;
 			}
 		}
+		
+		Team self, enemy;
+		switch (obj.getTeam())
+		{
+			case Player1:
+				self = Team.Player1;
+				enemy = Team.Player2;
+				break;
+			case Player2:
+				self = Team.Player2;
+				enemy = Team.Player1;
+				break;
+			default:
+				self = Team.Player1;
+				enemy = Team.Player2;
+		}
+		MobObject dummy = new MobObject(null, colorStage, colorStage, null, enemy, colorStage, MobObject.Type.chinese) {};
+		Location spawn = this.getTeamSpawnPoint(enemy);
+		Location base = this.getTeamBaseLocation(self);
+		Path path = this.pathFinder.findPath(dummy, spawn.x, spawn.y, base.x, base.y);
+
+		if (path == null)
+		{
+			obj.deleteObject();
+			path = this.pathFinder.findPath(dummy, spawn.x, spawn.y, base.x, base.y);
+		}
+		this.spawnPaths.set(enemy.index(), path);
+		dummy = null;
 	}
 	
 	/**
@@ -275,6 +343,8 @@ public class GameMap implements TileBasedMap
 		{
 			for (int j = loc.y; j < (loc.y + size); j++)
 			{
+				if (i >= columns || j >= rows)
+					return false;
 				if (this.teamMap[i][j] != team)
 					return false;
 				if (this.map[i][j] == TileType.Tower)
@@ -338,9 +408,35 @@ public class GameMap implements TileBasedMap
 		return temp;
 	}
 	
+	public Location getGridLocationFromPixels(int tx, int ty)
+	{
+		if (tx > 0 && tx < (columns * tileSize) && ty > 0 && ty < (rows * tileSize))
+		{
+			int x = tx / tileSize;
+			int y = ty / tileSize;
+			return new Location(x, y);
+		}
+		return null;
+	}
+
+	/**
+	 * Gets the spawn point for that team's location
+	 * 
+	 * @param team
+	 *            the team to get the spawn point for
+	 * @return the spawn point location
+	 */
 	public Location getTeamSpawnPoint(Team team)
 	{
 		return this.spawnPoints.get(team.index());
+	}
+	
+	public Location getTeamBaseLocation(Team team)
+	{
+		Location temp = this.baseLocations.get(team.index()).copy();
+		temp.x += 1;
+		temp.y += 1;
+		return temp;
 	}
 
 	private void dispatch(Event e)
@@ -367,6 +463,10 @@ public class GameMap implements TileBasedMap
 			// if we need to delay this event add it to the keep list.
 			logger.debug("Dispatching: " + event.getId() + " at location " + event.getLocation());
 			
+			if (listeners.get(event.getLocation()) == null)
+			{
+				listeners.put(event.getLocation(), new ArrayList<EventListener>());
+			}
 			for (EventListener callback : listeners.get(event.getLocation()))
 			{
 				callback.onEvent(event);

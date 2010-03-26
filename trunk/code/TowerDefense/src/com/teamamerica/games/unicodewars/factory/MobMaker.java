@@ -46,6 +46,7 @@ public class MobMaker
 
 		MoverComponent pathPart = new MoverComponent(temp);
 		temp.addComponent(pathPart);
+		pathPart.setPath(GameMap.inst().getSpawnPath(team));
 		VisualComponent visualPart = new VisualComponent(temp);
 		temp.addComponent(visualPart);
 		BB.inst().addTeamObject(temp, team);

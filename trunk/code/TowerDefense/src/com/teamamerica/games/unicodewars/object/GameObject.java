@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.newdawn.slick.Graphics;
 import com.teamamerica.games.unicodewars.component.Component;
+import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
 
@@ -175,5 +176,18 @@ public class GameObject
 		if (_userData.containsKey(name))
 			logger.error("User Data Key Collision: " + _id + " key: " + name + "");
 		_userData.put(name, data);
+	}
+	
+	/**
+	 * Call this when removing/killing an object to clean things up.
+	 */
+	public void deleteObject()
+	{
+		BB.inst().removeTeamObject(this);
+		
+		for (Component c : _updateQueue)
+		{
+			c.deleteComponent();
+		}
 	}
 }

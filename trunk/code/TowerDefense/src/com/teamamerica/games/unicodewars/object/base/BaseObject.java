@@ -11,6 +11,7 @@ import com.teamamerica.games.unicodewars.utils.Team;
 
 public class BaseObject extends GameObject
 {
+	public static final short size = 4;
 	private ArrayList<EventListener> listeners;
 	private int health;
 	private boolean registered;
@@ -20,43 +21,47 @@ public class BaseObject extends GameObject
 		super(name, id, team, renderPriority);
 		// TODO Auto-generated constructor stub
 		this._position = loc;
-		this._size = 4;
+		this._size = size;
 		this.health = 10000;
 		this.registered = false;
 		this.listeners = new ArrayList<EventListener>();
+		RegisterMapListeners();
 	}
 	
-	public void RegisterMapListeners()
+	private void RegisterMapListeners()
 	{
-		if (!registered)
+		for (int x = this._position.x; x < this._position.x + this._size; x++)
 		{
-			for (int x = this._position.x; x < this._position.x + this._size; x++)
+			for (int y = this._position.y; y < this._position.y + this._size; y++)
 			{
-				for (int y = this._position.y; y < this._position.y + this._size; y++)
-				{
-					EventListener temp = new EventListener() {
-						
-						@Override
-						public void onEvent(Event e)
+				EventListener temp = new EventListener() {
+					
+					@Override
+					public void onEvent(Event e)
+					{
+						// TODO Auto-generated method stub
+						switch (e.getId())
 						{
-							// TODO Auto-generated method stub
-							hit(e.sender);
+							case ENTER_SPACE:
+								hit(e.sender);
+								break;
 						}
-					};
-					GameMap.inst().registerSpace(new Location(x, y), temp);
-					listeners.add(temp);
-				}
+
+					}
+				};
+				GameMap.inst().registerSpace(new Location(x, y), temp);
+				listeners.add(temp);
 			}
-			registered = true;
 		}
 	}
 	
 	private void hit(GameObject obj)
 	{
-		if (obj.getClass() == MobObject.class)
+		if (obj instanceof MobObject)
 		{
 			MobObject temp = (MobObject) obj;
 			this.health -= temp.getAttack();
+			temp.deleteObject();
 		}
 	}
 
