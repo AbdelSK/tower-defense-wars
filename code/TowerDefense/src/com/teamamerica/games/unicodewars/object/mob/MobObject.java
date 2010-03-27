@@ -100,6 +100,4 @@ public abstract class MobObject extends GameObject implements Mover
 	{
 		return currentHP > 0;
 	}
-	
-
 }

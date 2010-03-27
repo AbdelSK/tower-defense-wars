@@ -24,7 +24,7 @@ public class PrototypeScriptingSystem implements Subsystem
 			{
 				if (key == Input.KEY_M)
 				{
-					MobMaker.MakeMobChinese1(Team.Player1);
+					MobMaker.MakeMobChinese(1, Team.Player1);
 				}
 				
 				if (key == Input.KEY_T)

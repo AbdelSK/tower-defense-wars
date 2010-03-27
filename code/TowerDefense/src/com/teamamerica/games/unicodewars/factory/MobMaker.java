@@ -12,20 +12,17 @@ import com.teamamerica.games.unicodewars.system.GameMap;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
 
-// import com.teamamerica.games.unicodewars.system.BB;
-
 public class MobMaker
 {
 	private MobMaker()
 	{
 	}
 	
-	
 	public static void MakeMob(MobObject.Type type, int level, Team team)
 	{
 		Location loc = GameMap.inst().getTeamSpawnPoint(team);
 		MobObject temp;
-		switch(type)
+		switch (type)
 		{
 			case chinese:
 				temp = new ChineseChar(loc, team, level, type);
@@ -52,28 +49,23 @@ public class MobMaker
 		BB.inst().addTeamObject(temp, team);
 	}
 	
-	public static void MakeMobChinese1(Team team)
+	public static void MakeMobChinese(int level, Team team)
 	{
-		MakeMob(MobObject.Type.chinese, 1, team);
+		MakeMob(MobObject.Type.chinese, level, team);
 	}
 	
-	public static void MakeMobChinese2(Team team)
+	public static void MakeMobLatin(int level, Team team)
 	{
-		MakeMob(MobObject.Type.chinese, 2, team);
+		MakeMob(MobObject.Type.latin, level, team);
 	}
 	
-	public static void MakeMobChinese3(Team team)
+	public static void MakeMobGreek(int level, Team team)
 	{
-		MakeMob(MobObject.Type.chinese, 3, team);
+		MakeMob(MobObject.Type.greek, level, team);
 	}
 	
-	public static void MakeMobChinese4(Team team)
+	public static void MakeMobCyrillic(int level, Team team)
 	{
-		MakeMob(MobObject.Type.chinese, 4, team);
-	}
-	
-	public static void MakeMobChinese5(Team team)
-	{
-		MakeMob(MobObject.Type.chinese, 5, team);
+		MakeMob(MobObject.Type.cyrillic, level, team);
 	}
 }
