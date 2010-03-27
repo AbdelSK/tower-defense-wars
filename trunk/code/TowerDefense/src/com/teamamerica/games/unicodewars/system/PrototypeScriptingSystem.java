@@ -41,28 +41,23 @@ public class PrototypeScriptingSystem implements Subsystem
 		});
 		
 		BB.inst().addMouseListenerListener(new MouseListener() {
-			private int tx = -1;
-			private int ty = -1;
+			private int tx[] = { -1, -1 };
+			private int ty[] = { -1, -1 };
 			
 			@Override
 			public void MouseReleased(int button, int x, int y)
 			{
-				// TODO Auto-generated method stub
-				if (button == Input.MOUSE_LEFT_BUTTON)
-				{
-					if (tx > 0 && ty > 0)
-						handleClickEvent(tx, ty);
-					tx = -1;
-					ty = -1;
-				}
+				if (tx[button] > 0 && ty[button] > 0)
+					handleClickEvent(button, tx[button], ty[button]);
+				tx[button] = -1;
+				ty[button] = -1;
 			}
 			
 			@Override
 			public void MouseClicked(int button, int x, int y)
 			{
-				// TODO Auto-generated method stub
-				tx = x;
-				ty = y;
+				tx[button] = x;
+				ty[button] = y;
 			}
 		});
 		
@@ -70,14 +65,25 @@ public class PrototypeScriptingSystem implements Subsystem
 		towerRow = 0;
 	}
 	
-	public void handleClickEvent(int x, int y)
+	public void handleClickEvent(int button, int x, int y)
 	{
 		Location loc = GameMap.inst().getGridLocationFromPixels(x, y);
 		if (loc != null)
 		{
-			if (GameMap.inst().canBuildTower(loc, (short) 2, Team.Player2))
+			if (button == Input.MOUSE_LEFT_BUTTON)
 			{
-				TowerMaker.MakeDiceTower(loc, Team.Player2);
+				if (GameMap.inst().canBuildTower(loc, (short) 2, Team.Player2))
+				{
+					TowerMaker.MakeDiceTower(loc, Team.Player2);
+				}
+			}
+			else if (button == Input.MOUSE_RIGHT_BUTTON)
+			{
+				TowerBase tower = GameMap.inst().getTowerAtLoc(loc);
+				if (tower != null)
+				{
+					tower.deleteObject();
+				}
 			}
 		}
 	}
