@@ -44,7 +44,7 @@ public class Main extends StateBasedGame {
 			app.setDisplayMode(1024, 768, false);
 		    app.setMaximumLogicUpdateInterval(20);
 		    app.setMinimumLogicUpdateInterval(16);
-			app.setTargetFrameRate(80);
+			app.setTargetFrameRate(30);
             app.start();
         } catch (SlickException e) {
             e.printStackTrace();
