@@ -20,6 +20,7 @@ public abstract class MobObject extends GameObject implements Mover
 	int totalHP = 0;
 	int level = 0;
 	int price = 0;
+	int refund = 0;
 	Type type;
 
 	public MobObject(String name, int id, int renderPriority, Location loc, Team side, int level, Type type)
@@ -31,24 +32,8 @@ public abstract class MobObject extends GameObject implements Mover
 		
 		this.level = level;
 		this.type = type;
-		this.price = 5 * level;
-		
-		switch (this.type)
-		{
-			case chinese:
-				this.defense = 4 * this.level;
-				this.attack = this.speed = this.vitality = 3 * this.level;
-			case latin:
-				this.speed = 4 * this.level;
-				this.defense = this.attack = this.vitality = 3 * this.level;
-			case greek:
-				this.attack = 4 * this.level;
-				this.defense = this.speed = this.vitality = 3 * this.level;
-			case cyrillic:
-				this.vitality = 4 * this.level;
-				this.defense = this.speed = this.attack = 3 * this.level;
-		}
-		this.currentHP = this.totalHP = this.vitality * 20;
+		this.price = 20 * level;
+		this.refund = this.price / 2;
 	}
 	
 	public int getAttack()
@@ -96,8 +81,22 @@ public abstract class MobObject extends GameObject implements Mover
 		return type;
 	}
 	
+	public int getRefundAmount()
+	{
+		return refund;
+	}
+
 	public boolean isAlive()
 	{
 		return currentHP > 0;
+	}
+	
+	public boolean adjustHealth(int amount)
+	{
+		currentHP += amount;
+		if (currentHP <= 0)
+			return false;
+		else
+			return true;
 	}
 }
