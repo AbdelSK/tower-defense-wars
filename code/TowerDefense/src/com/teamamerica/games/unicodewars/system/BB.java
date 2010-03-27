@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Random;
 import org.apache.log4j.Logger;
 import com.teamamerica.games.unicodewars.object.GameObject;
+import com.teamamerica.games.unicodewars.object.mob.MobObject;
+import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.utils.KeyListener;
 import com.teamamerica.games.unicodewars.utils.MouseListener;
 import com.teamamerica.games.unicodewars.utils.Team;
@@ -37,6 +39,10 @@ public class BB {
 	private List<KeyListener>     _keysPressed;
 	
 	private List<MouseListener> _mouseClicked;
+	
+	private TowerBase.Type towerSelection;
+	private MobObject.Type mobTypeSelection;
+	private int mobLevelSelection;
 		
 	private BB() { 
 		_random = new Random(System.currentTimeMillis());
@@ -49,7 +55,9 @@ public class BB {
 		
 		_keysPressed = new ArrayList<KeyListener>();
 		_mouseClicked = new ArrayList<MouseListener>();
-		
+		towerSelection = TowerBase.Type.diceOne;
+		mobTypeSelection = MobObject.Type.chinese;
+		mobLevelSelection = 1;
 		// _variableMap.put(Variable.maxAnglularAcceleration, 2.0f);
 	}
 		
@@ -115,6 +123,36 @@ public class BB {
 		return _objects;
 	}
 	
+	public TowerBase.Type getTowerSelection()
+	{
+		return towerSelection;
+	}
+	
+	public void setTowerSelection(TowerBase.Type tmpTowerSelection)
+	{
+		towerSelection = tmpTowerSelection;
+	}
+
+	public MobObject.Type getMobTypeSelection()
+	{
+		return mobTypeSelection;
+	}
+	
+	public void setMobTypeSelection(MobObject.Type tmpMobTypeSelection)
+	{
+		mobTypeSelection = tmpMobTypeSelection;
+	}
+
+	public int getMobLevelSelection()
+	{
+		return mobLevelSelection;
+	}
+	
+	public void setMobLevelSelection(int tmpMobLevelSelection)
+	{
+		mobLevelSelection = tmpMobLevelSelection;
+	}
+
 	public void removeTeamObject(GameObject obj)
 	{
 		for (int i = 0; i < _objects.get(obj.getTeam().index()).size(); i++)

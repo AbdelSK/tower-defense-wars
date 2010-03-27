@@ -19,6 +19,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import com.teamamerica.games.unicodewars.Main;
 import com.teamamerica.games.unicodewars.factory.MobMaker;
+import com.teamamerica.games.unicodewars.object.mob.MobObject;
+import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.system.GameSystem;
 import com.teamamerica.games.unicodewars.utils.Team;
@@ -149,6 +151,7 @@ public class GameplayState extends BHGameState
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
 				System.out.println("Dice pressed.");
+				BB.inst().setTowerSelection(TowerBase.Type.diceOne);
 			}
 		});
 		towerInterface.addWidget(buttons[0]);
@@ -160,6 +163,7 @@ public class GameplayState extends BHGameState
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
 				System.out.println("Chess Pieces pressed.");
+				BB.inst().setTowerSelection(TowerBase.Type.chessOne);
 			}
 		});
 		towerInterface.addWidget(buttons[1]);
@@ -171,6 +175,7 @@ public class GameplayState extends BHGameState
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
 				System.out.println("Currency pressed.");
+				BB.inst().setTowerSelection(TowerBase.Type.currencyOne);
 			}
 		});
 		towerInterface.addWidget(buttons[2]);
@@ -182,6 +187,7 @@ public class GameplayState extends BHGameState
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
 				System.out.println("Card Suits pressed.");
+				BB.inst().setTowerSelection(TowerBase.Type.cardOne);
 			}
 		});
 		towerInterface.addWidget(buttons[3]);
@@ -193,6 +199,7 @@ public class GameplayState extends BHGameState
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
 				System.out.println("Musical Notes pressed.");
+				BB.inst().setTowerSelection(TowerBase.Type.musicOne);
 			}
 		});
 		towerInterface.addWidget(buttons[4]);
@@ -228,7 +235,10 @@ public class GameplayState extends BHGameState
 			buttons[i].addButtonPressedListener(new IButtonPressedListener() {
 				public void buttonPressed(ButtonPressedEvent arg0)
 				{
-					MobMaker.MakeMobChinese(i, Team.Player1);
+					int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
+					MobMaker.MakeMobChinese(level, Team.Player1);
+					BB.inst().setMobTypeSelection(MobObject.Type.chinese);
+					BB.inst().setMobLevelSelection(level);
 				}
 			});
 			mobInterface.addWidget(buttons[i]);
@@ -243,7 +253,10 @@ public class GameplayState extends BHGameState
 			buttons[i].addButtonPressedListener(new IButtonPressedListener() {
 				public void buttonPressed(ButtonPressedEvent arg0)
 				{
-					MobMaker.MakeMobLatin(i, Team.Player1);
+					int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
+					MobMaker.MakeMobLatin(level, Team.Player1);
+					BB.inst().setMobTypeSelection(MobObject.Type.latin);
+					BB.inst().setMobLevelSelection(level);
 				}
 			});
 			mobInterface.addWidget(buttons[i]);
@@ -258,7 +271,10 @@ public class GameplayState extends BHGameState
 			buttons[i].addButtonPressedListener(new IButtonPressedListener() {
 				public void buttonPressed(ButtonPressedEvent arg0)
 				{
-					MobMaker.MakeMobGreek(i, Team.Player1);
+					int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
+					MobMaker.MakeMobGreek(level, Team.Player1);
+					BB.inst().setMobTypeSelection(MobObject.Type.greek);
+					BB.inst().setMobLevelSelection(level);
 				}
 			});
 			mobInterface.addWidget(buttons[i]);
@@ -273,7 +289,10 @@ public class GameplayState extends BHGameState
 			buttons[i].addButtonPressedListener(new IButtonPressedListener() {
 				public void buttonPressed(ButtonPressedEvent arg0)
 				{
-					MobMaker.MakeMobCyrillic(i, Team.Player1);
+					int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
+					MobMaker.MakeMobCyrillic(level, Team.Player1);
+					BB.inst().setMobTypeSelection(MobObject.Type.cyrillic);
+					BB.inst().setMobLevelSelection(level);
 				}
 			});
 			mobInterface.addWidget(buttons[i]);

@@ -51,7 +51,24 @@ public class VisualComponent extends Component
 		}
 		else if (this._parent instanceof TowerBase)
 		{
-			g.setColor(Color.red);
+			switch (((TowerBase) this._parent).getType())
+			{
+				case cardOne:
+					g.setColor(Color.red);
+					break;
+				case chessOne:
+					g.setColor(Color.cyan);
+					break;
+				case currencyOne:
+					g.setColor(Color.magenta);
+					break;
+				case diceOne:
+					g.setColor(Color.white);
+					break;
+				case musicOne:
+					g.setColor(Color.lightGray);
+					break;
+			}
 		}
 		else if (this._parent instanceof BaseObject)
 		{
