@@ -100,6 +100,10 @@ public class GameSystem
 		String player1ObjectCount = "Player1 has " + BB.inst().getAll().get(Team.Player1.index()).size() + " objects.";
 		g.drawString(tickCountdown, 384, 520);
 		g.drawString(player1ObjectCount, 384, 540);
+		// g.drawString("Gold: " +
+		// BB.inst().getAll().get(Team.Player1.getGold()), 384, 560);
+		// g.drawString("Income: " +
+		// BB.inst().getAll().get(Team.Player1.getIncome()), 384, 560);
 		g.popTransform();
 	}
 }

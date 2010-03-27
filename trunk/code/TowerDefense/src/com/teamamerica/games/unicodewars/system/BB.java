@@ -58,7 +58,6 @@ public class BB {
 		towerSelection = TowerBase.Type.diceOne;
 		mobTypeSelection = MobObject.Type.chinese;
 		mobLevelSelection = 1;
-		// _variableMap.put(Variable.maxAnglularAcceleration, 2.0f);
 	}
 		
 	public static BB inst() { 
