@@ -30,7 +30,7 @@ public class PrototypeScriptingSystem implements Subsystem
 			{
 				if (key == Input.KEY_M)
 				{
-					MobMaker.MakeMobChinese(1, Team.Player1);
+					MobMaker.MakeMob(BB.inst().getMobTypeSelection(), BB.inst().getMobLevelSelection(), Team.Player1);
 				}
 				
 				if (key == Input.KEY_T)
@@ -74,7 +74,7 @@ public class PrototypeScriptingSystem implements Subsystem
 			{
 				if (GameMap.inst().canBuildTower(loc, (short) 2, Team.Player2))
 				{
-					TowerMaker.MakeDiceTower(loc, Team.Player2);
+					TowerMaker.createTower(BB.inst().getTowerSelection(), loc, Team.Player2);
 				}
 			}
 			else if (button == Input.MOUSE_RIGHT_BUTTON)
