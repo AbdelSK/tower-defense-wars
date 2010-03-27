@@ -207,7 +207,7 @@ public class GameplayState extends BHGameState
 	{
 		int buttonSize = 64;
 		Button buttons[] = new Button[20];
-
+		
 		for (i = 0; i < 5; i++)
 		{
 			buttons[i] = FengGUI.createWidget(Button.class);

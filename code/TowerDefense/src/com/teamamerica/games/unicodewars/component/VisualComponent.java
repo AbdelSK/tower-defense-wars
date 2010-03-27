@@ -30,6 +30,7 @@ public class VisualComponent extends Component
 	{
 		Location renderLocTL = GameMap.inst().getLocationInPixels(this._parent.getPosition());
 		int size = this._parent.getSize() * GameMap.inst().tileSize;
+
 		if (this._parent instanceof MobObject)
 		{
 			switch (((MobObject) this._parent).getType())
@@ -58,6 +59,12 @@ public class VisualComponent extends Component
 		}
 		
 		g.fillRect(renderLocTL.x, renderLocTL.y, size, size);
+		
+		if (this._parent instanceof MobObject)
+		{
+			g.setColor(Color.black);
+			g.drawString("" + ((MobObject) this._parent).getLevel(), renderLocTL.x, renderLocTL.y);
+		}
 	}
 
 }
