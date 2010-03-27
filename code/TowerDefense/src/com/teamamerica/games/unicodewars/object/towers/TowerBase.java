@@ -174,10 +174,10 @@ public abstract class TowerBase extends GameObject
 						switch (e.getId())
 						{
 							case ENTER_SPACE:
-								handleMobInRange(e.sender);
+								handleMobInRange(e.sender, e.getLocation());
 								break;
 							case LEAVE_SPACE:
-								handleMobLeavingRange(e.sender);
+								handleMobLeavingRange(e.sender, e.getLocation());
 								break;
 						}
 
@@ -190,12 +190,12 @@ public abstract class TowerBase extends GameObject
 		}
 	}
 	
-	private void handleMobInRange(GameObject obj)
+	private void handleMobInRange(GameObject obj, Location loc)
 	{
 		System.out.println("pew. pew.");
 	}
 	
-	private void handleMobLeavingRange(GameObject obj)
+	private void handleMobLeavingRange(GameObject obj, Location loc)
 	{
 		if (enemy != null && obj.getId() == enemy.getId())
 		{

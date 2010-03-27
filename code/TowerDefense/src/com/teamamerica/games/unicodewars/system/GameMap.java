@@ -68,7 +68,7 @@ public class GameMap implements TileBasedMap
 		eventQueue = new LinkedList<Event>();
 		this.listeners = new HashMap<Location, List<EventListener>>();
 		
-		this.pathFinder = new AStarPathFinder(this, 10000, false);
+		this.pathFinder = new AStarPathFinder(this, 10000, true);
 		
 		this.gridColor = new Color(1.0f, 0, 0);
 		this.colorTimer = new Timer();
@@ -114,12 +114,14 @@ public class GameMap implements TileBasedMap
 		this.spawnPoints.set(Team.Player1.index(), new Location(columns / 2, rows / 2));
 		
 		// Set up the bases
-		BaseObject b1 = BaseMaker.MakeBase(Team.Player1, new Location(0, (rows / 2) - (BaseObject.size / 2)));
+		Location b1Loc = new Location(0, (rows / 2) - (BaseObject.size / 2));
+		BaseObject b1 = BaseMaker.MakeBase(Team.Player1, b1Loc);
 		buildBase(b1);
-		this.baseLocations.set(Team.Player1.index(), new Location(0, (rows / 2) - 2));
-		BaseObject b2 = BaseMaker.MakeBase(Team.Player2, new Location(columns - 4, (rows / 2) - (BaseObject.size / 2)));
+		this.baseLocations.set(Team.Player1.index(), new Location(b1Loc.x + 2, b1Loc.y + 2));
+		Location b2Loc = new Location(columns - 4, (rows / 2) - (BaseObject.size / 2));
+		BaseObject b2 = BaseMaker.MakeBase(Team.Player2, b2Loc);
 		buildBase(b2);
-		this.baseLocations.set(Team.Player2.index(), new Location(columns - 4, (rows / 2) - 2));
+		this.baseLocations.set(Team.Player2.index(), new Location(b2Loc.x + 2, b2Loc.y + 2));
 		
 		// Set up the spawn paths
 		for (Team team : Team.values())
@@ -547,6 +549,12 @@ public class GameMap implements TileBasedMap
 		g.drawLine(0, rows * tileSize, columns * tileSize, rows * tileSize); // Bottom
 		g.drawLine(0, 0, 0, rows * tileSize); // Left
 		g.drawLine(columns * tileSize, 0, columns * tileSize, rows * tileSize); // Right
+		
+		for (Location loc : this.spawnPoints)
+		{
+			g.setColor(Color.green);
+			g.fillRect(loc.x, loc.y, tileSize, tileSize);
+		}
 	}
 
 }
