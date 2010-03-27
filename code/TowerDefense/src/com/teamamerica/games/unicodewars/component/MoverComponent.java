@@ -103,9 +103,34 @@ public class MoverComponent extends Component
 		this.path = path;
 	}
 
+	/**
+	 * Returns true if the specified location is being used by the specified
+	 * GameObject, false otherwise
+	 * 
+	 * @return boolean
+	 */
+	public boolean containsLocation(GameObject gameObj, Location loc)
+	{
+		boolean bCollisionExists = false;
+		
+		for (int x = gameObj.getPosition().x; x < gameObj.getPosition().x + gameObj.getSize(); x++)
+		{
+			for (int y = gameObj.getPosition().y; y < gameObj.getPosition().y + gameObj.getSize(); y++)
+			{
+				if ((loc.x == x) && (loc.y == y))
+				{
+					bCollisionExists = true;
+					break;
+				}
+			}
+		}
+		
+		return bCollisionExists;
+	}
+
 	private void checkAndUpdate(GameObject obj)
 	{
-		if (obj.getPosition().equals(_parent.getPosition()))
+		if (containsLocation(obj, _parent.getPosition()))
 		{
 			obj.deleteObject();
 			return;
@@ -130,7 +155,7 @@ public class MoverComponent extends Component
 			for (int i = 0; i < oldPath.getLength(); i++)
 			{
 				Path.Step step = oldPath.getStep(i);
-				if (step.getX() == obj.getPosition().x && step.getY() == obj.getPosition().y)
+				if (containsLocation(obj, new Location(step.getX(), step.getY())))
 				{
 					if (i < this.pathStep)
 						return;
