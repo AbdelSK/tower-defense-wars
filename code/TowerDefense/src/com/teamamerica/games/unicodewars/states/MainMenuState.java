@@ -104,7 +104,7 @@ public class MainMenuState extends BHGameState {
 		
 		btn = FengGUI.createWidget(Button.class);
 		btn.setText("Exit Game");
-	    btn.setPosition(new Point(700, _centerY-25));
+		btn.setPosition(new Point(700, _centerY - 50));
 		btn.setSize(200, 50);
 		btn.addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0) {

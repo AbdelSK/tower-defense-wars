@@ -257,8 +257,8 @@
 				<Style key="default" fontstyle="default">
 					<Color ref="textColor" />
 				</Style>
-				<Style key="hovered" fontstyle="hovered">
-					<Color rgba="255, 255, 255, 255"/>
+				<Style key="hovered" fontstyle="default">
+					<Color ref="highlightTextColor"/>
 				</Style>
 			</TextStyle>
 
@@ -277,10 +277,6 @@
 					<BottomLeftColor rgba="255, 255, 255, 255"/>
 					<BottomRightColor rgba="255, 255, 255, 255"/>
 				</GradientBackground>
-
-				<PlainBackground label="focused" enabled="false">
-					<Color rgba="255, 255, 255, 255"/>
-				</PlainBackground>
 				
 				<PlainBackground label="hovered" enabled="false">
 					<Color rgba="255, 255, 255, 255"/>

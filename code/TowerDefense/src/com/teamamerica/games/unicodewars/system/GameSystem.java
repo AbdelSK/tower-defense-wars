@@ -96,10 +96,10 @@ public class GameSystem
 			}
 		}
 		g.setColor(Color.white);
-		String tickCountdown = "Time unitl the next tick: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
+		String tickCountdown = "Next income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
 		String player1ObjectCount = "Player1 has " + BB.inst().getAll().get(Team.Player1.index()).size() + " objects.";
-		g.drawString(tickCountdown, 330, 520);
-		g.drawString(player1ObjectCount, 330, 540);
+		g.drawString(tickCountdown, 384, 520);
+		g.drawString(player1ObjectCount, 384, 540);
 		g.popTransform();
 	}
 }
