@@ -13,6 +13,7 @@ import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFinder;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
+import org.newdawn.slick.util.pathfinding.heuristics.ManhattanHeuristic;
 import com.teamamerica.games.unicodewars.factory.BaseMaker;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.base.BaseObject;
@@ -68,7 +69,7 @@ public class GameMap implements TileBasedMap
 		eventQueue = new LinkedList<Event>();
 		this.listeners = new HashMap<Location, List<EventListener>>();
 		
-		this.pathFinder = new AStarPathFinder(this, 10000, true);
+		this.pathFinder = new AStarPathFinder(this, 10000, false, new ManhattanHeuristic(0));
 		
 		this.gridColor = new Color(1.0f, 0, 0);
 		this.colorTimer = new Timer();
