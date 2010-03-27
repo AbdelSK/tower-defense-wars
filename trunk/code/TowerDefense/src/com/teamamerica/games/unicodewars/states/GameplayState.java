@@ -28,7 +28,6 @@ import com.teamamerica.games.unicodewars.utils.Team;
 public class GameplayState extends BHGameState
 {
 	private static Logger logger = Logger.getLogger(GameplayState.class);
-	private int i;
 	private GameSystem _gameSystem;
 	private Container mobInterface;
 	private Container towerInterface;
@@ -226,7 +225,7 @@ public class GameplayState extends BHGameState
 		mobInterface.setHeight(256);
 		mobInterface.setWidth(320);
 
-		for (i = 0; i < 5; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			buttons[i] = FengGUI.createWidget(Button.class);
 			buttons[i].setText("Chinese " + (i + 1));
@@ -244,7 +243,7 @@ public class GameplayState extends BHGameState
 			mobInterface.addWidget(buttons[i]);
 		}
 		
-		for (i = 0; i < 5; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			buttons[i] = FengGUI.createWidget(Button.class);
 			buttons[i].setText("Latin " + (i + 1));
@@ -262,7 +261,7 @@ public class GameplayState extends BHGameState
 			mobInterface.addWidget(buttons[i]);
 		}
 		
-		for (i = 0; i < 5; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			buttons[i] = FengGUI.createWidget(Button.class);
 			buttons[i].setText("Greek " + (i + 1));
@@ -280,7 +279,7 @@ public class GameplayState extends BHGameState
 			mobInterface.addWidget(buttons[i]);
 		}
 		
-		for (i = 0; i < 5; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			buttons[i] = FengGUI.createWidget(Button.class);
 			buttons[i].setText("Cyrillic " + (i + 1));
