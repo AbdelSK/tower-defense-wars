@@ -105,7 +105,23 @@ public class MoverComponent extends Component
 
 	private void checkAndUpdate(GameObject obj)
 	{
-		Path oldPath = this.path;
+		if (obj.getPosition().equals(_parent.getPosition()))
+		{
+			obj.deleteObject();
+			return;
+		}
+		
+		if (this.path == null)
+		{
+			return;
+		}
+
+		Path oldPath = new Path();
+		for (int i = 0; i < this.path.getLength(); i++)
+		{
+			oldPath.appendStep(path.getX(i), path.getY(i));
+		}
+
 		int oldPathStep = this.pathStep;
 
 		updatePath();

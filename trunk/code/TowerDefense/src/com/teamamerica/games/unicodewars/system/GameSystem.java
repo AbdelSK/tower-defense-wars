@@ -33,7 +33,6 @@ public class GameSystem
 		_systems.put(Systems.PrototypeSubsytem, new PrototypeScriptingSystem());
 		this.tickTimer = new Timer();
 		
-
 	}
 
 	/**
