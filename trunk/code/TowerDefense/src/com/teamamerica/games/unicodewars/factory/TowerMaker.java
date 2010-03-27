@@ -1,7 +1,11 @@
 package com.teamamerica.games.unicodewars.factory;
 
 import com.teamamerica.games.unicodewars.component.VisualComponent;
+import com.teamamerica.games.unicodewars.object.towers.CardOne;
+import com.teamamerica.games.unicodewars.object.towers.ChessOne;
+import com.teamamerica.games.unicodewars.object.towers.CurrencyOne;
 import com.teamamerica.games.unicodewars.object.towers.DiceOne;
+import com.teamamerica.games.unicodewars.object.towers.MusicOne;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.system.GameMap;
@@ -18,17 +22,32 @@ public class TowerMaker
 	
 	public static TowerBase createTower(TowerBase.Type t, Location loc, Team team)
 	{
+		
+		TowerBase temp = null;
+		
 		switch (t)
 		{
 			case diceOne:
-				TowerBase temp = new DiceOne(loc, team);
-				VisualComponent looks = new VisualComponent(temp);
-				temp.addComponent(looks);
-				BB.inst().addTeamObject(temp, team);
-				GameMap.inst().buildTower(temp);
-				return temp;
+				temp = new DiceOne(loc, team);
+				break;
+			case chessOne:
+				temp = new ChessOne(loc, team);
+				break;
+			case cardOne:
+				temp = new CardOne(loc, team);
+				break;
+			case musicOne:
+				temp = new MusicOne(loc, team);
+				break;
+			case currencyOne:
+				temp = new CurrencyOne(loc, team);
+				break;
 		}
-		return null;
+		VisualComponent looks = new VisualComponent(temp);
+		temp.addComponent(looks);
+		BB.inst().addTeamObject(temp, team);
+		GameMap.inst().buildTower(temp);
+		return temp;
 	}
 
 	// Example Method

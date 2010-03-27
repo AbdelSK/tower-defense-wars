@@ -16,7 +16,7 @@ public abstract class TowerBase extends GameObject
 {
 	public static enum Type
 	{
-		diceOne(DiceOne.price), ;
+		diceOne(DiceOne.price), chessOne(ChessOne.price), cardOne(CardOne.price), musicOne(MusicOne.price), currencyOne(CurrencyOne.price);
 		
 		public final int price;
 		
@@ -192,7 +192,7 @@ public abstract class TowerBase extends GameObject
 	
 	private void handleMobInRange(GameObject obj)
 	{
-		
+		System.out.println("pew. pew.");
 	}
 	
 	private void handleMobLeavingRange(GameObject obj)
