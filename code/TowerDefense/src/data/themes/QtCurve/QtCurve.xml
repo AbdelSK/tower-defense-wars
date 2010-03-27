@@ -4,8 +4,8 @@
 	
 	<FengGUI:init>
 		<!-- Define some global colors for use all over the UI -->
-		<Color value="black" name="textColor"/>
-		<Color value="white" name="highlightTextColor"/>
+		<Color value="white" name="textColor"/>
+		<Color value="black" name="highlightTextColor"/>
 
 		<Color rgba="176, 186, 219, 255" name="SCB default light"/>
 		<Color rgba="142, 164, 203, 255" name="SCB default dark"/>
@@ -17,11 +17,11 @@
 
 		<!-- define fonts to use for text rendering -->
 		<ImageFont name="windowTitleFont">
-			<create fontName="Serif" type="bold" size="16" antialiasing="false"/>
+			<create fontName="Monaco" type="bold" size="16" antialiasing="false"/>
 		</ImageFont>
 	
 		<ImageFont name="defaultFont">
-			<create fontName="Serif" type="plain" size="14" antialiasing="false"/>
+			<create fontName="Monaco" type="plain" size="10" antialiasing="false"/>
 		</ImageFont>
 		
 		<!-- TextRenderer use a font to render Text. They should be defined globally to save resources -->
@@ -36,13 +36,13 @@
 <!-- JOGL TextRenderer Usage Example
 		<ComplexTextRenderer name="TitleTextRendererJOGL">
 			<JOGLTextRenderer>
-				<AWTFont fontName="Serif" type="bold" size="16" antialiasing="false" fractionalMetrics="true"/>
+				<AWTFont fontName="Monaco" type="bold" size="16" antialiasing="false" fractionalMetrics="true"/>
 			</JOGLTextRenderer>
 		</ComplexTextRenderer>
 		
 		<ComplexTextRenderer name="DefaultTextRendererJOGL">
 			<JOGLTextRenderer>
-				<AWTFont fontName="Serif" type="plain" size="14" antialiasing="false" fractionalMetrics="false"/>
+				<AWTFont fontName="Monaco" type="plain" size="14" antialiasing="false" fractionalMetrics="false"/>
 			</JOGLTextRenderer>
 		</ComplexTextRenderer>
 -->
@@ -257,32 +257,35 @@
 				<Style key="default" fontstyle="default">
 					<Color ref="textColor" />
 				</Style>
-				<Style key="hovered" fontstyle="default">
-					<Color ref="highlightTextColor" />
+				<Style key="hovered" fontstyle="hovered">
+					<Color rgba="255, 255, 255, 255"/>
 				</Style>
 			</TextStyle>
 
 			<!-- define backgrounds -->
 			<BackgroundDecorators>
 				<GradientBackground label="default" enabled="true">
-					<TopLeftColor rgba="249, 247, 242, 255"/>
-					<TopRightColor rgba="249, 247, 242, 255"/>
-					<BottomLeftColor rgba="233, 217, 198, 255"/>
-					<BottomRightColor rgba="233, 217, 198, 255"/>
+					<TopLeftColor rgba="0, 0, 0, 255"/>
+					<TopRightColor rgba="0, 0, 0, 255"/>
+					<BottomLeftColor rgba="0, 0, 0, 255"/>
+					<BottomRightColor rgba="0, 0, 0, 255"/>
 				</GradientBackground>
 				
 				<GradientBackground label="pressed" enabled="false">
-					<TopLeftColor rgba="233, 217, 198, 255"/>
-					<TopRightColor rgba="233, 217, 198, 255"/>
-					<BottomLeftColor rgba="249, 247, 242, 255"/>
-					<BottomRightColor rgba="249, 247, 242, 255"/>
-				</GradientBackground>	
+					<TopLeftColor rgba="255, 255, 255, 255"/>
+					<TopRightColor rgba="255, 255, 255, 255"/>
+					<BottomLeftColor rgba="255, 255, 255, 255"/>
+					<BottomRightColor rgba="255, 255, 255, 255"/>
+				</GradientBackground>
+
 				<PlainBackground label="focused" enabled="false">
-					<Color rgba="255, 255, 255, 130"/>
+					<Color rgba="255, 255, 255, 255"/>
 				</PlainBackground>
+				
 				<PlainBackground label="hovered" enabled="false">
-					<Color rgba="255, 200, 150, 100"/>
+					<Color rgba="255, 255, 255, 255"/>
 				</PlainBackground>
+				
 	    		</BackgroundDecorators>
 
 			<!-- define foregrounds -->
