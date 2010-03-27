@@ -22,6 +22,12 @@ public class PrototypeScriptingSystem implements Subsystem
 			@Override
 			public void keyPressed(int key)
 			{
+				
+			}
+			
+			@Override
+			public void keyReleased(int key)
+			{
 				if (key == Input.KEY_M)
 				{
 					MobMaker.MakeMobChinese(1, Team.Player1);
@@ -31,12 +37,6 @@ public class PrototypeScriptingSystem implements Subsystem
 				{
 					buildTowersInRows();
 				}
-			}
-			
-			@Override
-			public void keyReleased(int key)
-			{
-				
 			}
 		});
 		
