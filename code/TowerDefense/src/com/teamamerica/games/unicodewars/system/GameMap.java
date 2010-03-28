@@ -49,6 +49,7 @@ public class GameMap implements TileBasedMap
 	private Color gridColor;
 	private Timer colorTimer;
 	private int colorStage;
+	private int alphaStage;
 
 	public final int rows = 32; // height
 	public final int columns = 64; // width
@@ -78,6 +79,7 @@ public class GameMap implements TileBasedMap
 		this.gridColor = new Color(1.0f, 0, 0);
 		this.colorTimer = new Timer();
 		this.colorStage = 0;
+		this.alphaStage = 0;
 	}
 	
 	/**
@@ -459,6 +461,16 @@ public class GameMap implements TileBasedMap
 		return temp;
 	}
 
+	/**
+	 * Returns a new location object with the location relative to the grid
+	 * location from a pixel based location.
+	 * 
+	 * @param tx
+	 *            the pixel location x component
+	 * @param ty
+	 *            the pixel location y component
+	 * @return the new grid based location
+	 */
 	public Location getGridLocationFromPixels(int tx, int ty)
 	{
 		if (tx > 0 && tx < (columns * tileSize) && ty > 0 && ty < (rows * tileSize))
@@ -482,6 +494,13 @@ public class GameMap implements TileBasedMap
 		return this.spawnPoints.get(team.index());
 	}
 	
+	/**
+	 * Gets the location of the base for a team.
+	 * 
+	 * @param team
+	 *            the team to find the base for
+	 * @return the base's location
+	 */
 	public Location getTeamBaseLocation(Team team)
 	{
 		Location temp = this.baseLocations.get(team.index()).copy();
@@ -564,6 +583,20 @@ public class GameMap implements TileBasedMap
 				this.gridColor.b -= 0.1f;
 				if (this.gridColor.b < 0.05f)
 					this.colorStage = 0;
+			}
+			
+			switch (this.alphaStage)
+			{
+				case 0:
+					this.gridColor.a -= 0.1f;
+					if (this.gridColor.a < 0.1f)
+						this.alphaStage++;
+					break;
+				case 1:
+					this.gridColor.a += 0.1f;
+					if (this.gridColor.a > 0.9f)
+						this.alphaStage--;
+					break;
 			}
 		}
 	}
