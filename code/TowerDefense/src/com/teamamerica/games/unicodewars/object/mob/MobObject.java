@@ -99,4 +99,10 @@ public abstract class MobObject extends GameObject implements Mover
 		else
 			return true;
 	}
+	
+	@Override
+	public void deleteObject()
+	{
+		super.deleteObject();
+	}
 }

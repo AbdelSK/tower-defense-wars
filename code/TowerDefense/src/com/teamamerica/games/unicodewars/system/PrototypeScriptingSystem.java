@@ -77,14 +77,6 @@ public class PrototypeScriptingSystem implements Subsystem
 					TowerMaker.createTower(BB.inst().getTowerSelection(), loc, Team.Player2);
 				}
 			}
-			else if (button == Input.MOUSE_RIGHT_BUTTON)
-			{
-				TowerBase tower = GameMap.inst().getTowerAtLoc(loc);
-				if (tower != null)
-				{
-					tower.deleteObject();
-				}
-			}
 		}
 	}
 	

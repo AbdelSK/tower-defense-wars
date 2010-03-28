@@ -226,11 +226,18 @@ public class GameObject
 	 */
 	public void deleteObject()
 	{
-		BB.inst().removeTeamObject(this);
-		
-		for (Component c : _updateQueue)
+		if (BB.inst().removeTeamObject(this))
 		{
-			c.deleteComponent();
+			
+			for (Component c : _updateQueue)
+			{
+				c.deleteComponent();
+			}
+			
+			_updateQueue.clear();
+			_renderQueue.clear();
 		}
+		else
+			System.out.println("PROBLEM! Failed to remove object.");
 	}
 }

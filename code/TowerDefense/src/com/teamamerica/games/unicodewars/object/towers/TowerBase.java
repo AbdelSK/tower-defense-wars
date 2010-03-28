@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
+import org.newdawn.slick.Input;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.system.BB;
@@ -211,9 +212,9 @@ public abstract class TowerBase extends GameObject
 	protected void registerTower()
 	{
 		// TODO Auto-generated method stub
-		for (int x = getPosition().x; x < getPosition().x + this._size + this.radius; x++)
+		for (int x = this._position.x - this.radius; x < this._position.x + this._size + this.radius; x++)
 		{
-			for (int y = getPosition().y; y < getPosition().y + this._size + this.radius; y++)
+			for (int y = this._position.y - this.radius; y < this._position.y + this._size + this.radius; y++)
 			{
 				EventListener temp = new EventListener() {
 					
@@ -251,8 +252,15 @@ public abstract class TowerBase extends GameObject
 					@Override
 					public void MouseReleased(int button, int x, int y)
 					{
-						// TODO Auto-generated method stub
-						
+						switch (button)
+						{
+							case Input.MOUSE_LEFT_BUTTON:
+								handleTowerClick();
+								break;
+							case Input.MOUSE_RIGHT_BUTTON:
+								sellTower();
+
+						}
 					}
 					
 					@Override
@@ -268,6 +276,16 @@ public abstract class TowerBase extends GameObject
 		}
 	}
 	
+	private void handleTowerClick()
+	{
+		System.out.println("Tower clicked, yo");
+	}
+	
+	private void sellTower()
+	{
+		this.deleteObject();
+	}
+
 	private void handleMobInRange(GameObject obj, Location loc)
 	{
 		ArrayList<MobObject> inRange = attackMap.get(loc);

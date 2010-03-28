@@ -45,9 +45,16 @@ public class TowerMaker
 		}
 		VisualComponent looks = new VisualComponent(temp);
 		temp.addComponent(looks);
-		BB.inst().addTeamObject(temp, team);
-		GameMap.inst().buildTower(temp);
-		return temp;
+		if (GameMap.inst().buildTower(temp))
+		{
+			BB.inst().addTeamObject(temp, team);
+			return temp;
+		}
+		else
+		{
+			temp.deleteObject();
+			return null;
+		}
 	}
 
 	// Example Method

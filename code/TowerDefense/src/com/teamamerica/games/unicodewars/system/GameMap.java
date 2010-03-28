@@ -19,7 +19,6 @@ import com.teamamerica.games.unicodewars.factory.BaseMaker;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.base.BaseObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
-import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.utils.Event;
 import com.teamamerica.games.unicodewars.utils.EventListener;
 import com.teamamerica.games.unicodewars.utils.EventType;
@@ -40,7 +39,6 @@ public class GameMap implements TileBasedMap
 	private TileType[][] map;
 	private Team[][] teamMap;
 	private HashMap<Location, List<EventListener>> listeners;
-	private HashMap<Location, TowerBase> hmTowers;
 	private Queue<Event> eventQueue;
 	private PathFinder pathFinder;
 	private ArrayList<Location> spawnPoints;
@@ -72,7 +70,6 @@ public class GameMap implements TileBasedMap
 
 		eventQueue = new LinkedList<Event>();
 		this.listeners = new HashMap<Location, List<EventListener>>();
-		this.hmTowers = new HashMap<Location, TowerBase>();
 		
 		this.pathFinder = new AStarPathFinder(this, 10000, false, new ManhattanHeuristic(0));
 		
@@ -204,11 +201,7 @@ public class GameMap implements TileBasedMap
 	{
 		return rows;
 	}
-	
-	public TowerBase getTowerAtLoc(Location loc)
-	{
-		return hmTowers.get(loc);
-	}
+
 
 	@Override
 	public int getWidthInTiles()
@@ -253,7 +246,7 @@ public class GameMap implements TileBasedMap
 	 * @param obj
 	 *            the tower just built. Must have location set.
 	 */
-	public void buildTower(GameObject obj)
+	public boolean buildTower(GameObject obj)
 	{
 		for (int i = obj.getPosition().x; i < (obj.getPosition().x + obj.getSize()); i++)
 		{
@@ -265,12 +258,9 @@ public class GameMap implements TileBasedMap
 		
 		if (updateDefaultMobPath(obj.getTeam()) == null)
 		{
-			obj.deleteObject();
+			return false;
 		}
-		else
-		{
-			hmTowers.put(obj.getPosition(), (TowerBase) obj);
-		}
+		return true;
 	}
 	
 	private Path updateDefaultMobPath(Team team)
@@ -350,7 +340,6 @@ public class GameMap implements TileBasedMap
 					this.map[i][j] = TileType.Free;
 			}
 		}
-		hmTowers.remove(obj.getPosition());
 		updateDefaultMobPath(obj.getTeam());
 	}
 	
