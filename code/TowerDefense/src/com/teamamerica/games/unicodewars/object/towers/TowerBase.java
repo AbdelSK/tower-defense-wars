@@ -13,6 +13,7 @@ import com.teamamerica.games.unicodewars.utils.Event;
 import com.teamamerica.games.unicodewars.utils.EventListener;
 import com.teamamerica.games.unicodewars.utils.EventType;
 import com.teamamerica.games.unicodewars.utils.Location;
+import com.teamamerica.games.unicodewars.utils.MouseListener;
 import com.teamamerica.games.unicodewars.utils.Team;
 import com.teamamerica.games.unicodewars.utils.Timer;
 
@@ -240,6 +241,31 @@ public abstract class TowerBase extends GameObject
 				Collections.sort(sortedLocs);
 			}
 		}
+		
+		for (int x = this._position.x; x < this._position.x + this._size; x++)
+		{
+			for (int y = this._position.y; y < this._position.y + this._size; y++)
+			{
+				MouseListener temp = new MouseListener() {
+					
+					@Override
+					public void MouseReleased(int button, int x, int y)
+					{
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void MouseClicked(int button, int x, int y)
+					{
+						// TODO Auto-generated method stub
+						
+					}
+				};
+				
+				BB.inst().addMouseListenerForLocation(temp, new Location(x, y));
+			}
+		}
 	}
 	
 	private void handleMobInRange(GameObject obj, Location loc)
@@ -266,6 +292,13 @@ public abstract class TowerBase extends GameObject
 		for (Location key : listeners.keySet())
 		{
 			GameMap.inst().unregisterSpace(key, listeners.get(key));
+		}
+		for (int x = this._position.x; x < this._position.x + this._size; x++)
+		{
+			for (int y = this._position.y; y < this._position.y + this._size; y++)
+			{
+				BB.inst().removeMouseListenerForLocation(new Location(x, y));
+			}
 		}
 		GameMap.inst().removeTower(this);
 	}

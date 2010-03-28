@@ -33,11 +33,11 @@ public class GameObject
 	protected String _name;
 	
 	/** Location of this entity */
-	private Location _position;
+	protected Location _position;
 	/** Pixel location of this entity which is used for visual effects only. */
 	/** The object is considered to be occupying the tile specified by */
 	/** _position */
-	private Location _positionInPixels;
+	protected Location _positionInPixels;
 	/** Size (in tiles) of this entity */
 	protected short _size;
 	

@@ -12,6 +12,7 @@ import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.utils.KeyListener;
+import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.MouseListener;
 import com.teamamerica.games.unicodewars.utils.Team;
 import com.teamamerica.games.unicodewars.utils.Variable;
@@ -40,6 +41,8 @@ public class BB {
 	
 	private List<MouseListener> _mouseClicked;
 	
+	private HashMap<Location, MouseListener> _mouseClickedAtLocation;
+
 	private TowerBase.Type towerSelection;
 	private MobObject.Type mobTypeSelection;
 	private int mobLevelSelection;
@@ -55,6 +58,7 @@ public class BB {
 		
 		_keysPressed = new ArrayList<KeyListener>();
 		_mouseClicked = new ArrayList<MouseListener>();
+		_mouseClickedAtLocation = new HashMap<Location, MouseListener>();
 		towerSelection = TowerBase.Type.diceOne;
 		mobTypeSelection = MobObject.Type.chinese;
 		mobLevelSelection = 1;
@@ -186,11 +190,21 @@ public class BB {
 	{
 		for (MouseListener c : _mouseClicked)
 			c.MouseClicked(button, x, y);
+
+		Location loc = GameMap.inst().getGridLocationFromPixels(x, y);
+		MouseListener c = _mouseClickedAtLocation.get(loc);
+		if (c != null)
+			c.MouseClicked(button, x, y);
 	}
 	
 	public void mouseReleased(int button, int x, int y)
 	{
 		for (MouseListener c : _mouseClicked)
+			c.MouseReleased(button, x, y);
+
+		Location loc = GameMap.inst().getGridLocationFromPixels(x, y);
+		MouseListener c = _mouseClickedAtLocation.get(loc);
+		if (c != null)
 			c.MouseReleased(button, x, y);
 	}
 	
@@ -199,8 +213,18 @@ public class BB {
 		_mouseClicked.add(c);
 	}
 	
+	public void addMouseListenerForLocation(MouseListener c, Location loc)
+	{
+		_mouseClickedAtLocation.put(loc, c);
+	}
+
 	public void removeMouseListener(MouseListener c)
 	{
 		_mouseClicked.remove(c);
+	}
+	
+	public void removeMouseListenerForLocation(Location loc)
+	{
+		_mouseClickedAtLocation.remove(loc);
 	}
 }
