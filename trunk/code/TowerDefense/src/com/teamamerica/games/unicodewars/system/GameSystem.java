@@ -97,7 +97,7 @@ public class GameSystem
 		}
 		g.setColor(Color.white);
 		String tickCountdown = "Next income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
-		String player1ObjectCount = "Player1 has " + BB.inst().getAll().get(Team.Player1.index()).size() + " objects.";
+		String player1ObjectCount = "Player1 has " + (BB.inst().getAll().get(Team.Player1.index()).size() - 1) + " objects.";
 		g.drawString(tickCountdown, 384, 520);
 		g.drawString(player1ObjectCount, 384, 540);
 		// g.drawString("Gold: " +
