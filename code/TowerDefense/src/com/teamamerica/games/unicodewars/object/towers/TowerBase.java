@@ -112,6 +112,7 @@ public abstract class TowerBase extends GameObject
 		{
 			
 			MobObject toAttack = null;
+			Location attackLoc = null;
 			
 			for (Location loc : sortedLocs)
 			{
@@ -119,6 +120,7 @@ public abstract class TowerBase extends GameObject
 				{
 					System.out.println("Attack Map Not Empty");
 					toAttack = attackMap.get(loc).get(0);
+					attackLoc = loc;
 					for (MobObject mob : attackMap.get(loc))
 					{
 						if (mob.getCurrentHP() < toAttack.getCurrentHP())
@@ -130,16 +132,20 @@ public abstract class TowerBase extends GameObject
 				}
 			}
 
-			this.attack(toAttack);
+			this.attack(attackLoc, toAttack);
 		}
 	}
 	
-	public void attack(MobObject mob)
+	public void attack(Location loc, MobObject mob)
 	{
 		if (mob != null)
 		{
 			System.out.println(this.getInfoString() + " Attacking " + mob.getName());
-			mob.adjustHealth(-this.attack);
+			if (!mob.adjustHealth(-this.attack))
+			{
+				attackMap.get(loc).remove(mob);
+				mob.deleteObject();
+			}
 		}
 	}
 
