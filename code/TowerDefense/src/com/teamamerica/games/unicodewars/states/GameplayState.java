@@ -139,7 +139,6 @@ public class GameplayState extends BHGameState
 		Button buttons[] = new Button[6];
 		
 		towerInterface.setPosition(new Point(1024 - 384, 0));
-		towerInterface.setLayoutManager(null);
 		towerInterface.setHeight(256);
 		towerInterface.setWidth(384);
 
@@ -221,7 +220,6 @@ public class GameplayState extends BHGameState
 		Button buttons[] = new Button[20];
 		
 		mobInterface.setPosition(new Point(0, 0));
-		mobInterface.setLayoutManager(null);
 		mobInterface.setHeight(256);
 		mobInterface.setWidth(320);
 
