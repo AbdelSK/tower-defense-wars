@@ -17,6 +17,7 @@ public class MoverComponent extends Component
 	private Path path;
 	private int pathStep;
 	private Timer stopwatch;
+	private int speedFactor;
 	
 	public MoverComponent(GameObject owner)
 	{
@@ -48,12 +49,17 @@ public class MoverComponent extends Component
 		}
 		EventManager.inst().registerForAll(type, temp);
 		pathStep = 0;
+		
+		if (owner instanceof MobObject)
+			this.speedFactor = ((MobObject) owner).getSpeed();
+		else
+			this.speedFactor = 20;
 	}
 	
 	@Override
 	public void update(int elapsed)
 	{
-		if (stopwatch.xMilisecondsPassed(15))
+		if (stopwatch.xMilisecondsPassed(300 / this.speedFactor))
 		{
 			Location nextStepLoc = GameMap.inst().getLocationInPixels(this.path.getStep(this.pathStep + 1));
 			if (nextStepLoc.x - _parent.getPositionInPixels().x > 0)
