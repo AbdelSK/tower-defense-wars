@@ -156,15 +156,17 @@ public class BB {
 		mobLevelSelection = tmpMobLevelSelection;
 	}
 
-	public void removeTeamObject(GameObject obj)
+	public boolean removeTeamObject(GameObject obj)
 	{
 		for (int i = 0; i < _objects.get(obj.getTeam().index()).size(); i++)
 		{
 			if (_objects.get(obj.getTeam().index()).get(i).getId() == obj.getId())
 			{
 				_objects.get(obj.getTeam().index()).remove(i);
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	public void keyPressed(int key) { 
@@ -188,13 +190,15 @@ public class BB {
 	
 	public void mouseClicked(int button, int x, int y)
 	{
-		for (MouseListener c : _mouseClicked)
-			c.MouseClicked(button, x, y);
-
 		Location loc = GameMap.inst().getGridLocationFromPixels(x, y);
 		MouseListener c = _mouseClickedAtLocation.get(loc);
 		if (c != null)
 			c.MouseClicked(button, x, y);
+		else
+		{
+			for (MouseListener d : _mouseClicked)
+				d.MouseClicked(button, x, y);
+		}
 	}
 	
 	public void mouseReleased(int button, int x, int y)
