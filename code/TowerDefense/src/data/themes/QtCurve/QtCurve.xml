@@ -17,11 +17,11 @@
 
 		<!-- define fonts to use for text rendering -->
 		<ImageFont name="windowTitleFont">
-			<create fontName="Friz Quadrata Std" type="bold" size="16" antialiasing="false"/>
+			<create fontName="Friz Quadrata TT" type="bold" size="16" antialiasing="false"/>
 		</ImageFont>
 	
 		<ImageFont name="defaultFont">
-			<create fontName="Friz Quadrata Std" type="plain" size="16" antialiasing="true"/>
+			<create fontName="Friz Quadrata TT" type="plain" size="24" antialiasing="true"/>
 		</ImageFont>
 		
 		<!-- TextRenderer use a font to render Text. They should be defined globally to save resources -->
@@ -36,13 +36,13 @@
 <!-- JOGL TextRenderer Usage Example
 		<ComplexTextRenderer name="TitleTextRendererJOGL">
 			<JOGLTextRenderer>
-				<AWTFont fontName="Friz Quadrata Std" type="bold" size="16" antialiasing="false" fractionalMetrics="true"/>
+				<AWTFont fontName="Friz Quadrata TT" type="bold" size="16" antialiasing="false" fractionalMetrics="true"/>
 			</JOGLTextRenderer>
 		</ComplexTextRenderer>
 		
 		<ComplexTextRenderer name="DefaultTextRendererJOGL">
 			<JOGLTextRenderer>
-				<AWTFont fontName="Friz Quadrata Std" type="plain" size="14" antialiasing="false" fractionalMetrics="false"/>
+				<AWTFont fontName="Friz Quadrata TT" type="plain" size="14" antialiasing="false" fractionalMetrics="false"/>
 			</JOGLTextRenderer>
 		</ComplexTextRenderer>
 -->
