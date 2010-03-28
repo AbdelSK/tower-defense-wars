@@ -504,8 +504,6 @@ public class GameMap implements TileBasedMap
 	public Location getTeamBaseLocation(Team team)
 	{
 		Location temp = this.baseLocations.get(team.index()).copy();
-		temp.x += 1;
-		temp.y += 1;
 		return temp;
 	}
 
