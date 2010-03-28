@@ -32,7 +32,6 @@ public class GameSystem
 		_systems = new TreeMap<Systems, Subsystem>();
 		_systems.put(Systems.PrototypeSubsytem, new PrototypeScriptingSystem());
 		this.tickTimer = new Timer();
-		
 	}
 
 	/**
@@ -95,6 +94,7 @@ public class GameSystem
 				obj.render(g);
 			}
 		}
+
 		g.setColor(Color.white);
 		String tickCountdown = "Next income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
 		String player1ObjectCount = "Player1 has " + (BB.inst().getAll().get(Team.Player1.index()).size() - 1) + " objects.";

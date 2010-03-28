@@ -68,12 +68,12 @@ public class GameplayState extends BHGameState
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException
 	{
-		g.setAntiAlias(true);
-		g.setBackground(Color.black);
-		
+		container.setShowFPS(false);
 		_gameSystem.render(g);
 		_feng.render(container, game, g);
-		container.setShowFPS(false);
+
+		g.setAntiAlias(true);
+		g.setBackground(Color.black);
 		g.setColor(Color.black);
 		g.drawString(container.getFPS() + "", 2, 2);
 	}

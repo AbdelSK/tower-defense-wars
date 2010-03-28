@@ -17,11 +17,11 @@
 
 		<!-- define fonts to use for text rendering -->
 		<ImageFont name="windowTitleFont">
-			<create fontName="Friz Quadrata TT" type="bold" size="16" antialiasing="false"/>
+			<create fontName="Friz Quadrata TT" type="bold" size="14" antialiasing="false"/>
 		</ImageFont>
 	
 		<ImageFont name="defaultFont">
-			<create fontName="Friz Quadrata TT" type="plain" size="24" antialiasing="true"/>
+			<create fontName="Friz Quadrata TT" type="plain" size="14" antialiasing="true"/>
 		</ImageFont>
 		
 		<!-- TextRenderer use a font to render Text. They should be defined globally to save resources -->

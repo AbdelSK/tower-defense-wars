@@ -1,5 +1,9 @@
 package com.teamamerica.games.unicodewars.gui;
 
+import java.awt.Font;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import org.fenggui.Display;
 import org.fenggui.binding.render.Binding;
 import org.fenggui.binding.render.lwjgl.EventHelper;
@@ -10,6 +14,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.InputListener;
+import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.opengl.SlickCallable;
 
 /**
@@ -21,14 +26,29 @@ public class FengWrapper implements InputListener
 	private Display _fengDisplay;
 	
 	private GameContainer _container;
+	private UnicodeFont font;
 	private Input _input;
 	
 	public FengWrapper(GameContainer container)
 	{
+		Font ttfBase = null;
+		Font ttfReal = null;
+		try
+		{
+			InputStream myStream = new BufferedInputStream(new FileInputStream("src/data/font/Friz_Quadrata_TT.ttf"));
+			ttfBase = Font.createFont(Font.TRUETYPE_FONT, myStream);
+			ttfReal = ttfBase.deriveFont(Font.PLAIN, 24);
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		font = new UnicodeFont(ttfReal);
+
 		_container = container;
 		_container.getInput().addPrimaryListener(this);
 		_container.getInput().enableKeyRepeat();
-
+		// _container.setDefaultFont(font);
 		LWJGLBinding binding = new LWJGLBinding();
 		_fengDisplay = new Display(binding);
 		_fengDisplay.setDepthTestEnabled(true);
