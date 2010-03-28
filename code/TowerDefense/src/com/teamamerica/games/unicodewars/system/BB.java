@@ -203,13 +203,15 @@ public class BB {
 	
 	public void mouseReleased(int button, int x, int y)
 	{
-		for (MouseListener c : _mouseClicked)
-			c.MouseReleased(button, x, y);
-
 		Location loc = GameMap.inst().getGridLocationFromPixels(x, y);
 		MouseListener c = _mouseClickedAtLocation.get(loc);
 		if (c != null)
 			c.MouseReleased(button, x, y);
+		else
+		{
+			for (MouseListener d : _mouseClicked)
+				d.MouseReleased(button, x, y);
+		}
 	}
 	
 	public void addMouseListenerListener(MouseListener c)
