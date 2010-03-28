@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.newdawn.slick.Graphics;
 import com.teamamerica.games.unicodewars.component.Component;
 import com.teamamerica.games.unicodewars.system.BB;
+import com.teamamerica.games.unicodewars.system.GameMap;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
 
@@ -32,7 +33,11 @@ public class GameObject
 	protected String _name;
 	
 	/** Location of this entity */
-	protected Location _position;
+	private Location _position;
+	/** Pixel location of this entity which is used for visual effects only. */
+	/** The object is considered to be occupying the tile specified by */
+	/** _position */
+	private Location _positionInPixels;
 	/** Size (in tiles) of this entity */
 	protected short _size;
 	
@@ -51,6 +56,7 @@ public class GameObject
 		_id = id;
 		
 		_position = new Location(-1, -1);
+		_positionInPixels = new Location(-1, -1);
 		_team = team;
 		
 		_updateQueue = new LinkedList<Component>();
@@ -147,6 +153,7 @@ public class GameObject
 	public void setPosition(Location x)
 	{
 		_position = x;
+		_positionInPixels = GameMap.inst().getLocationInPixels(x);
 	}
 	
 	/**
@@ -158,8 +165,44 @@ public class GameObject
 	{
 		_position.x = row;
 		_position.y = column;
+		_positionInPixels = GameMap.inst().getLocationInPixels(_position);
 	}
 	
+	/**
+	 * Return the pixel location of this GameObject. This is used for visual
+	 * effects only. The object is considered to be occupying whatever tile
+	 * location is returned by getPosition()
+	 * 
+	 * @return
+	 */
+	public Location getPositionInPixels()
+	{
+		return _positionInPixels;
+	}
+	
+	/**
+	 * Sets the pixel location of this GameObject. This is used for visual
+	 * effects only. The object is considered to be occupying whatever tile
+	 * location is returned by getPosition()
+	 */
+	public void setPositionInPixels(Location x)
+	{
+		_positionInPixels = x;
+	}
+	
+	/**
+	 * Sets the pixel location of this GameObject. This is used for visual
+	 * effects only. The object is considered to be occupying whatever tile
+	 * location is returned by getPosition()
+	 * 
+	 * @param v
+	 */
+	public void setPositionInPixel(int x, int y)
+	{
+		_positionInPixels.x = x;
+		_positionInPixels.y = y;
+	}
+
 	public short getSize()
 	{
 		return this._size;

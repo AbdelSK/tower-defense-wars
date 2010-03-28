@@ -28,7 +28,7 @@ public class VisualComponent extends Component
 	@Override
 	public void render(Graphics g)
 	{
-		Location renderLocTL = GameMap.inst().getLocationInPixels(this._parent.getPosition());
+		Location renderLocTL = this._parent.getPositionInPixels();
 		int size = this._parent.getSize() * GameMap.inst().tileSize;
 
 		if (this._parent instanceof MobObject)

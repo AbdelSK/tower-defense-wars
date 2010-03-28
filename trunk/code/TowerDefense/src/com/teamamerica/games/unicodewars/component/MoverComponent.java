@@ -53,16 +53,37 @@ public class MoverComponent extends Component
 	@Override
 	public void update(int elapsed)
 	{
-		if (stopwatch.xMilisecondsPassed(300))
+		if (stopwatch.xMilisecondsPassed(15))
 		{
-			this.pathStep++;
-			if (this.pathStep < this.path.getLength())
+			Location nextStepLoc = GameMap.inst().getLocationInPixels(this.path.getStep(this.pathStep + 1));
+			if (nextStepLoc.x - _parent.getPositionInPixels().x > 0)
 			{
-				GameMap.inst().leaveSpace(_parent, _parent.getPosition());
-				Path.Step temp = this.path.getStep(pathStep);
-				Location newLoc = new Location(temp.getX(), temp.getY());
-				this._parent.setPosition(newLoc);
-				GameMap.inst().visitSpace(_parent, _parent.getPosition());
+				_parent.getPositionInPixels().x++;
+			}
+			else if (nextStepLoc.x - _parent.getPositionInPixels().x < 0)
+			{
+				_parent.getPositionInPixels().x--;
+			}
+			if (nextStepLoc.y - _parent.getPositionInPixels().y > 0)
+			{
+				_parent.getPositionInPixels().y++;
+			}
+			else if (nextStepLoc.y - _parent.getPositionInPixels().y < 0)
+			{
+				_parent.getPositionInPixels().y--;
+			}
+			
+			if ((_parent.getPositionInPixels().x == nextStepLoc.x) && (_parent.getPositionInPixels().y == nextStepLoc.y))
+			{
+				this.pathStep++;
+				if (this.pathStep < this.path.getLength())
+				{
+					GameMap.inst().leaveSpace(_parent, _parent.getPosition());
+					Path.Step temp = this.path.getStep(pathStep);
+					Location newLoc = new Location(temp.getX(), temp.getY());
+					this._parent.setPosition(newLoc);
+					GameMap.inst().visitSpace(_parent, _parent.getPosition());
+				}
 			}
 		}
 		

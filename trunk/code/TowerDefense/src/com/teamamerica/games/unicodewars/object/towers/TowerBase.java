@@ -48,7 +48,7 @@ public abstract class TowerBase extends GameObject
 		this.price = price;
 		this.type = type;
 		this._size = size;
-		this._position = loc;
+		setPosition(loc);
 		Random gen = BB.inst().getRandom();
 		listeners = new HashMap<Location, EventListener>();
 		
@@ -161,9 +161,9 @@ public abstract class TowerBase extends GameObject
 	protected void registerTower()
 	{
 		// TODO Auto-generated method stub
-		for (int x = this._position.x; x < this._position.x + this._size; x++)
+		for (int x = getPosition().x; x < getPosition().x + this._size; x++)
 		{
-			for (int y = this._position.y; y < this._position.y + this._size; y++)
+			for (int y = getPosition().y; y < getPosition().y + this._size; y++)
 			{
 				EventListener temp = new EventListener() {
 					

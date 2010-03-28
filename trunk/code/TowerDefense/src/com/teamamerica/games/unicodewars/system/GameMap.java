@@ -13,6 +13,7 @@ import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFinder;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
+import org.newdawn.slick.util.pathfinding.Path.Step;
 import org.newdawn.slick.util.pathfinding.heuristics.ManhattanHeuristic;
 import com.teamamerica.games.unicodewars.factory.BaseMaker;
 import com.teamamerica.games.unicodewars.object.GameObject;
@@ -427,12 +428,37 @@ public class GameMap implements TileBasedMap
 	 */
 	public Location getLocationInPixels(Location loc)
 	{
-		Location temp = new Location(loc.x, loc.y);
+		Location temp;
+		
+		if (loc == null)
+		{
+			temp = null;
+		}
+		else
+		{
+			temp = new Location(loc.x, loc.y);
+			temp.x *= this.tileSize;
+			temp.y *= this.tileSize;
+		}
+		return temp;
+	}
+	
+	/**
+	 * Returns a location object, with the location relative to pixels instead
+	 * of rows and columns.
+	 * 
+	 * @param step
+	 *            Step object which specifies a tile location
+	 * @return the location in pixel format
+	 */
+	public Location getLocationInPixels(Step step)
+	{
+		Location temp = new Location(step.getX(), step.getY());
 		temp.x *= this.tileSize;
 		temp.y *= this.tileSize;
 		return temp;
 	}
-	
+
 	public Location getGridLocationFromPixels(int tx, int ty)
 	{
 		if (tx > 0 && tx < (columns * tileSize) && ty > 0 && ty < (rows * tileSize))

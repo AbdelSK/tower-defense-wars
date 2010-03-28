@@ -20,7 +20,7 @@ public class BaseObject extends GameObject
 	{
 		super(name, id, team, renderPriority);
 		// TODO Auto-generated constructor stub
-		this._position = loc;
+		setPosition(loc);
 		this._size = size;
 		this.health = 10000;
 		this.registered = false;
@@ -30,9 +30,9 @@ public class BaseObject extends GameObject
 	
 	private void RegisterMapListeners()
 	{
-		for (int x = this._position.x; x < this._position.x + this._size; x++)
+		for (int x = getPosition().x; x < getPosition().x + this._size; x++)
 		{
-			for (int y = this._position.y; y < this._position.y + this._size; y++)
+			for (int y = getPosition().y; y < getPosition().y + this._size; y++)
 			{
 				EventListener temp = new EventListener() {
 					
