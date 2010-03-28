@@ -114,12 +114,11 @@ public abstract class TowerBase extends GameObject
 			
 			MobObject toAttack = null;
 			Location attackLoc = null;
-			
+
 			for (Location loc : sortedLocs)
 			{
 				if (attackMap.get(loc).size() > 0)
 				{
-					System.out.println("Attack Map Not Empty");
 					toAttack = attackMap.get(loc).get(0);
 					attackLoc = loc;
 					for (MobObject mob : attackMap.get(loc))
@@ -141,7 +140,8 @@ public abstract class TowerBase extends GameObject
 	{
 		if (mob != null)
 		{
-			System.out.println(this.getInfoString() + " Attacking " + mob.getName());
+			// System.out.println(this.getInfoString() + " Attacking " +
+			// mob.getName());
 			if (!mob.adjustHealth(-this.attack))
 			{
 				attackMap.get(loc).remove(mob);
@@ -272,6 +272,8 @@ public abstract class TowerBase extends GameObject
 	{
 		ArrayList<MobObject> inRange = attackMap.get(loc);
 		inRange.add((MobObject) obj);
+		
+		System.out.println("Mob " + obj.getId() + " is in range. Mobs in Range: " + inRange.size());
 	}
 	
 	private void handleMobLeavingRange(GameObject obj, Location loc)
@@ -283,6 +285,8 @@ public abstract class TowerBase extends GameObject
 		
 		ArrayList<MobObject> inRange = attackMap.get(loc);
 		inRange.remove((MobObject) obj);
+		
+		System.out.println("Mob " + obj.getId() + " is leaving range. Mobs in Range: " + inRange.size());
 	}
 	
 	@Override
