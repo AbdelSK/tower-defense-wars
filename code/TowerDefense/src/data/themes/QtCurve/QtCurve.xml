@@ -279,7 +279,7 @@
 				</GradientBackground>
 				
 				<PlainBackground label="hovered" enabled="false">
-					<Color rgba="255, 255, 255, 255"/>
+					<Color rgba="200, 200, 200, 200"/>
 				</PlainBackground>
 				
 	    		</BackgroundDecorators>
