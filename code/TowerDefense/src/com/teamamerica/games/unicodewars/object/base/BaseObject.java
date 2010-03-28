@@ -19,7 +19,6 @@ public class BaseObject extends GameObject
 	public BaseObject(String name, int id, Team team, int renderPriority, Location loc)
 	{
 		super(name, id, team, renderPriority);
-		// TODO Auto-generated constructor stub
 		setPosition(loc);
 		this._size = size;
 		this.health = 200;
@@ -39,7 +38,6 @@ public class BaseObject extends GameObject
 					@Override
 					public void onEvent(Event e)
 					{
-						// TODO Auto-generated method stub
 						switch (e.getId())
 						{
 							case ENTER_SPACE:
