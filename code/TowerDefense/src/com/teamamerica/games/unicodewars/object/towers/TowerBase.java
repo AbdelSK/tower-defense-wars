@@ -1,8 +1,11 @@
 package com.teamamerica.games.unicodewars.object.towers;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import com.teamamerica.games.unicodewars.object.GameObject;
+import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.system.EventManager;
 import com.teamamerica.games.unicodewars.system.GameMap;
@@ -11,6 +14,7 @@ import com.teamamerica.games.unicodewars.utils.EventListener;
 import com.teamamerica.games.unicodewars.utils.EventType;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
+import com.teamamerica.games.unicodewars.utils.Timer;
 
 public abstract class TowerBase extends GameObject
 {
@@ -38,9 +42,13 @@ public abstract class TowerBase extends GameObject
 	int attack = 0;
 	int speed = 0;
 	int price = 0;
+	private Timer stopWatch;
 	private HashMap<Location, EventListener> listeners;
 	private GameObject enemy = null;
+	private ArrayList<Location> sortedLocs;
 	
+	private HashMap<Location, ArrayList<MobObject>> attackMap;
+
 	public TowerBase(Type type, int attack, int price, int radius, int speed, Team team, Location loc)
 	{
 		super("Tower", BB.inst().getNextId(), team, 100);
@@ -50,7 +58,10 @@ public abstract class TowerBase extends GameObject
 		this._size = size;
 		setPosition(loc);
 		Random gen = BB.inst().getRandom();
+		stopWatch = new Timer();
 		listeners = new HashMap<Location, EventListener>();
+		attackMap = new HashMap<Location, ArrayList<MobObject>>();
+		sortedLocs = new ArrayList<Location>();
 		
 		if (type.equals(Type.diceOne))
 		{
@@ -97,7 +108,39 @@ public abstract class TowerBase extends GameObject
 	@Override
 	public void update(int elapsed)
 	{
-		
+		if (stopWatch.xMilisecondsPassed(40 / this.speed))
+		{
+			
+			MobObject toAttack = null;
+			
+			for (Location loc : sortedLocs)
+			{
+				if (attackMap.get(loc).size() > 0)
+				{
+					System.out.println("Attack Map Not Empty");
+					toAttack = attackMap.get(loc).get(0);
+					for (MobObject mob : attackMap.get(loc))
+					{
+						if (mob.getCurrentHP() < toAttack.getCurrentHP())
+						{
+							toAttack = mob;
+						}
+					}
+					break;
+				}
+			}
+
+			this.attack(toAttack);
+		}
+	}
+	
+	public void attack(MobObject mob)
+	{
+		if (mob != null)
+		{
+			System.out.println(this.getInfoString() + " Attacking " + mob.getName());
+			mob.adjustHealth(-this.attack);
+		}
 	}
 
 	public Type getType()
@@ -161,9 +204,9 @@ public abstract class TowerBase extends GameObject
 	protected void registerTower()
 	{
 		// TODO Auto-generated method stub
-		for (int x = getPosition().x; x < getPosition().x + this._size; x++)
+		for (int x = getPosition().x; x < getPosition().x + this._size + this.radius; x++)
 		{
-			for (int y = getPosition().y; y < getPosition().y + this._size; y++)
+			for (int y = getPosition().y; y < getPosition().y + this._size + this.radius; y++)
 			{
 				EventListener temp = new EventListener() {
 					
@@ -186,13 +229,17 @@ public abstract class TowerBase extends GameObject
 				Location loc = new Location(x, y);
 				GameMap.inst().registerSpace(loc, temp);
 				listeners.put(loc, temp);
+				attackMap.put(loc, new ArrayList<MobObject>());
+				sortedLocs.add(loc);
+				Collections.sort(sortedLocs);
 			}
 		}
 	}
 	
 	private void handleMobInRange(GameObject obj, Location loc)
 	{
-		System.out.println("pew. pew.");
+		ArrayList<MobObject> inRange = attackMap.get(loc);
+		inRange.add((MobObject) obj);
 	}
 	
 	private void handleMobLeavingRange(GameObject obj, Location loc)
@@ -201,6 +248,9 @@ public abstract class TowerBase extends GameObject
 		{
 			enemy = null;
 		}
+		
+		ArrayList<MobObject> inRange = attackMap.get(loc);
+		inRange.remove((MobObject) obj);
 	}
 	
 	@Override
