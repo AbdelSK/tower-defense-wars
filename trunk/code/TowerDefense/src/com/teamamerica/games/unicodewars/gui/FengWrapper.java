@@ -43,12 +43,13 @@ public class FengWrapper implements InputListener
 		{
 			ex.printStackTrace();
 		}
-		font = new UnicodeFont(ttfReal);
+		Font lol = new Font("Friz Quadrata TT", Font.TRUETYPE_FONT, 24);
+		font = new UnicodeFont(lol);
 
 		_container = container;
 		_container.getInput().addPrimaryListener(this);
 		_container.getInput().enableKeyRepeat();
-		// _container.setDefaultFont(font);
+		_container.setDefaultFont(font);
 		LWJGLBinding binding = new LWJGLBinding();
 		_fengDisplay = new Display(binding);
 		_fengDisplay.setDepthTestEnabled(true);
