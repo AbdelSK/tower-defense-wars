@@ -59,7 +59,7 @@ public class MoverComponent extends Component
 	@Override
 	public void update(int elapsed)
 	{
-		if (stopwatch.xMilisecondsPassed(300 / this.speedFactor))
+		if (stopwatch.xMilisecondsPassed(100 / this.speedFactor))
 		{
 			Location nextStepLoc = GameMap.inst().getLocationInPixels(this.path.getStep(this.pathStep + 1));
 			if (nextStepLoc.x - _parent.getPositionInPixels().x > 0)

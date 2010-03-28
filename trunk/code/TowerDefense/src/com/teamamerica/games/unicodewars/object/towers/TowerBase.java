@@ -141,8 +141,6 @@ public abstract class TowerBase extends GameObject
 	{
 		if (mob != null)
 		{
-			// System.out.println(this.getInfoString() + " Attacking " +
-			// mob.getName());
 			if (!mob.adjustHealth(-this.attack))
 			{
 				attackMap.get(loc).remove(mob);
