@@ -1,5 +1,6 @@
 package com.teamamerica.games.unicodewars.states;
 
+import java.awt.FontFormatException;
 import java.io.IOException;
 import org.fenggui.Button;
 import org.fenggui.Display;
@@ -50,7 +51,20 @@ public class MainMenuState extends BHGameState {
 
 		// This will add all of the widgets for your GUI to the
 		// Display for rendering and capturing input..
-		layout(_feng.getDisplay(), container, game);
+		try
+		{
+			layout(_feng.getDisplay(), container, game);
+		}
+		catch (FontFormatException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -81,7 +95,8 @@ public class MainMenuState extends BHGameState {
 		// If we had something to update, it would go here.
 	}
 
-	private void layout(Display display, final GameContainer container, final StateBasedGame game) {
+	private void layout(Display display, final GameContainer container, final StateBasedGame game) throws FontFormatException, IOException
+	{
 		try {
 			FengGUI.setTheme(new XMLTheme("data/themes/QtCurve/QtCurve.xml"));
 		} catch (IOException e) {
