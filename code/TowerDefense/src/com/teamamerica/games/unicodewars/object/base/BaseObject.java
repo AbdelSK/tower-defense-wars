@@ -22,7 +22,7 @@ public class BaseObject extends GameObject
 		// TODO Auto-generated constructor stub
 		setPosition(loc);
 		this._size = size;
-		this.health = 10000;
+		this.health = 200;
 		this.registered = false;
 		this.listeners = new ArrayList<EventListener>();
 		RegisterMapListeners();
@@ -55,6 +55,11 @@ public class BaseObject extends GameObject
 		}
 	}
 	
+	public int getHealth()
+	{
+		return health;
+	}
+
 	private void hit(GameObject obj)
 	{
 		if (obj instanceof MobObject)

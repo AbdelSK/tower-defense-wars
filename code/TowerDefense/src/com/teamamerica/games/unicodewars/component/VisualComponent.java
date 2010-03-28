@@ -82,6 +82,11 @@ public class VisualComponent extends Component
 			g.setColor(Color.black);
 			g.drawString("" + ((MobObject) this._parent).getLevel(), renderLocTL.x, renderLocTL.y);
 		}
+		else if (this._parent instanceof BaseObject)
+		{
+			g.setColor(Color.black);
+			g.drawString("" + ((BaseObject) this._parent).getHealth(), renderLocTL.x + 10, renderLocTL.y + 50);
+		}
 	}
 
 }
