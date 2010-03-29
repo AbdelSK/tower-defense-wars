@@ -239,7 +239,7 @@ public class GameplayState extends BHGameState
 		buttons[1].addMouseEnteredListener(new IMouseEnteredListener() {
 			public void mouseEntered(MouseEnteredEvent arg0)
 			{
-				buttons[1].setText("Chess Piece\nDamage: " + ChessOne.BASE_ATTACK + "\nSpeed: " + ChessOne.BASE_RADIUS + "\nRange: " + ChessOne.BASE_RADIUS + "\nPrice: " + ChessOne.price);
+				buttons[1].setText("Chess Piece\nDamage: " + ChessOne.BASE_ATTACK + "\nSpeed: " + ChessOne.BASE_SPEED + "\nRange: " + ChessOne.BASE_RADIUS + "\nPrice: " + ChessOne.price);
 			}
 		});
 		buttons[1].addMouseExitedListener(new IMouseExitedListener() {
@@ -260,7 +260,7 @@ public class GameplayState extends BHGameState
 		buttons[2].addMouseEnteredListener(new IMouseEnteredListener() {
 			public void mouseEntered(MouseEnteredEvent arg0)
 			{
-				buttons[2].setText("Currency\nDamage: " + CurrencyOne.BASE_ATTACK + "\nSpeed: " + CurrencyOne.BASE_RADIUS + "\nRange: " + CurrencyOne.BASE_RADIUS + "\nPrice: " + CurrencyOne.price);
+				buttons[2].setText("Currency\nDamage: " + CurrencyOne.BASE_ATTACK + "\nSpeed: " + CurrencyOne.BASE_SPEED + "\nRange: " + CurrencyOne.BASE_RADIUS + "\nPrice: " + CurrencyOne.price);
 			}
 		});
 		buttons[2].addMouseExitedListener(new IMouseExitedListener() {
@@ -281,7 +281,7 @@ public class GameplayState extends BHGameState
 		buttons[3].addMouseEnteredListener(new IMouseEnteredListener() {
 			public void mouseEntered(MouseEnteredEvent arg0)
 			{
-				buttons[3].setText("Card Suit\nDamage: " + CardOne.BASE_ATTACK + "\nSpeed: " + CardOne.BASE_RADIUS + "\nRange: " + CardOne.BASE_RADIUS + "\nPrice: " + CardOne.price);
+				buttons[3].setText("Card Suit\nDamage: " + CardOne.BASE_ATTACK + "\nSpeed: " + CardOne.BASE_SPEED + "\nRange: " + CardOne.BASE_RADIUS + "\nPrice: " + CardOne.price);
 			}
 		});
 		buttons[3].addMouseExitedListener(new IMouseExitedListener() {
@@ -302,7 +302,7 @@ public class GameplayState extends BHGameState
 		buttons[4].addMouseEnteredListener(new IMouseEnteredListener() {
 			public void mouseEntered(MouseEnteredEvent arg0)
 			{
-				buttons[4].setText("Musical Note\nDamage: " + MusicOne.BASE_ATTACK + "\nSpeed: " + MusicOne.BASE_RADIUS + "\nRange: " + MusicOne.BASE_RADIUS + "\nPrice: " + MusicOne.price);
+				buttons[4].setText("Musical Note\nDamage: " + MusicOne.BASE_ATTACK + "\nSpeed: " + MusicOne.BASE_SPEED + "\nRange: " + MusicOne.BASE_RADIUS + "\nPrice: " + MusicOne.price);
 			}
 		});
 		buttons[4].addMouseExitedListener(new IMouseExitedListener() {
