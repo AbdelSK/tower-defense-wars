@@ -1,6 +1,7 @@
 package com.teamamerica.games.unicodewars.object.towers;
 
 import java.util.Random;
+import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
 
@@ -26,7 +27,7 @@ public class DiceOne extends TowerBase
 		this.level++;
 		
 		int total = 0;
-		Random gen = new Random();
+		Random gen = BB.inst().getRandom();
 		
 		if (level == 2)
 		{
