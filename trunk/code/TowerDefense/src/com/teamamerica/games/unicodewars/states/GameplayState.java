@@ -8,6 +8,8 @@ import org.fenggui.Display;
 import org.fenggui.FengGUI;
 import org.fenggui.event.ButtonPressedEvent;
 import org.fenggui.event.IButtonPressedListener;
+import org.fenggui.event.mouse.IMouseEnteredListener;
+import org.fenggui.event.mouse.MouseEnteredEvent;
 import org.fenggui.layout.GridLayout;
 import org.fenggui.theme.XMLTheme;
 import org.fenggui.theme.xml.IXMLStreamableException;
@@ -133,10 +135,11 @@ public class GameplayState extends BHGameState
 		display.addWidget(towerInterface);
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void layoutTowerButtons(Display display)
 	{
 		int buttonSize = 128;
-		Button buttons[] = new Button[6];
+		final Button buttons[] = new Button[6];
 		
 		towerInterface.setPosition(new Point(1024 - 384, 0));
 		towerInterface.setHeight(256);
@@ -150,6 +153,13 @@ public class GameplayState extends BHGameState
 			{
 				System.out.println("Dice pressed.");
 				BB.inst().setTowerSelection(TowerBase.Type.diceOne);
+			}
+		});
+		buttons[0].addMouseEnteredListener(new IMouseEnteredListener() {
+			public void mouseEntered(MouseEnteredEvent arg0)
+			{
+				System.out.println("hover deprecated POS");
+				buttons[0].setText("lol");
 			}
 		});
 		towerInterface.addWidget(buttons[0]);
