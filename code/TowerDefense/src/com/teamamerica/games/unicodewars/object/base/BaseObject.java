@@ -23,7 +23,7 @@ public class BaseObject extends GameObject
 		super(name, id, team, renderPriority);
 		setPosition(loc);
 		this._size = size;
-		this.health = 20;
+		this.health = 200;
 		this.registered = false;
 		this.listeners = new ArrayList<EventListener>();
 		RegisterMapListeners();
