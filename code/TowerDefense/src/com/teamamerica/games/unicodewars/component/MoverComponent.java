@@ -18,6 +18,8 @@ public class MoverComponent extends Component
 	private int pathStep;
 	private Timer stopwatch;
 	private int speedFactor;
+	private EventListener towerBuildListener;
+	private EventType towerBuildListenerType;
 	
 	public MoverComponent(GameObject owner)
 	{
@@ -25,7 +27,7 @@ public class MoverComponent extends Component
 		// TODO Auto-generated constructor stub
 		this.stopwatch = new Timer();
 		
-		EventListener temp = new EventListener() {
+		towerBuildListener = new EventListener() {
 			
 			@Override
 			public void onEvent(Event e)
@@ -34,20 +36,19 @@ public class MoverComponent extends Component
 				checkAndUpdate(e.sender);
 			}
 		};
-		EventType type;
 		switch (owner.getTeam())
 		{
 			case Player1:
-				type = EventType.P2_TOWER_BUILT;
+				this.towerBuildListenerType = EventType.P2_TOWER_BUILT;
 				break;
 			case Player2:
-				type = EventType.P1_TOWER_BUILT;
+				this.towerBuildListenerType = EventType.P1_TOWER_BUILT;
 				break;
 			default:
-				type = EventType.P2_TOWER_BUILT;
+				this.towerBuildListenerType = EventType.P2_TOWER_BUILT;
 				break;
 		}
-		EventManager.inst().registerForAll(type, temp);
+		EventManager.inst().registerForAll(towerBuildListenerType, towerBuildListener);
 		pathStep = 0;
 		
 		if (owner instanceof MobObject)
@@ -199,6 +200,9 @@ public class MoverComponent extends Component
 	public void deleteComponent()
 	{
 		GameMap.inst().leaveSpace(_parent, _parent.getPosition());
+		EventManager.inst().unregisterForAll(this.towerBuildListenerType, this.towerBuildListener);
+		super.deleteComponent();
+
 	}
 
 }
