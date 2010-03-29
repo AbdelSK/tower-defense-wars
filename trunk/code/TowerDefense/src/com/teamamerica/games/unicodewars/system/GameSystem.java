@@ -48,7 +48,6 @@ public class GameSystem
 		}
 		catch (SlickException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		_systems = new TreeMap<Systems, Subsystem>();
