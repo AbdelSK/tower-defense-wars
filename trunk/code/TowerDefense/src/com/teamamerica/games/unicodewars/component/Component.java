@@ -65,6 +65,6 @@ public abstract class Component
 	 */
 	public void deleteComponent()
 	{
-		
+		this._parent = null;
 	}
 }

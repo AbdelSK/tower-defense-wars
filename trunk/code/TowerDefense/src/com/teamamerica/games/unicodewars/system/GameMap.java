@@ -71,7 +71,7 @@ public class GameMap implements TileBasedMap
 		eventQueue = new LinkedList<Event>();
 		this.listeners = new HashMap<Location, List<EventListener>>();
 		
-		this.pathFinder = new AStarPathFinder(this, 10000, false, new ManhattanHeuristic(0));
+		this.pathFinder = new AStarPathFinder(this, 10000, false, new ManhattanHeuristic(1));
 		
 		this.gridColor = new Color(1.0f, 0, 0);
 		this.colorTimer = new Timer();
@@ -189,9 +189,68 @@ public class GameMap implements TileBasedMap
 	public float getCost(PathFindingContext context, int tx, int ty)
 	{
 		if (context.getMover() instanceof MobObject)
-			return 1;
-		else if (context.getMover() == null)
-			return 1;
+		{
+			MobObject temp = (MobObject) context.getMover();
+			int cost = 1;
+			for (int range = 5; range > 0; range--)
+			{
+				int x = tx - range;
+				int y = ty - range;
+				while (x < tx + range)
+				{
+					if (x > 0 && x < columns && y > 0 && y < rows)
+					{
+						if (this.teamMap[x][y] != temp.getTeam())
+						{
+							if (this.map[x][y] == TileType.Tower)
+								cost += 6 - range;
+						}
+					}
+					x++;
+					
+				}
+				while (y < ty + range)
+				{
+					if (x > 0 && x < columns && y > 0 && y < rows)
+					{
+						if (this.teamMap[x][y] != temp.getTeam())
+						{
+							if (this.map[x][y] == TileType.Tower)
+								cost += 6 - range;
+						}
+					}
+					y++;
+					
+				}
+				while (x > tx - range)
+				{
+					if (x > 0 && x < columns && y > 0 && y < rows)
+					{
+						if (this.teamMap[x][y] != temp.getTeam())
+						{
+							if (this.map[x][y] == TileType.Tower)
+								cost += 6 - range;
+						}
+					}
+					x--;
+				}
+				while (y > ty - range)
+				{
+					if (x > 0 && x < columns && y > 0 && y < rows)
+					{
+						if (this.teamMap[x][y] != temp.getTeam())
+						{
+							if (this.map[x][y] == TileType.Tower)
+								cost += 6 - range;
+						}
+					}
+					y--;
+				}
+				
+			}
+			
+			return cost;
+		}
 		else
 			return 0;
 	}

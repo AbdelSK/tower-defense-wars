@@ -158,14 +158,13 @@ public class BB {
 
 	public boolean removeTeamObject(GameObject obj)
 	{
-		for (int i = 0; i < _objects.get(obj.getTeam().index()).size(); i++)
+		List<GameObject> teamList = _objects.get(obj.getTeam().index());
+		
+		if (teamList.remove(obj))
 		{
-			if (_objects.get(obj.getTeam().index()).get(i).getId() == obj.getId())
-			{
-				_objects.get(obj.getTeam().index()).remove(i);
-				return true;
-			}
+			return true;
 		}
+
 		return false;
 	}
 	

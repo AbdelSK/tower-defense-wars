@@ -62,6 +62,11 @@ public class EventManager
 		_all.get(event).add(callback);
 	}
 	
+	public void unregisterForAll(EventType event, EventListener callback)
+	{
+		_all.get(event).remove(callback);
+	}
+
 	/**
 	 * Register for a subset of events for a given type. The subset includes any
 	 * events that should be forwarded to the specific GameObject
