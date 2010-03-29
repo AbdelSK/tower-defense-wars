@@ -9,7 +9,9 @@ import org.fenggui.FengGUI;
 import org.fenggui.event.ButtonPressedEvent;
 import org.fenggui.event.IButtonPressedListener;
 import org.fenggui.event.mouse.IMouseEnteredListener;
+import org.fenggui.event.mouse.IMouseExitedListener;
 import org.fenggui.event.mouse.MouseEnteredEvent;
+import org.fenggui.event.mouse.MouseExitedEvent;
 import org.fenggui.layout.GridLayout;
 import org.fenggui.theme.XMLTheme;
 import org.fenggui.theme.xml.IXMLStreamableException;
@@ -24,6 +26,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import com.teamamerica.games.unicodewars.Main;
 import com.teamamerica.games.unicodewars.factory.MobMaker;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
+import com.teamamerica.games.unicodewars.object.towers.DiceOne;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.system.EventManager;
@@ -206,8 +209,14 @@ public class GameplayState extends BHGameState
 		buttons[0].addMouseEnteredListener(new IMouseEnteredListener() {
 			public void mouseEntered(MouseEnteredEvent arg0)
 			{
-				System.out.println("hover deprecated POS");
-				buttons[0].setText("lol");
+				buttons[0].setText("Price: " + DiceOne.price);
+			}
+		});
+		buttons[0].addMouseExitedListener(new IMouseExitedListener() {
+			@Override
+			public void mouseExited(MouseExitedEvent arg0)
+			{
+				buttons[0].setText("Dice");
 			}
 		});
 		towerInterface.addWidget(buttons[0]);
