@@ -3,9 +3,11 @@ package com.teamamerica.games.unicodewars.object.base;
 import java.util.ArrayList;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
+import com.teamamerica.games.unicodewars.system.EventManager;
 import com.teamamerica.games.unicodewars.system.GameMap;
 import com.teamamerica.games.unicodewars.utils.Event;
 import com.teamamerica.games.unicodewars.utils.EventListener;
+import com.teamamerica.games.unicodewars.utils.EventType;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
 
@@ -21,7 +23,7 @@ public class BaseObject extends GameObject
 		super(name, id, team, renderPriority);
 		setPosition(loc);
 		this._size = size;
-		this.health = 200;
+		this.health = 20;
 		this.registered = false;
 		this.listeners = new ArrayList<EventListener>();
 		RegisterMapListeners();
@@ -65,6 +67,12 @@ public class BaseObject extends GameObject
 			MobObject temp = (MobObject) obj;
 			this.health -= temp.getAttack();
 			temp.deleteObject();
+			if (this.health <= 0)
+			{
+				Event e = new Event(EventType.BASE_DESTROYED);
+				e.addParameter("teamDestroyed", this.getTeam());
+				EventManager.inst().dispatch(e);
+			}
 		}
 	}
 

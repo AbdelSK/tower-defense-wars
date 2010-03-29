@@ -8,15 +8,17 @@ import org.newdawn.slick.state.StateBasedGame;
 import com.teamamerica.games.unicodewars.gui.FengWrapper;
 import com.teamamerica.games.unicodewars.states.BHGameState;
 import com.teamamerica.games.unicodewars.states.GameplayState;
+import com.teamamerica.games.unicodewars.states.LoseState;
 import com.teamamerica.games.unicodewars.states.MainMenuState;
 import com.teamamerica.games.unicodewars.states.SplashState;
+import com.teamamerica.games.unicodewars.states.WinState;
 
 public class Main extends StateBasedGame {
 
 	private FengWrapper _fengWrapper;
 	
 	public enum States { 
-		SplashState, MainMenuState, GameplayState,
+		SplashState, MainMenuState, GameplayState, LoseState, WinState
 	};
 	
 	public Main() {
@@ -31,6 +33,8 @@ public class Main extends StateBasedGame {
 		addState(new SplashState());
 		addState(new MainMenuState());
 		addState(new GameplayState());
+		addState(new LoseState());
+		addState(new WinState());
 		for (States s : States.values()) { 
 			GameState state = getState(s.ordinal());
 			((BHGameState) state).setFengWrapper(_fengWrapper);
