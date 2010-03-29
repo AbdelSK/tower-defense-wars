@@ -158,7 +158,7 @@ public abstract class TowerBase extends GameObject
 	{
 		return radius;
 	}
-	
+
 	public int getPrice()
 	{
 		return price;
@@ -191,25 +191,22 @@ public abstract class TowerBase extends GameObject
 
 	public void doUpgrade()
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	public String getInfoString()
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	public String getStatusString()
 	{
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 	
 	protected void registerTower()
 	{
-		// TODO Auto-generated method stub
+
 		for (int x = this._position.x - this.radius; x < this._position.x + this._size + this.radius; x++)
 		{
 			for (int y = this._position.y - this.radius; y < this._position.y + this._size + this.radius; y++)
@@ -219,7 +216,7 @@ public abstract class TowerBase extends GameObject
 					@Override
 					public void onEvent(Event e)
 					{
-						// TODO Auto-generated method stub
+
 						switch (e.getId())
 						{
 							case ENTER_SPACE:
@@ -264,7 +261,6 @@ public abstract class TowerBase extends GameObject
 					@Override
 					public void MouseClicked(int button, int x, int y)
 					{
-						// TODO Auto-generated method stub
 						
 					}
 				};

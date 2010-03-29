@@ -2,6 +2,7 @@ package com.teamamerica.games.unicodewars.gui;
 
 import org.fenggui.Display;
 import org.fenggui.binding.render.Binding;
+import org.fenggui.binding.render.Font;
 import org.fenggui.binding.render.lwjgl.EventHelper;
 import org.fenggui.binding.render.lwjgl.LWJGLBinding;
 import org.fenggui.event.mouse.MouseButton;
@@ -19,7 +20,7 @@ public class FengWrapper implements InputListener
 {
 
 	private Display _fengDisplay;
-	
+	private Font font;
 	private GameContainer _container;
 	private Input _input;
 	
@@ -31,7 +32,6 @@ public class FengWrapper implements InputListener
 		LWJGLBinding binding = new LWJGLBinding();
 		_fengDisplay = new Display(binding);
 		_fengDisplay.setDepthTestEnabled(true);
-
 		Binding.getInstance().setUseClassLoader(true);
 	}
 	
