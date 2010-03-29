@@ -43,8 +43,7 @@ public class FengWrapper implements InputListener
 		{
 			ex.printStackTrace();
 		}
-		Font lol = new Font("Friz Quadrata TT", Font.TRUETYPE_FONT, 24);
-		font = new UnicodeFont(lol);
+		font = new UnicodeFont(ttfReal);
 
 		_container = container;
 		_container.getInput().addPrimaryListener(this);
