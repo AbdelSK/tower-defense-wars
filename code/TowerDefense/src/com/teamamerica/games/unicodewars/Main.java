@@ -51,7 +51,7 @@ public class Main extends StateBasedGame
 		try
 		{
 			AppGameContainer app = new AppGameContainer(new Main());
-			app.setDisplayMode(1024, 768, false);
+			app.setDisplayMode(1024, 768, true);
 			app.setMaximumLogicUpdateInterval(20);
 			app.setMinimumLogicUpdateInterval(16);
 			app.setTargetFrameRate(80);

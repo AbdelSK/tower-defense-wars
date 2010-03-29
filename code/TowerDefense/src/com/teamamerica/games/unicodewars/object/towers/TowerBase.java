@@ -292,14 +292,17 @@ public abstract class TowerBase extends GameObject
 		buttons[0].addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
-				BB.inst().getHUD().doUpgrade();
+				if(BB.inst().getHUD().canUpgrade())
+					BB.inst().getHUD().doUpgrade();
+				else
+					BB.inst().getCurrentHUD()[0].setEnabled(false);
 				System.out.println("Upgraded " + BB.inst().getHUD().type + "(" + BB.inst().getHUD()._id + ") to level " + BB.inst().getHUD().level);
 				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[0]);
 				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[1]);
 				BB.inst().setCurrentHUD(null);
 			}
 		});
-		
+
 		buttons[1].setPosition(new Point(382, 64));
 		buttons[1].setText("Sell " + this.type + " for " + this.getSellPrice() + "g.");
 		buttons[1].addButtonPressedListener(new IButtonPressedListener() {
