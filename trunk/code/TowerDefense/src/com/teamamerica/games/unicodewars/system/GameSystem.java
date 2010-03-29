@@ -6,6 +6,9 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.utils.Team;
 import com.teamamerica.games.unicodewars.utils.Timer;
@@ -76,6 +79,7 @@ public class GameSystem
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void render(Graphics g)
 	{
 		// GameObject controlled = (GameObject)
@@ -94,7 +98,29 @@ public class GameSystem
 				obj.render(g);
 			}
 		}
+		UnicodeFont font = null;
+		try
+		{
+			font = new UnicodeFont("data/font/Friz_Quadrata_TT.ttf", 16, false, false);
+		}
+		catch (SlickException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+		font.getEffects().add(new ColorEffect());
+		font.addAsciiGlyphs();
+		try
+		{
+			font.loadGlyphs();
+		}
+		catch (SlickException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		g.setFont(font);
 		g.setColor(Color.white);
 		String tickCountdown = "Next income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
 		String player1ObjectCount = "Player1 has " + (BB.inst().getAll().get(Team.Player1.index()).size() - 1) + " objects.";
