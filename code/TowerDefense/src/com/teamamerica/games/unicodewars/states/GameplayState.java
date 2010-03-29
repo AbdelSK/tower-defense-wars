@@ -228,7 +228,6 @@ public class GameplayState extends BHGameState
 				buttons[0].setText("Dice");
 			}
 		});
-		towerInterface.addWidget(buttons[0]);
 		
 		buttons[1].setText("Chess Pieces");
 		buttons[1].addButtonPressedListener(new IButtonPressedListener() {
@@ -250,7 +249,6 @@ public class GameplayState extends BHGameState
 				buttons[1].setText("Chess Pieces");
 			}
 		});
-		towerInterface.addWidget(buttons[1]);
 		
 		buttons[2].setText("Currency");
 		buttons[2].addButtonPressedListener(new IButtonPressedListener() {
@@ -272,7 +270,6 @@ public class GameplayState extends BHGameState
 				buttons[2].setText("Currency");
 			}
 		});
-		towerInterface.addWidget(buttons[2]);
 		
 		buttons[3].setText("Card Suits");
 		buttons[3].addButtonPressedListener(new IButtonPressedListener() {
@@ -294,7 +291,6 @@ public class GameplayState extends BHGameState
 				buttons[3].setText("Card Suits");
 			}
 		});
-		towerInterface.addWidget(buttons[3]);
 		
 		buttons[4].setText("Musical Notes");
 		buttons[4].addButtonPressedListener(new IButtonPressedListener() {
@@ -316,7 +312,6 @@ public class GameplayState extends BHGameState
 				buttons[4].setText("Musical Notes");
 			}
 		});
-		towerInterface.addWidget(buttons[4]);
 		
 		buttons[5].setText("Special");
 		buttons[5].setEnabled(false);
@@ -338,7 +333,9 @@ public class GameplayState extends BHGameState
 				buttons[5].setText("Special");
 			}
 		});
-		towerInterface.addWidget(buttons[5]);
+		
+		for (int i = 0; i < 6; i++)
+			towerInterface.addWidget(buttons[i]);
 	}
 	
 	private void layoutMobButtons(Display display)
@@ -371,7 +368,6 @@ public class GameplayState extends BHGameState
 					BB.inst().setMobLevelSelection(level);
 				}
 			});
-			mobInterface.addWidget(buttons[i]);
 		}
 
 		for (int i = 0; i < 5; i++)
@@ -387,7 +383,6 @@ public class GameplayState extends BHGameState
 					BB.inst().setMobLevelSelection(level);
 				}
 			});
-			mobInterface.addWidget(buttons[i + 5]);
 		}
 		
 		for (int i = 0; i < 5; i++)
@@ -403,7 +398,6 @@ public class GameplayState extends BHGameState
 					BB.inst().setMobLevelSelection(level);
 				}
 			});
-			mobInterface.addWidget(buttons[i + 10]);
 		}
 		
 		for (int i = 0; i < 5; i++)
@@ -419,7 +413,9 @@ public class GameplayState extends BHGameState
 					BB.inst().setMobLevelSelection(level);
 				}
 			});
-			mobInterface.addWidget(buttons[i + 15]);
 		}
+		
+		for (int i = 0; i < 20; i++)
+			mobInterface.addWidget(buttons[i]);
 	}
 }
