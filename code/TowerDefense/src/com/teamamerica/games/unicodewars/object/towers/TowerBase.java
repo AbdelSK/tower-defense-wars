@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
+import org.fenggui.Button;
+import org.fenggui.util.Point;
 import org.newdawn.slick.Input;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
@@ -206,7 +208,6 @@ public abstract class TowerBase extends GameObject
 	
 	protected void registerTower()
 	{
-
 		for (int x = this._position.x - this.radius; x < this._position.x + this._size + this.radius; x++)
 		{
 			for (int y = this._position.y - this.radius; y < this._position.y + this._size + this.radius; y++)
@@ -273,6 +274,16 @@ public abstract class TowerBase extends GameObject
 	private void handleTowerClick()
 	{
 		System.out.println("Tower clicked, yo");
+		System.out.println("Tower: " + this.type + "\nLevel: " + this.level);
+
+		if (this.canUpgrade())
+			this.doUpgrade();
+
+		Button button = new Button();
+		button.setPosition(new Point(340, 50));
+		button.setShrinkable(false);
+		button.setSize(128, 128);
+		button.setText("Upgrade: " + this.type);
 	}
 	
 	private void sellTower()
