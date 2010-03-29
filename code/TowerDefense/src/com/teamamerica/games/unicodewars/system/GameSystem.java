@@ -10,7 +10,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 import com.teamamerica.games.unicodewars.object.GameObject;
-import com.teamamerica.games.unicodewars.utils.Team;
 import com.teamamerica.games.unicodewars.utils.Timer;
 
 public class GameSystem
@@ -119,9 +118,7 @@ public class GameSystem
 		g.setFont(font);
 		g.setColor(Color.white);
 		String tickCountdown = "Next income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
-		String player1ObjectCount = "Player1 has " + (BB.inst().getAll().get(Team.Player1.index()).size() - 1) + " objects.";
 		g.drawString(tickCountdown, 384, 520);
-		g.drawString(player1ObjectCount, 384, 540);
 		// g.drawString("Gold: " +
 		// BB.inst().getAll().get(Team.Player1.getGold()), 384, 560);
 		// g.drawString("Income: " +
