@@ -7,9 +7,9 @@ public class MusicOne extends TowerBase
 {
 	
 	public static int price = 40;
-	private static int BASE_ATTACK = 2;
-	private static int BASE_SPEED = 5;
-	private static int BASE_RADIUS = 2;
+	public static int BASE_ATTACK = 2;
+	public static int BASE_SPEED = 5;
+	public static int BASE_RADIUS = 2;
 	
 	public MusicOne(Location loc, Team team)
 	{

@@ -7,9 +7,9 @@ public class CurrencyOne extends TowerBase
 {
 	
 	public static int price = 60;
-	private static int BASE_ATTACK = 5;
-	private static int BASE_SPEED = 5;
-	private static int BASE_RADIUS = 5;
+	public static int BASE_ATTACK = 5;
+	public static int BASE_SPEED = 5;
+	public static int BASE_RADIUS = 5;
 	
 	public CurrencyOne(Location loc, Team team)
 	{
