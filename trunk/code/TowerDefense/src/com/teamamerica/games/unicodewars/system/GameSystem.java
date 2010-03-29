@@ -17,6 +17,7 @@ public class GameSystem
 {
 	private static Logger logger = Logger.getLogger(GameSystem.class);
 	private static final long tickTime = 30000;
+	private UnicodeFont font;
 	
 	public enum Systems
 	{
@@ -31,7 +32,25 @@ public class GameSystem
 	{
 		
 		BB.inst().setScreen(width, height);
-		
+		try
+		{
+			font = new UnicodeFont("data/font/Friz_Quadrata_TT.ttf", 16, false, false);
+		}
+		catch (SlickException e)
+		{
+			e.printStackTrace();
+		}
+		font.getEffects().add(new ColorEffect());
+		font.addAsciiGlyphs();
+		try
+		{
+			font.loadGlyphs();
+		}
+		catch (SlickException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		_systems = new TreeMap<Systems, Subsystem>();
 		_systems.put(Systems.PrototypeSubsytem, new PrototypeScriptingSystem());
 		this.tickTimer = new Timer();
@@ -78,8 +97,7 @@ public class GameSystem
 			// Tick has passed. Update what is needed.
 		}
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	public void render(Graphics g)
 	{
 		// GameObject controlled = (GameObject)
@@ -98,28 +116,7 @@ public class GameSystem
 				obj.render(g);
 			}
 		}
-		UnicodeFont font = null;
-		try
-		{
-			font = new UnicodeFont("data/font/Friz_Quadrata_TT.ttf", 16, false, false);
-		}
-		catch (SlickException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-		font.getEffects().add(new ColorEffect());
-		font.addAsciiGlyphs();
-		try
-		{
-			font.loadGlyphs();
-		}
-		catch (SlickException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		g.setFont(font);
 		g.setColor(Color.white);
 		String tickCountdown = "Next income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
