@@ -204,7 +204,7 @@ public class GameplayState extends BHGameState
 			buttons[i].setShrinkable(false);
 		}
 		
-		towerInterface.setPosition(new Point(1024 - 384, 0));
+		towerInterface.setPosition(new Point(640, 0));
 		towerInterface.setHeight(256);
 		towerInterface.setWidth(384);
 		

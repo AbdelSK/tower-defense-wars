@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import org.apache.log4j.Logger;
+import org.fenggui.Button;
+import org.fenggui.Display;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
@@ -27,25 +29,20 @@ import com.teamamerica.games.unicodewars.utils.Variable;
  */
 public class BB {
     private static Logger logger = Logger.getLogger( BB.class );
-
     private static BB _blackboard;
-    
     private Random _random;
     private int _nextId;
-    
     private Map<Variable,Object> _variableMap;
-    
 	private List<List<GameObject>> _objects;
-	
 	private List<KeyListener>     _keysPressed;
-	
 	private List<MouseListener> _mouseClicked;
-	
 	private HashMap<Location, MouseListener> _mouseClickedAtLocation;
-
 	private TowerBase.Type towerSelection;
 	private MobObject.Type mobTypeSelection;
 	private int mobLevelSelection;
+	private Display display;
+	private TowerBase HUD;
+	private Button currentHUD[];
 		
 	private BB() { 
 		_random = new Random(System.currentTimeMillis());
@@ -231,5 +228,35 @@ public class BB {
 	public void removeMouseListenerForLocation(Location loc)
 	{
 		_mouseClickedAtLocation.remove(loc);
+	}
+	
+	public void setDisplay(Display disp)
+	{
+		this.display = disp;
+	}
+
+	public Display getDisplay()
+	{
+		return this.display;
+	}
+	
+	public TowerBase getHUD()
+	{
+		return this.HUD;
+	}
+	
+	public void setHUD(TowerBase towerBase)
+	{
+		this.HUD = towerBase;
+	}
+	
+	public void setCurrentHUD(Button buttons[])
+	{
+		this.currentHUD = buttons;
+	}
+	
+	public Button[] getCurrentHUD()
+	{
+		return this.currentHUD;
 	}
 }

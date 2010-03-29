@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import org.fenggui.Button;
+import org.fenggui.FengGUI;
+import org.fenggui.event.ButtonPressedEvent;
+import org.fenggui.event.IButtonPressedListener;
 import org.fenggui.util.Point;
 import org.newdawn.slick.Input;
 import com.teamamerica.games.unicodewars.object.GameObject;
@@ -273,17 +276,45 @@ public abstract class TowerBase extends GameObject
 	
 	private void handleTowerClick()
 	{
-		System.out.println("Tower clicked, yo");
-		System.out.println("Tower: " + this.type + "\nLevel: " + this.level);
-
-		if (this.canUpgrade())
-			this.doUpgrade();
-
-		Button button = new Button();
-		button.setPosition(new Point(340, 50));
-		button.setShrinkable(false);
-		button.setSize(128, 128);
-		button.setText("Upgrade: " + this.type);
+		BB.inst().setHUD(this);
+		Button buttons[] = new Button[2];
+		
+		for (int i = 0; i < 2; i++)
+		{
+			buttons[i] = FengGUI.createWidget(Button.class);
+			buttons[i].setShrinkable(false);
+			buttons[i].setMultiline(true);
+			buttons[i].setSize(256, 64);
+		}
+		
+		buttons[0].setPosition(new Point(382, 0));
+		buttons[0].setText("Upgrade " + this.type + " to level " + (this.level + 1) + "\nCost: " + this.getUpgradePrice());
+		buttons[0].addButtonPressedListener(new IButtonPressedListener() {
+			public void buttonPressed(ButtonPressedEvent arg0)
+			{
+				BB.inst().getHUD().doUpgrade();
+				System.out.println("Upgraded " + BB.inst().getHUD().type + "(" + BB.inst().getHUD()._id + ") to level " + BB.inst().getHUD().level);
+				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[0]);
+				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[1]);
+				BB.inst().setCurrentHUD(null);
+			}
+		});
+		
+		buttons[1].setPosition(new Point(382, 64));
+		buttons[1].setText("Sell " + this.type + " for " + this.getSellPrice() + "g.");
+		buttons[1].addButtonPressedListener(new IButtonPressedListener() {
+			public void buttonPressed(ButtonPressedEvent arg0)
+			{
+				System.out.println("Sold " + BB.inst().getHUD().type + "(" + BB.inst().getHUD()._id + ")");
+				BB.inst().getHUD().sellTower();
+				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[0]);
+				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[1]);
+				BB.inst().setCurrentHUD(null);
+			}
+		});
+		BB.inst().setCurrentHUD(buttons);
+		BB.inst().getDisplay().addWidget(buttons[0]);
+		BB.inst().getDisplay().addWidget(buttons[1]);
 	}
 	
 	private void sellTower()
