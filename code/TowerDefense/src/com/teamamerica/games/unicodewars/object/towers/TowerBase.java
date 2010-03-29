@@ -277,9 +277,9 @@ public abstract class TowerBase extends GameObject
 	private void handleTowerClick()
 	{
 		BB.inst().setHUD(this);
-		Button buttons[] = new Button[2];
+		Button buttons[] = new Button[3];
 		
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			buttons[i] = FengGUI.createWidget(Button.class);
 			buttons[i].setShrinkable(false);
@@ -287,21 +287,25 @@ public abstract class TowerBase extends GameObject
 			buttons[i].setSize(256, 64);
 		}
 		
-		buttons[0].setPosition(new Point(382, 0));
-		buttons[0].setText("Upgrade " + this.type + " to level " + (this.level + 1) + "\nCost: " + this.getUpgradePrice());
-		buttons[0].addButtonPressedListener(new IButtonPressedListener() {
-			public void buttonPressed(ButtonPressedEvent arg0)
-			{
-				if(BB.inst().getHUD().canUpgrade())
-					BB.inst().getHUD().doUpgrade();
-				else
-					BB.inst().getCurrentHUD()[0].setEnabled(false);
-				System.out.println("Upgraded " + BB.inst().getHUD().type + "(" + BB.inst().getHUD()._id + ") to level " + BB.inst().getHUD().level);
-				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[0]);
-				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[1]);
-				BB.inst().setCurrentHUD(null);
-			}
-		});
+		if (BB.inst().getHUD().canUpgrade())
+		{
+			buttons[0].setPosition(new Point(382, 0));
+			buttons[0].setText("Upgrade " + this.type + " to level " + (this.level + 1) + "\nCost: " + this.getUpgradePrice());
+			buttons[0].addButtonPressedListener(new IButtonPressedListener() {
+				public void buttonPressed(ButtonPressedEvent arg0)
+				{
+					if (BB.inst().getHUD().canUpgrade())
+						BB.inst().getHUD().doUpgrade();
+					else
+						BB.inst().getCurrentHUD()[0].setEnabled(false);
+					System.out.println("Upgraded " + BB.inst().getHUD().type + "(" + BB.inst().getHUD()._id + ") to level " + BB.inst().getHUD().level);
+					BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[0]);
+					BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[1]);
+					BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[2]);
+					BB.inst().setCurrentHUD(null);
+				}
+			});
+		}
 
 		buttons[1].setPosition(new Point(382, 64));
 		buttons[1].setText("Sell " + this.type + " for " + this.getSellPrice() + "g.");
@@ -312,12 +316,23 @@ public abstract class TowerBase extends GameObject
 				BB.inst().getHUD().sellTower();
 				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[0]);
 				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[1]);
+				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[2]);
 				BB.inst().setCurrentHUD(null);
 			}
 		});
+		
+		buttons[2].setPosition(new Point(382, 128));
+		buttons[2].setSize(128, 96);
+		buttons[2].setEnabled(false);
+		buttons[2].setText(BB.inst().getHUD().type + " Level " + BB.inst().getHUD().level + "\nAttack: " + BB.inst().getHUD().attack + "\nRange: " + BB.inst().getHUD().radius + "\nSpeed: " + BB.inst().getHUD().speed);
+
 		BB.inst().setCurrentHUD(buttons);
-		BB.inst().getDisplay().addWidget(buttons[0]);
+
+		if (BB.inst().getHUD().canUpgrade())
+			BB.inst().getDisplay().addWidget(buttons[0]);
+
 		BB.inst().getDisplay().addWidget(buttons[1]);
+		BB.inst().getDisplay().addWidget(buttons[2]);
 	}
 	
 	private void sellTower()
