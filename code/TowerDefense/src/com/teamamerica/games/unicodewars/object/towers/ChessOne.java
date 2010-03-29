@@ -7,9 +7,9 @@ public class ChessOne extends TowerBase
 {
 	
 	public static int price = 20;
-	private static int BASE_ATTACK = 5;
-	private static int BASE_SPEED = 2;
-	private static int BASE_RADIUS = 2;
+	public static int BASE_ATTACK = 5;
+	public static int BASE_SPEED = 2;
+	public static int BASE_RADIUS = 2;
 	
 	public ChessOne(Location loc, Team team)
 	{

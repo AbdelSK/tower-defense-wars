@@ -7,9 +7,9 @@ public class CardOne extends TowerBase
 {
 	
 	public static int price = 30;
-	private static int BASE_ATTACK = 2;
-	private static int BASE_SPEED = 2;
-	private static int BASE_RADIUS = 5;
+	public static int BASE_ATTACK = 2;
+	public static int BASE_SPEED = 2;
+	public static int BASE_RADIUS = 5;
 	
 	public CardOne(Location loc, Team team)
 	{

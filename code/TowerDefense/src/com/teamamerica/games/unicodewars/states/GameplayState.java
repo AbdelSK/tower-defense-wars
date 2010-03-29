@@ -26,7 +26,11 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import com.teamamerica.games.unicodewars.Main;
 import com.teamamerica.games.unicodewars.factory.MobMaker;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
+import com.teamamerica.games.unicodewars.object.towers.CardOne;
+import com.teamamerica.games.unicodewars.object.towers.ChessOne;
+import com.teamamerica.games.unicodewars.object.towers.CurrencyOne;
 import com.teamamerica.games.unicodewars.object.towers.DiceOne;
+import com.teamamerica.games.unicodewars.object.towers.MusicOne;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.system.EventManager;
@@ -42,7 +46,7 @@ public class GameplayState extends BHGameState
 	{
 		nobody, player1, player2;
 	}
-
+	
 	private static Logger logger = Logger.getLogger(GameplayState.class);
 	private GameSystem _gameSystem;
 	private Container mobInterface;
@@ -64,7 +68,7 @@ public class GameplayState extends BHGameState
 	{
 		return Main.States.GameplayState.ordinal();
 	}
-
+	
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException
 	{
@@ -96,7 +100,7 @@ public class GameplayState extends BHGameState
 		super.enter(container, game);
 		layout(_feng.getDisplay());
 	}
-
+	
 	@Override
 	public void leave(GameContainer container, StateBasedGame game) throws SlickException
 	{
@@ -110,13 +114,13 @@ public class GameplayState extends BHGameState
 		container.setShowFPS(false);
 		_gameSystem.render(g);
 		_feng.render(container, game, g);
-
+		
 		g.setAntiAlias(true);
 		g.setBackground(Color.black);
 		g.setColor(Color.black);
 		g.drawString(container.getFPS() + "", 2, 2);
 	}
-
+	
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int millis) throws SlickException
 	{
@@ -132,7 +136,7 @@ public class GameplayState extends BHGameState
 			game.enterState(Main.States.LoseState.ordinal(), new FadeOutTransition(), new FadeInTransition());
 		}
 	}
-
+	
 	@Override
 	public void keyPressed(int key, char c)
 	{
@@ -156,7 +160,7 @@ public class GameplayState extends BHGameState
 	{
 		BB.inst().mouseReleased(button, x, y);
 	}
-
+	
 	/**
 	 * Layout the GUI for this game state. We definitely need some sliders to
 	 * modify values, etc.
@@ -192,24 +196,29 @@ public class GameplayState extends BHGameState
 		int buttonSize = 128;
 		final Button buttons[] = new Button[6];
 		
+		for (int i = 0; i < 6; i++)
+		{
+			buttons[i] = FengGUI.createWidget(Button.class);
+			buttons[i].setSize(buttonSize, buttonSize);
+			buttons[i].setMultiline(true);
+			buttons[i].setShrinkable(false);
+		}
+		
 		towerInterface.setPosition(new Point(1024 - 384, 0));
 		towerInterface.setHeight(256);
 		towerInterface.setWidth(384);
-
-		buttons[0] = FengGUI.createWidget(Button.class);
+		
 		buttons[0].setText("Dice");
-		buttons[0].setSize(buttonSize, buttonSize);
 		buttons[0].addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
-				System.out.println("Dice pressed.");
 				BB.inst().setTowerSelection(TowerBase.Type.diceOne);
 			}
 		});
 		buttons[0].addMouseEnteredListener(new IMouseEnteredListener() {
 			public void mouseEntered(MouseEnteredEvent arg0)
 			{
-				buttons[0].setText("Price: " + DiceOne.price);
+				buttons[0].setText("Dice Tower\nDamage: ??\nSpeed: ??\nRange: ??\nPrice: " + DiceOne.price);
 			}
 		});
 		buttons[0].addMouseExitedListener(new IMouseExitedListener() {
@@ -221,61 +230,112 @@ public class GameplayState extends BHGameState
 		});
 		towerInterface.addWidget(buttons[0]);
 		
-		buttons[1] = FengGUI.createWidget(Button.class);
 		buttons[1].setText("Chess Pieces");
-		buttons[1].setSize(buttonSize, buttonSize);
 		buttons[1].addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
-				System.out.println("Chess Pieces pressed.");
 				BB.inst().setTowerSelection(TowerBase.Type.chessOne);
+			}
+		});
+		buttons[1].addMouseEnteredListener(new IMouseEnteredListener() {
+			public void mouseEntered(MouseEnteredEvent arg0)
+			{
+				buttons[1].setText("Chess Piece\nDamage: " + ChessOne.BASE_ATTACK + "\nSpeed: " + ChessOne.BASE_RADIUS + "\nRange: " + ChessOne.BASE_RADIUS + "\nPrice: " + ChessOne.price);
+			}
+		});
+		buttons[1].addMouseExitedListener(new IMouseExitedListener() {
+			@Override
+			public void mouseExited(MouseExitedEvent arg0)
+			{
+				buttons[1].setText("Chess Pieces");
 			}
 		});
 		towerInterface.addWidget(buttons[1]);
 		
-		buttons[2] = FengGUI.createWidget(Button.class);
 		buttons[2].setText("Currency");
-		buttons[2].setSize(buttonSize, buttonSize);
 		buttons[2].addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
-				System.out.println("Currency pressed.");
 				BB.inst().setTowerSelection(TowerBase.Type.currencyOne);
+			}
+		});
+		buttons[2].addMouseEnteredListener(new IMouseEnteredListener() {
+			public void mouseEntered(MouseEnteredEvent arg0)
+			{
+				buttons[2].setText("Currency\nDamage: " + CurrencyOne.BASE_ATTACK + "\nSpeed: " + CurrencyOne.BASE_RADIUS + "\nRange: " + CurrencyOne.BASE_RADIUS + "\nPrice: " + CurrencyOne.price);
+			}
+		});
+		buttons[2].addMouseExitedListener(new IMouseExitedListener() {
+			@Override
+			public void mouseExited(MouseExitedEvent arg0)
+			{
+				buttons[2].setText("Currency");
 			}
 		});
 		towerInterface.addWidget(buttons[2]);
 		
-		buttons[3] = FengGUI.createWidget(Button.class);
 		buttons[3].setText("Card Suits");
-		buttons[3].setSize(buttonSize, buttonSize);
 		buttons[3].addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
-				System.out.println("Card Suits pressed.");
 				BB.inst().setTowerSelection(TowerBase.Type.cardOne);
+			}
+		});
+		buttons[3].addMouseEnteredListener(new IMouseEnteredListener() {
+			public void mouseEntered(MouseEnteredEvent arg0)
+			{
+				buttons[3].setText("Card Suit\nDamage: " + CardOne.BASE_ATTACK + "\nSpeed: " + CardOne.BASE_RADIUS + "\nRange: " + CardOne.BASE_RADIUS + "\nPrice: " + CardOne.price);
+			}
+		});
+		buttons[3].addMouseExitedListener(new IMouseExitedListener() {
+			@Override
+			public void mouseExited(MouseExitedEvent arg0)
+			{
+				buttons[3].setText("Card Suits");
 			}
 		});
 		towerInterface.addWidget(buttons[3]);
 		
-		buttons[4] = FengGUI.createWidget(Button.class);
 		buttons[4].setText("Musical Notes");
-		buttons[4].setSize(buttonSize, buttonSize);
 		buttons[4].addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
-				System.out.println("Musical Notes pressed.");
 				BB.inst().setTowerSelection(TowerBase.Type.musicOne);
+			}
+		});
+		buttons[4].addMouseEnteredListener(new IMouseEnteredListener() {
+			public void mouseEntered(MouseEnteredEvent arg0)
+			{
+				buttons[4].setText("Musical Note\nDamage: " + MusicOne.BASE_ATTACK + "\nSpeed: " + MusicOne.BASE_RADIUS + "\nRange: " + MusicOne.BASE_RADIUS + "\nPrice: " + MusicOne.price);
+			}
+		});
+		buttons[4].addMouseExitedListener(new IMouseExitedListener() {
+			@Override
+			public void mouseExited(MouseExitedEvent arg0)
+			{
+				buttons[4].setText("Musical Notes");
 			}
 		});
 		towerInterface.addWidget(buttons[4]);
 		
-		buttons[5] = FengGUI.createWidget(Button.class);
 		buttons[5].setText("Special");
-		buttons[5].setSize(buttonSize, buttonSize);
+		buttons[5].setEnabled(false);
 		buttons[5].addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
-				System.out.println("Special pressed.");
+			}
+		});
+		buttons[5].addMouseEnteredListener(new IMouseEnteredListener() {
+			public void mouseEntered(MouseEnteredEvent arg0)
+			{
+				buttons[5].setText("Special\nDamage: ??\nSpeed: ??\nRange: ??\nPrice: " + MusicOne.price);
+			}
+		});
+		buttons[5].addMouseExitedListener(new IMouseExitedListener() {
+			@Override
+			public void mouseExited(MouseExitedEvent arg0)
+			{
+				buttons[5].setText("Special");
 			}
 		});
 		towerInterface.addWidget(buttons[5]);
@@ -284,18 +344,24 @@ public class GameplayState extends BHGameState
 	private void layoutMobButtons(Display display)
 	{
 		int buttonSize = 64;
-		Button buttons[] = new Button[20];
+		final Button buttons[] = new Button[20];
+		
+		for (int i = 0; i < 20; i++)
+		{
+			buttons[i] = FengGUI.createWidget(Button.class);
+			buttons[i].setSize(64, 64);
+			buttons[i].setMultiline(true);
+			buttons[i].setShrinkable(false);
+		}
 		
 		mobInterface.setPosition(new Point(0, 0));
-		mobInterface.setHeight(256);
+		mobInterface.setHeight(64);
 		mobInterface.setWidth(320);
 
 		for (int i = 0; i < 5; i++)
 		{
-			buttons[i] = FengGUI.createWidget(Button.class);
 			buttons[i].setText("Chinese " + (i + 1));
-			buttons[i].setPosition(new Point(i * buttonSize, 1));
-			buttons[i].setSize(buttonSize, buttonSize);
+			buttons[i].setPosition(new Point(i * buttonSize, 0));
 			buttons[i].addButtonPressedListener(new IButtonPressedListener() {
 				public void buttonPressed(ButtonPressedEvent arg0)
 				{
@@ -307,14 +373,12 @@ public class GameplayState extends BHGameState
 			});
 			mobInterface.addWidget(buttons[i]);
 		}
-		
+
 		for (int i = 0; i < 5; i++)
 		{
-			buttons[i] = FengGUI.createWidget(Button.class);
-			buttons[i].setText("Latin " + (i + 1));
-			buttons[i].setPosition(new Point(i * buttonSize, buttonSize + 1));
-			buttons[i].setSize(buttonSize, buttonSize);
-			buttons[i].addButtonPressedListener(new IButtonPressedListener() {
+			buttons[i + 5].setText("Latin " + (i + 1));
+			buttons[i + 5].setPosition(new Point(i * buttonSize, buttonSize));
+			buttons[i + 5].addButtonPressedListener(new IButtonPressedListener() {
 				public void buttonPressed(ButtonPressedEvent arg0)
 				{
 					int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
@@ -323,16 +387,14 @@ public class GameplayState extends BHGameState
 					BB.inst().setMobLevelSelection(level);
 				}
 			});
-			mobInterface.addWidget(buttons[i]);
+			mobInterface.addWidget(buttons[i + 5]);
 		}
 		
 		for (int i = 0; i < 5; i++)
 		{
-			buttons[i] = FengGUI.createWidget(Button.class);
-			buttons[i].setText("Greek " + (i + 1));
-			buttons[i].setPosition(new Point(i * buttonSize, 2 * buttonSize + 1));
-			buttons[i].setSize(buttonSize, buttonSize);
-			buttons[i].addButtonPressedListener(new IButtonPressedListener() {
+			buttons[i + 10].setText("Greek " + (i + 1));
+			buttons[i + 10].setPosition(new Point(i * buttonSize, 2 * buttonSize));
+			buttons[i + 10].addButtonPressedListener(new IButtonPressedListener() {
 				public void buttonPressed(ButtonPressedEvent arg0)
 				{
 					int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
@@ -341,16 +403,14 @@ public class GameplayState extends BHGameState
 					BB.inst().setMobLevelSelection(level);
 				}
 			});
-			mobInterface.addWidget(buttons[i]);
+			mobInterface.addWidget(buttons[i + 10]);
 		}
 		
 		for (int i = 0; i < 5; i++)
 		{
-			buttons[i] = FengGUI.createWidget(Button.class);
-			buttons[i].setText("Cyrillic " + (i + 1));
-			buttons[i].setPosition(new Point(i * buttonSize, 3 * buttonSize));
-			buttons[i].setSize(buttonSize, buttonSize);
-			buttons[i].addButtonPressedListener(new IButtonPressedListener() {
+			buttons[i + 15].setText("Cyrillic " + (i + 1));
+			buttons[i + 15].setPosition(new Point(i * buttonSize, 3 * buttonSize));
+			buttons[i + 15].addButtonPressedListener(new IButtonPressedListener() {
 				public void buttonPressed(ButtonPressedEvent arg0)
 				{
 					int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
@@ -359,7 +419,7 @@ public class GameplayState extends BHGameState
 					BB.inst().setMobLevelSelection(level);
 				}
 			});
-			mobInterface.addWidget(buttons[i]);
+			mobInterface.addWidget(buttons[i + 15]);
 		}
 	}
 }
