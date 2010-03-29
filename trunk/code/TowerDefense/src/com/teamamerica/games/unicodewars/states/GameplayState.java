@@ -19,25 +19,41 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 import com.teamamerica.games.unicodewars.Main;
 import com.teamamerica.games.unicodewars.factory.MobMaker;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.system.BB;
+import com.teamamerica.games.unicodewars.system.EventManager;
 import com.teamamerica.games.unicodewars.system.GameSystem;
+import com.teamamerica.games.unicodewars.utils.Event;
+import com.teamamerica.games.unicodewars.utils.EventListener;
+import com.teamamerica.games.unicodewars.utils.EventType;
 import com.teamamerica.games.unicodewars.utils.Team;
 
 public class GameplayState extends BHGameState
 {
+	private static enum Winner
+	{
+		nobody, player1, player2;
+	}
+
 	private static Logger logger = Logger.getLogger(GameplayState.class);
 	private GameSystem _gameSystem;
 	private Container mobInterface;
 	private Container towerInterface;
+	private EventListener el;
+	private boolean bLayoutComplete;
+	private Winner winner;
 	
 	public GameplayState()
 	{
 		mobInterface = new Container(new GridLayout(4, 5));
 		towerInterface = new Container(new GridLayout(2, 3));
+		bLayoutComplete = false;
+		winner = Winner.nobody;
 	}
 	
 	@Override
@@ -51,6 +67,24 @@ public class GameplayState extends BHGameState
 	{
 		_gameSystem = new GameSystem(container.getWidth(), container.getHeight());
 		_gameSystem.loadLevel("Hello world");
+		el = new EventListener() {
+			
+			@Override
+			public void onEvent(Event e)
+			{
+				Team teamDestroyed = (Team) e.getValue("teamDestroyed");
+				
+				if (teamDestroyed == Team.Player1)
+				{
+					winner = Winner.player2;
+				}
+				else if (teamDestroyed == Team.Player2)
+				{
+					winner = Winner.player1;
+				}
+			}
+		};
+		EventManager.inst().registerForAll(EventType.BASE_DESTROYED, el);
 	}
 	
 	@Override
@@ -84,6 +118,16 @@ public class GameplayState extends BHGameState
 	public void update(GameContainer container, StateBasedGame game, int millis) throws SlickException
 	{
 		_gameSystem.update(millis);
+		if (winner == Winner.player1)
+		{
+			winner = Winner.nobody;
+			game.enterState(Main.States.WinState.ordinal(), new FadeOutTransition(), new FadeInTransition());
+		}
+		else if (winner == Winner.player2)
+		{
+			winner = Winner.nobody;
+			game.enterState(Main.States.LoseState.ordinal(), new FadeOutTransition(), new FadeInTransition());
+		}
 	}
 
 	@Override
@@ -116,23 +160,27 @@ public class GameplayState extends BHGameState
 	 */
 	private void layout(Display display)
 	{
-		try
+		if (!bLayoutComplete)
 		{
-			FengGUI.setTheme(new XMLTheme("data/themes/QtCurve/QtCurve.xml"));
+			try
+			{
+				FengGUI.setTheme(new XMLTheme("data/themes/QtCurve/QtCurve.xml"));
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IXMLStreamableException e)
+			{
+				e.printStackTrace();
+			}
+			
+			layoutTowerButtons(display);
+			layoutMobButtons(display);
+			display.addWidget(mobInterface);
+			display.addWidget(towerInterface);
+			bLayoutComplete = true;
 		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		catch (IXMLStreamableException e)
-		{
-			e.printStackTrace();
-		}
-
-		layoutTowerButtons(display);
-		layoutMobButtons(display);
-		display.addWidget(mobInterface);
-		display.addWidget(towerInterface);
 	}
 	
 	@SuppressWarnings("deprecation")

@@ -21,5 +21,10 @@ public enum EventType
 	/**
 	 * For when Player2 builds a tower
 	 */
-	P2_TOWER_BUILT
+	P2_TOWER_BUILT,
+
+	/**
+	 * For when a base has been destroyed
+	 */
+	BASE_DESTROYED
 }
