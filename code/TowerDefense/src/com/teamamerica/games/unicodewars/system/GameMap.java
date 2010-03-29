@@ -683,8 +683,5 @@ public class GameMap implements TileBasedMap
 		g.drawLine(0, rows * tileSize, columns * tileSize, rows * tileSize); // Bottom
 		g.drawLine(0, 0, 0, rows * tileSize); // Left
 		g.drawLine(columns * tileSize, 0, columns * tileSize, rows * tileSize); // Right
-		
-
 	}
-
 }
