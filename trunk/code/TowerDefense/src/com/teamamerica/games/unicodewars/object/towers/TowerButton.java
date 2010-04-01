@@ -16,11 +16,13 @@ public class TowerButton extends AwesomeButton
 	{
 		super.init(text, hover, x, y);
 		this.type = tt;
+		System.out.println("button init: setting to " + type);
 	}
 
 	@Override
 	public void buttonPressed(ButtonPressedEvent arg0)
 	{
-		BB.inst().setTowerSelection(type);
+		System.out.println("button pressed: creating " + type);
+		BB.inst().setTowerSelection(this.type);
 	}
 }
