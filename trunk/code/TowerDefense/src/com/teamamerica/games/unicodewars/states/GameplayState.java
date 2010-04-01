@@ -8,10 +8,6 @@ import org.fenggui.Display;
 import org.fenggui.FengGUI;
 import org.fenggui.event.ButtonPressedEvent;
 import org.fenggui.event.IButtonPressedListener;
-import org.fenggui.event.mouse.IMouseEnteredListener;
-import org.fenggui.event.mouse.IMouseExitedListener;
-import org.fenggui.event.mouse.MouseEnteredEvent;
-import org.fenggui.event.mouse.MouseExitedEvent;
 import org.fenggui.layout.GridLayout;
 import org.fenggui.theme.XMLTheme;
 import org.fenggui.theme.xml.IXMLStreamableException;
@@ -32,6 +28,7 @@ import com.teamamerica.games.unicodewars.object.towers.CurrencyOne;
 import com.teamamerica.games.unicodewars.object.towers.DiceOne;
 import com.teamamerica.games.unicodewars.object.towers.MusicOne;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
+import com.teamamerica.games.unicodewars.object.towers.TowerButton;
 import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.system.EventManager;
 import com.teamamerica.games.unicodewars.system.GameSystem;
@@ -190,152 +187,45 @@ public class GameplayState extends BHGameState
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	private void layoutTowerButtons(Display display)
 	{
-		int buttonSize = 128;
-		final Button buttons[] = new Button[6];
-		
-		for (int i = 0; i < 6; i++)
-		{
-			buttons[i] = FengGUI.createWidget(Button.class);
-			buttons[i].setSize(buttonSize, buttonSize);
-			buttons[i].setMultiline(true);
-			buttons[i].setShrinkable(false);
-		}
+		final TowerButton tb[] = new TowerButton[6];
+		String[][] text = new String[6][2];
+		TowerBase.Type types[] = new TowerBase.Type[6];
+		text[0][0] = "Dice";
+		text[1][0] = "Chess Pieces";
+		text[2][0] = "Currency";
+		text[3][0] = "Card Suits";
+		text[4][0] = "Musical Notes";
+		text[5][0] = "Special";
+		text[0][1] = "Dice Tower\nDamage: ??\nSpeed: ??\nRange: ??\nPrice: " + DiceOne.price;
+		text[1][1] = "Chess Piece\nDamage: " + ChessOne.BASE_ATTACK + "\nSpeed: " + ChessOne.BASE_SPEED + "\nRange: " + ChessOne.BASE_RADIUS + "\nPrice: " + ChessOne.price;
+		text[2][1] = "Currency\nDamage: " + CurrencyOne.BASE_ATTACK + "\nSpeed: " + CurrencyOne.BASE_SPEED + "\nRange: " + CurrencyOne.BASE_RADIUS + "\nPrice: " + CurrencyOne.price;
+		text[3][1] = "Card Suit\nDamage: " + CardOne.BASE_ATTACK + "\nSpeed: " + CardOne.BASE_SPEED + "\nRange: " + CardOne.BASE_RADIUS + "\nPrice: " + CardOne.price;
+		text[4][1] = "Musical Note\nDamage: " + MusicOne.BASE_ATTACK + "\nSpeed: " + MusicOne.BASE_SPEED + "\nRange: " + MusicOne.BASE_RADIUS + "\nPrice: " + MusicOne.price;
+		text[5][1] = "Special\nDamage: ??\nSpeed: ??\nRange: ??\nPrice: " + MusicOne.price;
+		types[0] = TowerBase.Type.diceOne;
+		types[0] = TowerBase.Type.chessOne;
+		types[0] = TowerBase.Type.currencyOne;
+		types[0] = TowerBase.Type.cardOne;
+		types[0] = TowerBase.Type.musicOne;
+		types[0] = TowerBase.Type.diceOne;
 		
 		towerInterface.setPosition(new Point(640, 0));
 		towerInterface.setHeight(256);
 		towerInterface.setWidth(384);
-		
-		buttons[0].setText("Dice");
-		buttons[0].addButtonPressedListener(new IButtonPressedListener() {
-			public void buttonPressed(ButtonPressedEvent arg0)
-			{
-				BB.inst().setTowerSelection(TowerBase.Type.diceOne);
-			}
-		});
-		buttons[0].addMouseEnteredListener(new IMouseEnteredListener() {
-			public void mouseEntered(MouseEnteredEvent arg0)
-			{
-				buttons[0].setText("Dice Tower\nDamage: ??\nSpeed: ??\nRange: ??\nPrice: " + DiceOne.price);
-			}
-		});
-		buttons[0].addMouseExitedListener(new IMouseExitedListener() {
-			@Override
-			public void mouseExited(MouseExitedEvent arg0)
-			{
-				buttons[0].setText("Dice");
-			}
-		});
-		
-		buttons[1].setText("Chess Pieces");
-		buttons[1].addButtonPressedListener(new IButtonPressedListener() {
-			public void buttonPressed(ButtonPressedEvent arg0)
-			{
-				BB.inst().setTowerSelection(TowerBase.Type.chessOne);
-			}
-		});
-		buttons[1].addMouseEnteredListener(new IMouseEnteredListener() {
-			public void mouseEntered(MouseEnteredEvent arg0)
-			{
-				buttons[1].setText("Chess Piece\nDamage: " + ChessOne.BASE_ATTACK + "\nSpeed: " + ChessOne.BASE_SPEED + "\nRange: " + ChessOne.BASE_RADIUS + "\nPrice: " + ChessOne.price);
-			}
-		});
-		buttons[1].addMouseExitedListener(new IMouseExitedListener() {
-			@Override
-			public void mouseExited(MouseExitedEvent arg0)
-			{
-				buttons[1].setText("Chess Pieces");
-			}
-		});
-		
-		buttons[2].setText("Currency");
-		buttons[2].addButtonPressedListener(new IButtonPressedListener() {
-			public void buttonPressed(ButtonPressedEvent arg0)
-			{
-				BB.inst().setTowerSelection(TowerBase.Type.currencyOne);
-			}
-		});
-		buttons[2].addMouseEnteredListener(new IMouseEnteredListener() {
-			public void mouseEntered(MouseEnteredEvent arg0)
-			{
-				buttons[2].setText("Currency\nDamage: " + CurrencyOne.BASE_ATTACK + "\nSpeed: " + CurrencyOne.BASE_SPEED + "\nRange: " + CurrencyOne.BASE_RADIUS + "\nPrice: " + CurrencyOne.price);
-			}
-		});
-		buttons[2].addMouseExitedListener(new IMouseExitedListener() {
-			@Override
-			public void mouseExited(MouseExitedEvent arg0)
-			{
-				buttons[2].setText("Currency");
-			}
-		});
-		
-		buttons[3].setText("Card Suits");
-		buttons[3].addButtonPressedListener(new IButtonPressedListener() {
-			public void buttonPressed(ButtonPressedEvent arg0)
-			{
-				BB.inst().setTowerSelection(TowerBase.Type.cardOne);
-			}
-		});
-		buttons[3].addMouseEnteredListener(new IMouseEnteredListener() {
-			public void mouseEntered(MouseEnteredEvent arg0)
-			{
-				buttons[3].setText("Card Suit\nDamage: " + CardOne.BASE_ATTACK + "\nSpeed: " + CardOne.BASE_SPEED + "\nRange: " + CardOne.BASE_RADIUS + "\nPrice: " + CardOne.price);
-			}
-		});
-		buttons[3].addMouseExitedListener(new IMouseExitedListener() {
-			@Override
-			public void mouseExited(MouseExitedEvent arg0)
-			{
-				buttons[3].setText("Card Suits");
-			}
-		});
-		
-		buttons[4].setText("Musical Notes");
-		buttons[4].addButtonPressedListener(new IButtonPressedListener() {
-			public void buttonPressed(ButtonPressedEvent arg0)
-			{
-				BB.inst().setTowerSelection(TowerBase.Type.musicOne);
-			}
-		});
-		buttons[4].addMouseEnteredListener(new IMouseEnteredListener() {
-			public void mouseEntered(MouseEnteredEvent arg0)
-			{
-				buttons[4].setText("Musical Note\nDamage: " + MusicOne.BASE_ATTACK + "\nSpeed: " + MusicOne.BASE_SPEED + "\nRange: " + MusicOne.BASE_RADIUS + "\nPrice: " + MusicOne.price);
-			}
-		});
-		buttons[4].addMouseExitedListener(new IMouseExitedListener() {
-			@Override
-			public void mouseExited(MouseExitedEvent arg0)
-			{
-				buttons[4].setText("Musical Notes");
-			}
-		});
-		
-		buttons[5].setText("Special");
-		buttons[5].setEnabled(false);
-		buttons[5].addButtonPressedListener(new IButtonPressedListener() {
-			public void buttonPressed(ButtonPressedEvent arg0)
-			{
-			}
-		});
-		buttons[5].addMouseEnteredListener(new IMouseEnteredListener() {
-			public void mouseEntered(MouseEnteredEvent arg0)
-			{
-				buttons[5].setText("Special\nDamage: ??\nSpeed: ??\nRange: ??\nPrice: " + MusicOne.price);
-			}
-		});
-		buttons[5].addMouseExitedListener(new IMouseExitedListener() {
-			@Override
-			public void mouseExited(MouseExitedEvent arg0)
-			{
-				buttons[5].setText("Special");
-			}
-		});
-		
+
 		for (int i = 0; i < 6; i++)
-			towerInterface.addWidget(buttons[i]);
+		{
+			tb[i] = FengGUI.createWidget(TowerButton.class);
+			// tb[i] = new TowerButton(text[i][0], text[i][1], 128, 128,
+			// types[i]);
+			tb[i].setSize(128, 128);
+			tb[i].setMultiline(true);
+			tb[i].setShrinkable(false);
+			tb[i].setText("shit");
+			towerInterface.addWidget(tb[i]);
+		}
 	}
 	
 	private void layoutMobButtons(Display display)
