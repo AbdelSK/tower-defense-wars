@@ -205,11 +205,11 @@ public class GameplayState extends BHGameState
 		text[4][1] = "Musical Note\nDamage: " + MusicOne.BASE_ATTACK + "\nSpeed: " + MusicOne.BASE_SPEED + "\nRange: " + MusicOne.BASE_RADIUS + "\nPrice: " + MusicOne.price;
 		text[5][1] = "Special\nDamage: ??\nSpeed: ??\nRange: ??\nPrice: " + MusicOne.price;
 		types[0] = TowerBase.Type.diceOne;
-		types[0] = TowerBase.Type.chessOne;
-		types[0] = TowerBase.Type.currencyOne;
-		types[0] = TowerBase.Type.cardOne;
-		types[0] = TowerBase.Type.musicOne;
-		types[0] = TowerBase.Type.diceOne;
+		types[1] = TowerBase.Type.chessOne;
+		types[2] = TowerBase.Type.currencyOne;
+		types[3] = TowerBase.Type.cardOne;
+		types[4] = TowerBase.Type.musicOne;
+		types[5] = TowerBase.Type.diceOne;
 		
 		towerInterface.setPosition(new Point(640, 0));
 		towerInterface.setHeight(256);
@@ -218,12 +218,7 @@ public class GameplayState extends BHGameState
 		for (int i = 0; i < 6; i++)
 		{
 			tb[i] = FengGUI.createWidget(TowerButton.class);
-			// tb[i] = new TowerButton(text[i][0], text[i][1], 128, 128,
-			// types[i]);
-			tb[i].setSize(128, 128);
-			tb[i].setMultiline(true);
-			tb[i].setShrinkable(false);
-			tb[i].setText("shit");
+			tb[i].init(text[i][0], text[i][1], 128, 128, types[i]);
 			towerInterface.addWidget(tb[i]);
 		}
 	}

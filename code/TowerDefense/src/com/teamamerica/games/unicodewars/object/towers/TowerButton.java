@@ -7,15 +7,15 @@ public class TowerButton extends AwesomeButton
 {
 	private TowerBase.Type type;
 	
-	public TowerButton(String text, String hover, int x, int y, TowerBase.Type tt)
-	{
-		super(text, hover, x, y);
-		this.type = tt;
-	}
-	
 	public TowerButton()
 	{
 		super();
+	}
+	
+	public void init(String text, String hover, int x, int y, TowerBase.Type tt)
+	{
+		super.init(text, hover, x, y);
+		this.type = tt;
 	}
 
 	@Override
