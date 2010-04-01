@@ -48,24 +48,4 @@ public class MobMaker
 		temp.addComponent(visualPart);
 		BB.inst().addTeamObject(temp, team);
 	}
-	
-	public static void MakeMobChinese(int level, Team team)
-	{
-		MakeMob(MobObject.Type.chinese, level, team);
-	}
-	
-	public static void MakeMobLatin(int level, Team team)
-	{
-		MakeMob(MobObject.Type.latin, level, team);
-	}
-	
-	public static void MakeMobGreek(int level, Team team)
-	{
-		MakeMob(MobObject.Type.greek, level, team);
-	}
-	
-	public static void MakeMobCyrillic(int level, Team team)
-	{
-		MakeMob(MobObject.Type.cyrillic, level, team);
-	}
 }

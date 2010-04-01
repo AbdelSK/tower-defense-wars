@@ -190,8 +190,8 @@ public class GameplayState extends BHGameState
 	private void layoutTowerButtons(Display display)
 	{
 		final TowerButton tb[] = new TowerButton[6];
-		String[][] text = new String[6][2];
-		TowerBase.Type types[] = new TowerBase.Type[6];
+		final String[][] text = new String[6][2];
+		final TowerBase.Type types[] = new TowerBase.Type[6];
 		text[0][0] = "Dice";
 		text[1][0] = "Chess Pieces";
 		text[2][0] = "Currency";
@@ -228,6 +228,10 @@ public class GameplayState extends BHGameState
 		int buttonSize = 64;
 		final Button buttons[] = new Button[20];
 		
+		mobInterface.setPosition(new Point(0, 0));
+		mobInterface.setHeight(64);
+		mobInterface.setWidth(320);
+
 		for (int i = 0; i < 20; i++)
 		{
 			buttons[i] = FengGUI.createWidget(Button.class);
@@ -236,9 +240,7 @@ public class GameplayState extends BHGameState
 			buttons[i].setShrinkable(false);
 		}
 		
-		mobInterface.setPosition(new Point(0, 0));
-		mobInterface.setHeight(64);
-		mobInterface.setWidth(320);
+
 
 		for (int i = 0; i < 5; i++)
 		{
@@ -248,7 +250,7 @@ public class GameplayState extends BHGameState
 				public void buttonPressed(ButtonPressedEvent arg0)
 				{
 					int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
-					MobMaker.MakeMobChinese(level, Team.Player1);
+					MobMaker.MakeMob(MobObject.Type.chinese, level, Team.Player1);
 					BB.inst().setMobTypeSelection(MobObject.Type.chinese);
 					BB.inst().setMobLevelSelection(level);
 				}
@@ -263,7 +265,7 @@ public class GameplayState extends BHGameState
 				public void buttonPressed(ButtonPressedEvent arg0)
 				{
 					int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
-					MobMaker.MakeMobLatin(level, Team.Player1);
+					MobMaker.MakeMob(MobObject.Type.latin, level, Team.Player1);
 					BB.inst().setMobTypeSelection(MobObject.Type.latin);
 					BB.inst().setMobLevelSelection(level);
 				}
@@ -278,7 +280,7 @@ public class GameplayState extends BHGameState
 				public void buttonPressed(ButtonPressedEvent arg0)
 				{
 					int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
-					MobMaker.MakeMobGreek(level, Team.Player1);
+					MobMaker.MakeMob(MobObject.Type.greek, level, Team.Player1);
 					BB.inst().setMobTypeSelection(MobObject.Type.greek);
 					BB.inst().setMobLevelSelection(level);
 				}
@@ -293,7 +295,7 @@ public class GameplayState extends BHGameState
 				public void buttonPressed(ButtonPressedEvent arg0)
 				{
 					int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
-					MobMaker.MakeMobCyrillic(level, Team.Player1);
+					MobMaker.MakeMob(MobObject.Type.cyrillic, level, Team.Player1);
 					BB.inst().setMobTypeSelection(MobObject.Type.cyrillic);
 					BB.inst().setMobLevelSelection(level);
 				}
