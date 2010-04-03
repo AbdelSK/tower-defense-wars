@@ -39,6 +39,5 @@ public abstract class AwesomeButton extends Button implements IButtonPressedList
 		this.setText(this.defaultText);
 	}
 
-	@Override
 	public abstract void buttonPressed(ButtonPressedEvent arg0);
 }

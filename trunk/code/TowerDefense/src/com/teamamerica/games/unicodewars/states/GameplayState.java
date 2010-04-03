@@ -239,8 +239,6 @@ public class GameplayState extends BHGameState
 			buttons[i].setMultiline(true);
 			buttons[i].setShrinkable(false);
 		}
-		
-
 
 		for (int i = 0; i < 5; i++)
 		{
