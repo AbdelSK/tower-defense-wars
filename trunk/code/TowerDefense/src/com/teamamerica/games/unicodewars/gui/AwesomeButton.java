@@ -1,4 +1,4 @@
-package com.teamamerica.games.unicodewars.object.towers;
+package com.teamamerica.games.unicodewars.gui;
 
 import org.fenggui.Button;
 import org.fenggui.event.ButtonPressedEvent;
