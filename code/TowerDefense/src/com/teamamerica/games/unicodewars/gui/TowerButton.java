@@ -1,6 +1,8 @@
-package com.teamamerica.games.unicodewars.object.towers;
+package com.teamamerica.games.unicodewars.gui;
 
 import org.fenggui.event.ButtonPressedEvent;
+import com.teamamerica.games.unicodewars.object.towers.TowerBase;
+import com.teamamerica.games.unicodewars.object.towers.TowerBase.Type;
 import com.teamamerica.games.unicodewars.system.BB;
 
 public class TowerButton extends AwesomeButton
