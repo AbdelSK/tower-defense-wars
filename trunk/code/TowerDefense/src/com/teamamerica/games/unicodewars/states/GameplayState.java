@@ -219,6 +219,7 @@ public class GameplayState extends BHGameState
 		{
 			tb[i] = FengGUI.createWidget(TowerButton.class);
 			tb[i].init(text[i][0], text[i][1], 128, 128, types[i]);
+			tb[i].addButtonPressedListener(tb[i]);
 			towerInterface.addWidget(tb[i]);
 		}
 	}
