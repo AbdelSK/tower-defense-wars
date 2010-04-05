@@ -2,6 +2,8 @@ package com.teamamerica.games.unicodewars.component;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.base.BaseObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
@@ -11,11 +13,23 @@ import com.teamamerica.games.unicodewars.utils.Location;
 
 public class VisualComponent extends Component
 {
-	
-	public VisualComponent(GameObject owner)
+	private Image img;
+
+	public VisualComponent(GameObject owner, String imgPath)
 	{
 		super(owner);
-		// TODO Auto-generated constructor stub
+		try
+		{
+			img = new Image(imgPath);
+		}
+		catch (SlickException e)
+		{
+			img = null;
+		}
+		catch (NullPointerException e)
+		{
+			img = null;
+		}
 	}
 
 	@Override
@@ -75,14 +89,26 @@ public class VisualComponent extends Component
 			g.setColor(Color.pink);
 		}
 		
-		g.fillRect(renderLocTL.x, renderLocTL.y, size, size);
-		
-		if (this._parent instanceof MobObject)
+		if (img != null)
 		{
-			g.setColor(Color.black);
-			g.drawString("" + ((MobObject) this._parent).getLevel(), renderLocTL.x, renderLocTL.y);
+			switch (this._parent.getTeam())
+			{
+				case Player1:
+					img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.blue);
+					break;
+				case Player2:
+					img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.red);
+					break;
+				default:
+					img.draw(renderLocTL.x, renderLocTL.y, size, size);
+					break;
+			}
+			
 		}
-		else if (this._parent instanceof BaseObject)
+		else
+			g.fillRect(renderLocTL.x, renderLocTL.y, size, size);
+		
+		if (this._parent instanceof BaseObject)
 		{
 			g.setColor(Color.black);
 			g.drawString("" + ((BaseObject) this._parent).getHealth(), renderLocTL.x + 10, renderLocTL.y + 50);
