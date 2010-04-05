@@ -50,6 +50,8 @@ public class GameMap implements TileBasedMap
 	private Timer colorTimer;
 	private int colorStage;
 	private int alphaStage;
+	
+	private TowerBase selectedTower;
 
 	public final int rows = 32; // height
 	public final int columns = 64; // width
@@ -305,6 +307,8 @@ public class GameMap implements TileBasedMap
 	 */
 	public void registerSpace(GameObject obj, Location loc, EventListener callback)
 	{
+		if (loc.x < 0 || loc.x >= this.columns || loc.y < 0 || loc.y >= this.rows)
+			return;
 		if (obj.getTeam() != this.teamMap[loc.x][loc.y])
 			return;
 		
@@ -505,6 +509,16 @@ public class GameMap implements TileBasedMap
 		Location temp = this.baseLocations.get(team.index()).copy();
 		return temp;
 	}
+	
+	public void setSelectedTower(TowerBase obj)
+	{
+		this.selectedTower = obj;
+	}
+	
+	public void clearSelectedTower()
+	{
+		this.selectedTower = null;
+	}
 
 	private void dispatch(Event e)
 	{
@@ -634,5 +648,23 @@ public class GameMap implements TileBasedMap
 		g.drawLine(0, rows * tileSize, columns * tileSize, rows * tileSize); // Bottom
 		g.drawLine(0, 0, 0, rows * tileSize); // Left
 		g.drawLine(columns * tileSize, 0, columns * tileSize, rows * tileSize); // Right
+		
+		if (this.selectedTower != null)
+		{
+			Color temp = Color.red.scaleCopy(1);
+			temp.a = .5f;
+			g.setColor(temp);
+			
+			for (int x = this.selectedTower.getPosition().x - this.selectedTower.getRadius(); x < this.selectedTower.getPosition().x + this.selectedTower.getSize() + this.selectedTower.getRadius(); x++)
+			{
+				for (int y = this.selectedTower.getPosition().y - this.selectedTower.getRadius(); y < this.selectedTower.getPosition().y + this.selectedTower.getSize() + this.selectedTower.getRadius(); y++)
+				{
+					if (x > 0 && x < columns && y > 0 && y < rows)
+					{
+						g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+					}
+				}
+			}
+		}
 	}
 }
