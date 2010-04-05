@@ -43,6 +43,7 @@ public class CurrencyOne extends TowerBase
 			this.speed = 17;
 			this.radius = 17;
 		}
+		super.doUpgrade();
 	}
 	
 	@Override

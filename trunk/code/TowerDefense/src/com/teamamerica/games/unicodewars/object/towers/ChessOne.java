@@ -43,6 +43,7 @@ public class ChessOne extends TowerBase
 			this.speed = 16;
 			this.radius = 16;
 		}
+		super.doUpgrade();
 	}
 	
 	@Override

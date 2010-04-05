@@ -196,6 +196,23 @@ public abstract class TowerBase extends GameObject
 
 	public void doUpgrade()
 	{
+		this.registerNewSpaces();
+		EventType buildType;
+		switch (this._team)
+		{
+			case Player1:
+				buildType = EventType.P1_TOWER_BUILT;
+				GameMap.inst().updateDefaultMobPath(Team.Player2);
+				break;
+			case Player2:
+				buildType = EventType.P2_TOWER_BUILT;
+				GameMap.inst().updateDefaultMobPath(Team.Player1);
+				break;
+			default:
+				buildType = EventType.P2_TOWER_BUILT;
+		}
+		Event buildEvent = new Event(buildType, this._position, this);
+		EventManager.inst().dispatch(buildEvent);
 	}
 
 	public String getInfoString()
@@ -234,7 +251,7 @@ public abstract class TowerBase extends GameObject
 					}
 				};
 				Location loc = new Location(x, y);
-				GameMap.inst().registerSpace(loc, temp);
+				GameMap.inst().registerSpace(this, loc, temp);
 				listeners.put(loc, temp);
 				attackMap.put(loc, new ArrayList<MobObject>());
 				sortedLocs.add(loc);
@@ -274,6 +291,44 @@ public abstract class TowerBase extends GameObject
 		}
 	}
 	
+	protected void registerNewSpaces()
+	{
+		for (int x = this._position.x - this.radius; x < this._position.x + this._size + this.radius; x++)
+		{
+			for (int y = this._position.y - this.radius; y < this._position.y + this._size + this.radius; y++)
+			{
+				Location loc = new Location(x, y);
+				if (this.listeners.get(loc) == null)
+				{
+					EventListener temp = new EventListener() {
+						
+						@Override
+						public void onEvent(Event e)
+						{
+							
+							switch (e.getId())
+							{
+								case ENTER_SPACE:
+									handleMobInRange(e.sender, e.getLocation());
+									break;
+								case LEAVE_SPACE:
+									handleMobLeavingRange(e.sender, e.getLocation());
+									break;
+							}
+							
+						}
+					};
+					
+					GameMap.inst().registerSpace(this, loc, temp);
+					listeners.put(loc, temp);
+					attackMap.put(loc, new ArrayList<MobObject>());
+					sortedLocs.add(loc);
+					Collections.sort(sortedLocs);
+				}
+			}
+		}
+	}
+
 	private void handleTowerClick()
 	{
 		BB.inst().setHUD(this);
@@ -367,7 +422,7 @@ public abstract class TowerBase extends GameObject
 		super.deleteObject();
 		for (Location key : listeners.keySet())
 		{
-			GameMap.inst().unregisterSpace(key, listeners.get(key));
+			GameMap.inst().unregisterSpace(this, key, listeners.get(key));
 		}
 		for (int x = this._position.x; x < this._position.x + this._size; x++)
 		{

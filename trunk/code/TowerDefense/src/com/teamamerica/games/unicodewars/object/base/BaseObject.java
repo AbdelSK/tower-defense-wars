@@ -1,6 +1,6 @@
 package com.teamamerica.games.unicodewars.object.base;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.system.EventManager;
@@ -14,7 +14,7 @@ import com.teamamerica.games.unicodewars.utils.Team;
 public class BaseObject extends GameObject
 {
 	public static final short size = 4;
-	private ArrayList<EventListener> listeners;
+	private HashMap<Location, EventListener> listeners;
 	private int health;
 	private boolean registered;
 	
@@ -25,7 +25,7 @@ public class BaseObject extends GameObject
 		this._size = size;
 		this.health = 200;
 		this.registered = false;
-		this.listeners = new ArrayList<EventListener>();
+		this.listeners = new HashMap<Location, EventListener>();
 		RegisterMapListeners();
 	}
 	
@@ -49,8 +49,9 @@ public class BaseObject extends GameObject
 
 					}
 				};
-				GameMap.inst().registerSpace(new Location(x, y), temp);
-				listeners.add(temp);
+				Location loc = new Location(x, y);
+				GameMap.inst().registerSpace(this, loc, temp);
+				listeners.put(loc, temp);
 			}
 		}
 	}
@@ -73,6 +74,16 @@ public class BaseObject extends GameObject
 				e.addParameter("teamDestroyed", this.getTeam());
 				EventManager.inst().dispatch(e);
 			}
+		}
+	}
+	
+	@Override
+	public void deleteObject()
+	{
+		super.deleteObject();
+		for (Location key : listeners.keySet())
+		{
+			GameMap.inst().unregisterSpace(this, key, listeners.get(key));
 		}
 	}
 

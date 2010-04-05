@@ -19,6 +19,7 @@ import com.teamamerica.games.unicodewars.factory.BaseMaker;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.base.BaseObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
+import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.utils.Event;
 import com.teamamerica.games.unicodewars.utils.EventListener;
 import com.teamamerica.games.unicodewars.utils.EventType;
@@ -38,6 +39,7 @@ public class GameMap implements TileBasedMap
 	private static Logger logger = Logger.getLogger(GameMap.class);
 	private TileType[][] map;
 	private Team[][] teamMap;
+	private int[][] costMap;
 	private HashMap<Location, List<EventListener>> listeners;
 	private Queue<Event> eventQueue;
 	private PathFinder pathFinder;
@@ -57,6 +59,7 @@ public class GameMap implements TileBasedMap
 	{
 		this.map = new TileType[columns][rows];
 		this.teamMap = new Team[columns][rows];
+		this.costMap = new int[columns][rows];
 		this.spawnPoints = new ArrayList<Location>();
 		this.baseLocations = new ArrayList<Location>();
 		this.spawnPaths = new ArrayList<Path>();
@@ -100,7 +103,8 @@ public class GameMap implements TileBasedMap
 			for (int x = 0; x < columns; x++)
 			{
 				this.listeners.put(new Location(x, y), new ArrayList<EventListener>());
-				this.map[x][y] = TileType.Free; // This will change
+				this.map[x][y] = TileType.Free;
+				this.costMap[x][y] = 1;
 				if (x < columns / 2)
 				{
 					this.teamMap[x][y] = Team.Player1;
@@ -189,70 +193,9 @@ public class GameMap implements TileBasedMap
 	public float getCost(PathFindingContext context, int tx, int ty)
 	{
 		if (context.getMover() instanceof MobObject)
-		{
-			MobObject temp = (MobObject) context.getMover();
-			int cost = 1;
-			for (int range = 5; range > 0; range--)
-			{
-				int x = tx - range;
-				int y = ty - range;
-				while (x < tx + range)
-				{
-					if (x > 0 && x < columns && y > 0 && y < rows)
-					{
-						if (this.teamMap[x][y] != temp.getTeam())
-						{
-							if (this.map[x][y] == TileType.Tower)
-								cost += 6 - range;
-						}
-					}
-					x++;
-					
-				}
-				while (y < ty + range)
-				{
-					if (x > 0 && x < columns && y > 0 && y < rows)
-					{
-						if (this.teamMap[x][y] != temp.getTeam())
-						{
-							if (this.map[x][y] == TileType.Tower)
-								cost += 6 - range;
-						}
-					}
-					y++;
-					
-				}
-				while (x > tx - range)
-				{
-					if (x > 0 && x < columns && y > 0 && y < rows)
-					{
-						if (this.teamMap[x][y] != temp.getTeam())
-						{
-							if (this.map[x][y] == TileType.Tower)
-								cost += 6 - range;
-						}
-					}
-					x--;
-				}
-				while (y > ty - range)
-				{
-					if (x > 0 && x < columns && y > 0 && y < rows)
-					{
-						if (this.teamMap[x][y] != temp.getTeam())
-						{
-							if (this.map[x][y] == TileType.Tower)
-								cost += 6 - range;
-						}
-					}
-					y--;
-				}
-				
-			}
-			
-			return cost;
-		}
+			return this.costMap[tx][ty];
 		else
-			return 0;
+			return 1;
 	}
 	
 	@Override
@@ -260,7 +203,6 @@ public class GameMap implements TileBasedMap
 	{
 		return rows;
 	}
-
 
 	@Override
 	public int getWidthInTiles()
@@ -322,7 +264,7 @@ public class GameMap implements TileBasedMap
 		return true;
 	}
 	
-	private Path updateDefaultMobPath(Team team)
+	public Path updateDefaultMobPath(Team team)
 	{
 		Team self, enemy;
 		switch (team)
@@ -361,8 +303,14 @@ public class GameMap implements TileBasedMap
 	 * @param callback
 	 *            the EventListener to call
 	 */
-	public void registerSpace(Location loc, EventListener callback)
+	public void registerSpace(GameObject obj, Location loc, EventListener callback)
 	{
+		if (obj.getTeam() != this.teamMap[loc.x][loc.y])
+			return;
+		
+		if (obj instanceof TowerBase)
+			this.costMap[loc.x][loc.y]++;
+
 		if (listeners.get(loc) == null)
 		{
 			listeners.put(loc, new ArrayList<EventListener>());
@@ -378,8 +326,11 @@ public class GameMap implements TileBasedMap
 	 * @param callback
 	 *            the EventListener registered with this space to unregister
 	 */
-	public void unregisterSpace(Location loc, EventListener callback)
+	public void unregisterSpace(GameObject obj, Location loc, EventListener callback)
 	{
+		if (obj instanceof TowerBase)
+			this.costMap[loc.x][loc.y]--;
+
 		listeners.get(loc).remove(callback);
 	}
 	
