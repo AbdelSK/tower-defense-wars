@@ -332,6 +332,7 @@ public abstract class TowerBase extends GameObject
 	private void handleTowerClick()
 	{
 		BB.inst().setHUD(this);
+		GameMap.inst().setSelectedTower(this);
 		Button buttons[] = new Button[3];
 		
 		for (int i = 0; i < 3; i++)
@@ -358,6 +359,7 @@ public abstract class TowerBase extends GameObject
 					BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[1]);
 					BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[2]);
 					BB.inst().setCurrentHUD(null);
+					GameMap.inst().clearSelectedTower();
 				}
 			});
 		}
@@ -373,6 +375,7 @@ public abstract class TowerBase extends GameObject
 				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[1]);
 				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[2]);
 				BB.inst().setCurrentHUD(null);
+				GameMap.inst().clearSelectedTower();
 			}
 		});
 		
