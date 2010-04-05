@@ -65,6 +65,7 @@ public class DiceOne extends TowerBase
 		{
 			this.speed = 1;
 		}
+		super.doUpgrade();
 	}
 	
 	@Override

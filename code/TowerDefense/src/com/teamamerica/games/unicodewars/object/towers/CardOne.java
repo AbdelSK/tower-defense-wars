@@ -43,6 +43,7 @@ public class CardOne extends TowerBase
 			this.speed = 16;
 			this.radius = 20;
 		}
+		super.doUpgrade();
 	}
 	
 	@Override

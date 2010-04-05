@@ -43,6 +43,7 @@ public class MusicOne extends TowerBase
 			this.speed = 20;
 			this.radius = 16;
 		}
+		super.doUpgrade();
 	}
 	
 	@Override
