@@ -9,24 +9,23 @@ import com.teamamerica.games.unicodewars.utils.Team;
 public class MobButton extends AwesomeButton
 {
 	private MobObject.Type type;
+	private int level;
 	
 	public MobButton()
 	{
 		super();
 	}
 	
-	public void init(String text, String hover, int x, int y, MobObject.Type mt)
+	public void init(String text, String hover, int x, int y, MobObject.Type mt, int level)
 	{
 		super.init(text, hover, x, y);
 		this.type = mt;
-		System.out.println("button init: setting to " + type);
+		this.level = level;
 	}
 
 	@Override
 	public void buttonPressed(ButtonPressedEvent arg0)
 	{
-		System.out.println("button pressed: creating " + type);
-		int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
 		MobMaker.MakeMob(type, level, Team.Player1);
 		BB.inst().setMobTypeSelection(type);
 		BB.inst().setMobLevelSelection(level);
