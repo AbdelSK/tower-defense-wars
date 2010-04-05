@@ -96,19 +96,37 @@ public class VisualComponent extends Component
 				MobObject temp = (MobObject) this._parent;
 				float healthPercent = ((float) temp.getCurrentHP()) / ((float) temp.getTotalHP());
 				img.setAlpha(healthPercent);
+				switch (temp.getType())
+				{
+					case chinese:
+						img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.red.brighter());
+						break;
+					case latin:
+						img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.blue.brighter());
+						break;
+					case greek:
+						img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.green.brighter());
+						break;
+					case cyrillic:
+						img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.orange.brighter());
+						break;
+					default:
+						img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.cyan.brighter());
+						break;
+				}
 			}
-			switch (this._parent.getTeam())
-			{
-				case Player1:
-					img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.cyan);
-					break;
-				case Player2:
-					img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.red);
-					break;
-				default:
-					img.draw(renderLocTL.x, renderLocTL.y, size, size);
-					break;
-			}
+			// switch (this._parent.getTeam())
+			// {
+			// case Player1:
+			// img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.cyan);
+			// break;
+			// case Player2:
+			// img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.red);
+			// break;
+			// default:
+			// img.draw(renderLocTL.x, renderLocTL.y, size, size);
+			// break;
+			// }
 			
 		}
 		else
