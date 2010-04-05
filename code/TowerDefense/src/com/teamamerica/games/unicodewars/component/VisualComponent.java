@@ -91,6 +91,12 @@ public class VisualComponent extends Component
 		
 		if (img != null)
 		{
+			if (this._parent instanceof MobObject)
+			{
+				MobObject temp = (MobObject) this._parent;
+				float healthPercent = ((float) temp.getCurrentHP()) / ((float) temp.getTotalHP());
+				img.setAlpha(healthPercent);
+			}
 			switch (this._parent.getTeam())
 			{
 				case Player1:
