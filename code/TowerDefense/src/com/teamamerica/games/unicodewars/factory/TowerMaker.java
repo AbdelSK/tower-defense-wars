@@ -43,7 +43,7 @@ public class TowerMaker
 				temp = new CurrencyOne(loc, team);
 				break;
 		}
-		VisualComponent looks = new VisualComponent(temp);
+		VisualComponent looks = new VisualComponent(temp, null);
 		temp.addComponent(looks);
 		BB.inst().addTeamObject(temp, team);
 		if (GameMap.inst().buildTower(temp))

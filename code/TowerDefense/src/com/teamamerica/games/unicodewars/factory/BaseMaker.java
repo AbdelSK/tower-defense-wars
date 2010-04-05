@@ -16,7 +16,7 @@ public class BaseMaker
 	{
 		BaseObject temp = new BaseObject(team.toString() + " base", BB.inst().getNextId(), team, 20, loc);
 
-		VisualComponent view = new VisualComponent(temp);
+		VisualComponent view = new VisualComponent(temp, null);
 		temp.addComponent(view);
 		
 		BB.inst().addTeamObject(temp, team);
