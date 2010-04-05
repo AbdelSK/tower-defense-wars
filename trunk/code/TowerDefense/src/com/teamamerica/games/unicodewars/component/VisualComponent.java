@@ -45,25 +45,7 @@ public class VisualComponent extends Component
 		Location renderLocTL = this._parent.getPositionInPixels();
 		int size = this._parent.getSize() * GameMap.inst().tileSize;
 
-		if (this._parent instanceof MobObject)
-		{
-			switch (((MobObject) this._parent).getType())
-			{
-				case chinese:
-					g.setColor(Color.blue);
-					break;
-				case latin:
-					g.setColor(Color.green);
-					break;
-				case greek:
-					g.setColor(Color.orange);
-					break;
-				case cyrillic:
-					g.setColor(Color.yellow);
-					break;
-			}
-		}
-		else if (this._parent instanceof TowerBase)
+		if (this._parent instanceof TowerBase)
 		{
 			switch (((TowerBase) this._parent).getType())
 			{
