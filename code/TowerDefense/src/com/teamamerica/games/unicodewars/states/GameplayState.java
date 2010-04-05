@@ -2,12 +2,9 @@ package com.teamamerica.games.unicodewars.states;
 
 import java.io.IOException;
 import org.apache.log4j.Logger;
-import org.fenggui.Button;
 import org.fenggui.Container;
 import org.fenggui.Display;
 import org.fenggui.FengGUI;
-import org.fenggui.event.ButtonPressedEvent;
-import org.fenggui.event.IButtonPressedListener;
 import org.fenggui.layout.GridLayout;
 import org.fenggui.theme.XMLTheme;
 import org.fenggui.theme.xml.IXMLStreamableException;
@@ -20,7 +17,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 import com.teamamerica.games.unicodewars.Main;
-import com.teamamerica.games.unicodewars.factory.MobMaker;
+import com.teamamerica.games.unicodewars.gui.MobButton;
 import com.teamamerica.games.unicodewars.gui.TowerButton;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.object.towers.CardOne;
@@ -226,82 +223,33 @@ public class GameplayState extends BHGameState
 	
 	private void layoutMobButtons(Display display)
 	{
-		int buttonSize = 64;
-		final Button buttons[] = new Button[20];
+		final MobButton buttons[][] = new MobButton[4][5];
+		String text[] = new String[4];
+		MobObject.Type type[] = new MobObject.Type[4];
+		text[0] = "Chn";
+		text[1] = "Lat";
+		text[2] = "Grk";
+		text[3] = "Cyr";
+		type[0] = MobObject.Type.chinese;
+		type[1] = MobObject.Type.latin;
+		type[2] = MobObject.Type.greek;
+		type[3] = MobObject.Type.cyrillic;
 		
 		mobInterface.setPosition(new Point(0, 0));
 		mobInterface.setHeight(64);
 		mobInterface.setWidth(320);
 
-		for (int i = 0; i < 20; i++)
-		{
-			buttons[i] = FengGUI.createWidget(Button.class);
-			buttons[i].setSize(64, 64);
-			buttons[i].setMultiline(true);
-			buttons[i].setShrinkable(false);
-		}
-
-		for (int i = 0; i < 5; i++)
-		{
-			buttons[i].setText("Chinese " + (i + 1));
-			buttons[i].setPosition(new Point(i * buttonSize, 0));
-			buttons[i].addButtonPressedListener(new IButtonPressedListener() {
-				public void buttonPressed(ButtonPressedEvent arg0)
-				{
-					int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
-					MobMaker.MakeMob(MobObject.Type.chinese, level, Team.Player1);
-					BB.inst().setMobTypeSelection(MobObject.Type.chinese);
-					BB.inst().setMobLevelSelection(level);
-				}
-			});
-		}
-
-		for (int i = 0; i < 5; i++)
-		{
-			buttons[i + 5].setText("Latin " + (i + 1));
-			buttons[i + 5].setPosition(new Point(i * buttonSize, buttonSize));
-			buttons[i + 5].addButtonPressedListener(new IButtonPressedListener() {
-				public void buttonPressed(ButtonPressedEvent arg0)
-				{
-					int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
-					MobMaker.MakeMob(MobObject.Type.latin, level, Team.Player1);
-					BB.inst().setMobTypeSelection(MobObject.Type.latin);
-					BB.inst().setMobLevelSelection(level);
-				}
-			});
-		}
-		
-		for (int i = 0; i < 5; i++)
-		{
-			buttons[i + 10].setText("Greek " + (i + 1));
-			buttons[i + 10].setPosition(new Point(i * buttonSize, 2 * buttonSize));
-			buttons[i + 10].addButtonPressedListener(new IButtonPressedListener() {
-				public void buttonPressed(ButtonPressedEvent arg0)
-				{
-					int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
-					MobMaker.MakeMob(MobObject.Type.greek, level, Team.Player1);
-					BB.inst().setMobTypeSelection(MobObject.Type.greek);
-					BB.inst().setMobLevelSelection(level);
-				}
-			});
-		}
-		
-		for (int i = 0; i < 5; i++)
-		{
-			buttons[i + 15].setText("Cyrillic " + (i + 1));
-			buttons[i + 15].setPosition(new Point(i * buttonSize, 3 * buttonSize));
-			buttons[i + 15].addButtonPressedListener(new IButtonPressedListener() {
-				public void buttonPressed(ButtonPressedEvent arg0)
-				{
-					int level = arg0.getTrigger().getPosition().getX() / arg0.getTrigger().getSize().getWidth() + 1;
-					MobMaker.MakeMob(MobObject.Type.cyrillic, level, Team.Player1);
-					BB.inst().setMobTypeSelection(MobObject.Type.cyrillic);
-					BB.inst().setMobLevelSelection(level);
-				}
-			});
-		}
-		
-		for (int i = 0; i < 20; i++)
-			mobInterface.addWidget(buttons[i]);
+		for (int i = 0; i < 4; i++)
+			for (int j = 0; j < 5; j++)
+			{
+				buttons[i][j] = FengGUI.createWidget(MobButton.class);
+				buttons[i][j].setSize(64, 64);
+				buttons[i][j].setMultiline(true);
+				buttons[i][j].setShrinkable(false);
+				buttons[i][j].setPosition(new Point(j * 64, i * 64));
+				buttons[i][j].init(text[i] + " " + (j + 1), "lol", 64, 64, type[i], (j + 1));
+				buttons[i][j].addButtonPressedListener(buttons[i][j]);
+				mobInterface.addWidget(buttons[i][j]);
+			}
 	}
 }
