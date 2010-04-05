@@ -21,7 +21,7 @@
 		</ImageFont>
 	
 		<ImageFont name="defaultFont">
-			<create fontName="Friz Quadrata TT" type="plain" size="14" antialiasing="true"/>
+			<create fontName="Friz Quadrata TT" type="plain" size="10" antialiasing="true"/>
 		</ImageFont>
 		
 		<!-- TextRenderer use a font to render Text. They should be defined globally to save resources -->
