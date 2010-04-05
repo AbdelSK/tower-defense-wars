@@ -225,11 +225,32 @@ public class GameplayState extends BHGameState
 	{
 		final MobButton buttons[][] = new MobButton[4][5];
 		String text[] = new String[4];
+		String stats[][] = new String[4][5];
 		MobObject.Type type[] = new MobObject.Type[4];
 		text[0] = "Chn";
 		text[1] = "Lat";
 		text[2] = "Grk";
 		text[3] = "Cyr";
+		stats[0][0] = "HP: 40\nDef: 4\nAtk: 1\nSpd: 1";
+		stats[0][1] = "HP: 80\nDef: 8\nAtk: 2\nSpd: 2";
+		stats[0][2] = "HP: 120\nDef: 12\nAtk: 3\nSpd: 3";
+		stats[0][3] = "HP: 160\nDef: 16\nAtk: 4\nSpd: 4";
+		stats[0][4] = "HP: 200\nDef: 20\nAtk: 5\nSpd: 5";
+		stats[1][0] = "HP: 20\nDef: 1\nAtk: 2\nSpd: 4";
+		stats[1][1] = "HP: 40\nDef: 2\nAtk: 4\nSpd: 8";
+		stats[1][2] = "HP: 60\nDef: 3\nAtk: 6\nSpd: 12";
+		stats[1][3] = "HP: 80\nDef: 4\nAtk: 8\nSpd: 16";
+		stats[1][4] = "HP: 100\nDef: 5\nAtk: 10\nSpd: 20";
+		stats[2][0] = "HP: 20\nDef: 2\nAtk: 4\nSpd: 1";
+		stats[2][1] = "HP: 40\nDef: 4\nAtk: 8\nSpd: 2";
+		stats[2][2] = "HP: 60\nDef: 6\nAtk: 12\nSpd: 3";
+		stats[2][3] = "HP: 80\nDef: 8\nAtk: 16\nSpd: 4";
+		stats[2][4] = "HP: 100\nDef: 10\nAtk: 20\nSpd: 5";
+		stats[3][0] = "HP: 80\nDef: 1\nAtk: 1\nSpd: 2";
+		stats[3][1] = "HP: 160\nDef: 2\nAtk: 2\nSpd: 4";
+		stats[3][2] = "HP: 240\nDef: 3\nAtk: 3\nSpd: 6";
+		stats[3][3] = "HP: 320\nDef: 4\nAtk: 4\nSpd: 8";
+		stats[3][4] = "HP: 400\nDef: 5\nAtk: 5\nSpd: 10";
 		type[0] = MobObject.Type.chinese;
 		type[1] = MobObject.Type.latin;
 		type[2] = MobObject.Type.greek;
@@ -247,7 +268,7 @@ public class GameplayState extends BHGameState
 				buttons[i][j].setMultiline(true);
 				buttons[i][j].setShrinkable(false);
 				buttons[i][j].setPosition(new Point(j * 64, i * 64));
-				buttons[i][j].init(text[i] + " " + (j + 1), "lol", 64, 64, type[i], (j + 1));
+				buttons[i][j].init(text[i] + " " + (j + 1), stats[i][j], 64, 64, type[i], (j + 1));
 				buttons[i][j].addButtonPressedListener(buttons[i][j]);
 				mobInterface.addWidget(buttons[i][j]);
 			}
