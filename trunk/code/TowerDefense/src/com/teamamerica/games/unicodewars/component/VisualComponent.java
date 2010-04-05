@@ -100,7 +100,7 @@ public class VisualComponent extends Component
 			switch (this._parent.getTeam())
 			{
 				case Player1:
-					img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.blue);
+					img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.cyan);
 					break;
 				case Player2:
 					img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.red);
