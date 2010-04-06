@@ -16,6 +16,7 @@ public class DiceOne extends TowerBase
 		super(TowerBase.Type.diceOne, 0, price, 0, 0, team, loc);
 	}
 
+	@Override
 	public boolean canUpgrade()
 	{
 		return this.level < 6;
@@ -32,22 +33,27 @@ public class DiceOne extends TowerBase
 		if (level == 2)
 		{
 			total = 12;
+			this.getVisualComponent().updateImage("data/images/towers/Dice-2.png");
 		}
 		else if (level == 3)
 		{
 			total = 19;
+			this.getVisualComponent().updateImage("data/images/towers/Dice-3.png");
 		}
 		else if (level == 4)
 		{
 			total = 26;
+			this.getVisualComponent().updateImage("data/images/towers/Dice-4.png");
 		}
 		else if (level == 5)
 		{
 			total = 33;
+			this.getVisualComponent().updateImage("data/images/towers/Dice-5.png");
 		}
 		else if (level == 6)
 		{
 			total = 40;
+			this.getVisualComponent().updateImage("data/images/towers/Dice-6.png");
 		}
 
 		this.attack = gen.nextInt(total);

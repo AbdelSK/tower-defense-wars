@@ -30,18 +30,21 @@ public class CardOne extends TowerBase
 			this.attack = 4;
 			this.speed = 4;
 			this.radius = 10;
+			this.getVisualComponent().updateImage("data/images/towers/Card-2.png");
 		}
 		else if (level == 3)
 		{
 			this.attack = 8;
 			this.speed = 8;
 			this.radius = 15;
+			this.getVisualComponent().updateImage("data/images/towers/Card-3.png");
 		}
 		else if (level == 4)
 		{
 			this.attack = 16;
 			this.speed = 16;
 			this.radius = 20;
+			this.getVisualComponent().updateImage("data/images/towers/Card-4.png");
 		}
 		super.doUpgrade();
 	}
