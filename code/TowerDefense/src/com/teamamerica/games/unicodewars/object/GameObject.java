@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.newdawn.slick.Graphics;
 import com.teamamerica.games.unicodewars.component.Component;
+import com.teamamerica.games.unicodewars.component.VisualComponent;
 import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.system.GameMap;
 import com.teamamerica.games.unicodewars.utils.Location;
@@ -239,5 +240,15 @@ public class GameObject
 		}
 		else
 			System.out.println("PROBLEM! Failed to remove object.");
+	}
+	
+	protected VisualComponent getVisualComponent()
+	{
+		for (Component c : _renderQueue)
+		{
+			if (c instanceof VisualComponent)
+				return (VisualComponent) c;
+		}
+		return null;
 	}
 }

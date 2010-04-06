@@ -30,18 +30,21 @@ public class MusicOne extends TowerBase
 			this.attack = 4;
 			this.speed = 10;
 			this.radius = 4;
+			this.getVisualComponent().updateImage("data/images/towers/Music-2.png");
 		}
 		else if (level == 3)
 		{
 			this.attack = 8;
 			this.speed = 15;
 			this.radius = 8;
+			this.getVisualComponent().updateImage("data/images/towers/Music-3.png");
 		}
 		else if (level == 4)
 		{
 			this.attack = 16;
 			this.speed = 20;
 			this.radius = 16;
+			this.getVisualComponent().updateImage("data/images/towers/Music-4.png");
 		}
 		super.doUpgrade();
 	}

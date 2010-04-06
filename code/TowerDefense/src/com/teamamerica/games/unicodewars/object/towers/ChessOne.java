@@ -30,18 +30,21 @@ public class ChessOne extends TowerBase
 			this.attack = 10;
 			this.speed = 4;
 			this.radius = 4;
+			this.getVisualComponent().updateImage("data/images/towers/Chess-2.png");
 		}
 		else if (level == 3)
 		{
 			this.attack = 15;
 			this.speed = 8;
 			this.radius = 8;
+			this.getVisualComponent().updateImage("data/images/towers/Chess-3.png");
 		}
 		else if (level == 4)
 		{
 			this.attack = 20;
 			this.speed = 16;
 			this.radius = 16;
+			this.getVisualComponent().updateImage("data/images/towers/Chess-4.png");
 		}
 		super.doUpgrade();
 	}
