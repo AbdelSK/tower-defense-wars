@@ -15,8 +15,8 @@ public class BaseMaker
 	public static BaseObject MakeBase(Team team, Location loc)
 	{
 		BaseObject temp = new BaseObject(team.toString() + " base", BB.inst().getNextId(), team, 20, loc);
-
-		VisualComponent view = new VisualComponent(temp, null);
+		String imgPath = "data/images/Base.png";
+		VisualComponent view = new VisualComponent(temp, imgPath);
 		temp.addComponent(view);
 		
 		BB.inst().addTeamObject(temp, team);

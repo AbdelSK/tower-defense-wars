@@ -24,26 +24,31 @@ public class TowerMaker
 	{
 		
 		TowerBase temp = null;
-		
+		String imgPath = null;
 		switch (t)
 		{
 			case diceOne:
 				temp = new DiceOne(loc, team);
+				imgPath = "data/images/towers/Dice-1.png";
 				break;
 			case chessOne:
 				temp = new ChessOne(loc, team);
+				imgPath = "data/images/towers/Chess-1.png";
 				break;
 			case cardOne:
 				temp = new CardOne(loc, team);
+				imgPath = "data/images/towers/Card-1.png";
 				break;
 			case musicOne:
 				temp = new MusicOne(loc, team);
+				imgPath = "data/images/towers/Music-1.png";
 				break;
 			case currencyOne:
 				temp = new CurrencyOne(loc, team);
+				imgPath = "data/images/towers/Currency-1.png";
 				break;
 		}
-		VisualComponent looks = new VisualComponent(temp, null);
+		VisualComponent looks = new VisualComponent(temp, imgPath);
 		temp.addComponent(looks);
 		BB.inst().addTeamObject(temp, team);
 		if (GameMap.inst().buildTower(temp))
