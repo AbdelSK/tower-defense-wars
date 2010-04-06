@@ -18,6 +18,11 @@ public class VisualComponent extends Component
 	public VisualComponent(GameObject owner, String imgPath)
 	{
 		super(owner);
+		this.updateImage(imgPath);
+	}
+	
+	public void updateImage(String imgPath)
+	{
 		try
 		{
 			img = new Image(imgPath);
@@ -97,18 +102,21 @@ public class VisualComponent extends Component
 						break;
 				}
 			}
-			// switch (this._parent.getTeam())
-			// {
-			// case Player1:
-			// img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.cyan);
-			// break;
-			// case Player2:
-			// img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.red);
-			// break;
-			// default:
-			// img.draw(renderLocTL.x, renderLocTL.y, size, size);
-			// break;
-			// }
+			else
+			{
+				switch (this._parent.getTeam())
+				{
+					case Player1:
+						img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.cyan);
+						break;
+					case Player2:
+						img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.red);
+						break;
+					default:
+						img.draw(renderLocTL.x, renderLocTL.y, size, size);
+						break;
+				}
+			}
 			
 		}
 		else
