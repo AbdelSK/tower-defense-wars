@@ -16,6 +16,7 @@ import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.utils.KeyListener;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.MouseListener;
+import com.teamamerica.games.unicodewars.utils.Player;
 import com.teamamerica.games.unicodewars.utils.Team;
 import com.teamamerica.games.unicodewars.utils.Variable;
 
@@ -43,6 +44,7 @@ public class BB {
 	private Display display;
 	private TowerBase HUD;
 	private Button currentHUD[];
+	public Player players[] = new Player[2];
 		
 	private BB() { 
 		_random = new Random(System.currentTimeMillis());
