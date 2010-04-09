@@ -115,7 +115,7 @@ public abstract class TowerBase extends GameObject
 	@Override
 	public void update(int elapsed)
 	{
-		if (stopWatch.xMilisecondsPassed(40 / this.speed))
+		if (stopWatch.xMilisecondsPassed(80 / this.speed))
 		{
 			
 			MobObject toAttack = null;

@@ -10,10 +10,10 @@ public class ChineseChar extends MobObject
 	{
 		super("Chinese Mob", BB.inst().getNextId(), 10, loc, side, level, MobObject.Type.chinese);
 		
-		this.defense = 4 * this.level;
-		this.vitality = 2 * this.level;
-		this.speed = this.attack = 1 * this.level;
+		this.defense = 4 * (int) Math.pow(this.level, 3);
+		this.vitality = 2 * (int) Math.pow(this.level, 3);
+		this.speed = this.attack = 1 * (int) Math.pow(this.level, 2);
 		
-		this.currentHP = this.totalHP = this.vitality * 20;
+		this.currentHP = this.totalHP = this.vitality * 80;
 	}
 }

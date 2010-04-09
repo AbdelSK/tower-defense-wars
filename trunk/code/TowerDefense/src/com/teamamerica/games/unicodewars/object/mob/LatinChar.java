@@ -10,10 +10,10 @@ public class LatinChar extends MobObject
 	{
 		super("Latin Mob", BB.inst().getNextId(), 10, loc, side, level, MobObject.Type.latin);
 
-		this.speed = 4 * this.level;
-		this.attack = 2 * this.level;
-		this.defense = this.vitality = 1 * this.level;
+		this.speed = 4 * (int) Math.pow(this.level, 3);
+		this.attack = 2 * (int) Math.pow(this.level, 2);
+		this.defense = this.vitality = 1 * (int) Math.pow(this.level, 3);
 		
-		this.currentHP = this.totalHP = this.vitality * 20;
+		this.currentHP = this.totalHP = this.vitality * 80;
 	}
 }

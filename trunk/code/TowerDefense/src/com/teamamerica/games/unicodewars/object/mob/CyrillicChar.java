@@ -10,10 +10,10 @@ public class CyrillicChar extends MobObject
 	{
 		super("Cyrillic Mob", BB.inst().getNextId(), 10, loc, side, level, MobObject.Type.cyrillic);
 		
-		this.vitality = 4 * this.level;
-		this.speed = 2 * this.level;
-		this.defense = this.attack = 1 * this.level;
+		this.vitality = 4 * (int) Math.pow(this.level, 3);
+		this.speed = 2 * (int) Math.pow(this.level, 3);
+		this.defense = this.attack = 1 * (int) Math.pow(this.level, 2);
 		
-		this.currentHP = this.totalHP = this.vitality * 20;
+		this.currentHP = this.totalHP = this.vitality * 80;
 	}
 }
