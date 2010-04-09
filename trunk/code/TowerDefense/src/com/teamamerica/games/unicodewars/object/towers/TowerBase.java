@@ -213,6 +213,8 @@ public abstract class TowerBase extends GameObject
 		}
 		Event buildEvent = new Event(buildType, this._position, this);
 		EventManager.inst().dispatch(buildEvent);
+		
+		price += getUpgradePrice();
 	}
 
 	public String getInfoString()
