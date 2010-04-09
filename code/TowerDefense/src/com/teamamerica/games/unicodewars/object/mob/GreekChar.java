@@ -10,10 +10,10 @@ public class GreekChar extends MobObject
 	{
 		super("Greek Mob", BB.inst().getNextId(), 10, loc, side, level, MobObject.Type.greek);
 		
-		this.attack = 4 * this.level;
-		this.defense = 2 * this.level;
-		this.speed = this.vitality = 1 * this.level;
+		this.attack = 4 * (int) Math.pow(this.level, 2);
+		this.defense = 2 * (int) Math.pow(this.level, 3);
+		this.speed = this.vitality = 1 * (int) Math.pow(this.level, 3);
 		
-		this.currentHP = this.totalHP = this.vitality * 20;
+		this.currentHP = this.totalHP = this.vitality * 80;
 	}
 }
