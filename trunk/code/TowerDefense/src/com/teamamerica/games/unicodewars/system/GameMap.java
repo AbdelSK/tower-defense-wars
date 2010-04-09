@@ -332,6 +332,8 @@ public class GameMap implements TileBasedMap
 	 */
 	public void unregisterSpace(GameObject obj, Location loc, EventListener callback)
 	{
+		if (loc.x < 0 || loc.x >= this.columns || loc.y < 0 || loc.y >= this.rows)
+			return;
 		if (obj instanceof TowerBase)
 			this.costMap[loc.x][loc.y]--;
 
