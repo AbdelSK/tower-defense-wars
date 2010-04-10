@@ -372,25 +372,30 @@ public class GameMap implements TileBasedMap
 	 */
 	public boolean canBuildTower(Location loc, short size, Team team)
 	{
-		for (int i = loc.x; i < (loc.x + size); i++)
+		if (BB.inst().getPlayer().getGold() >= BB.inst().getTowerSelection().price)
 		{
-			for (int j = loc.y; j < (loc.y + size); j++)
-			{
-				if (i >= columns || j >= rows)
-					return false;
-				if (this.teamMap[i][j] != team)
-					return false;
-				if (this.map[i][j] == TileType.Tower)
-					return false;
-				if (this.map[i][j] == TileType.Base)
-					return false;
-				if (this.map[i][j] == TileType.Spawn)
-					return false;
-				if (this.map[i][j] == TileType.Blocked)
-					return false;
-			}
+			for (int i = loc.x; i < (loc.x + size); i++)
+				for (int j = loc.y; j < (loc.y + size); j++)
+				{
+					if (i >= columns || j >= rows)
+						return false;
+					if (this.teamMap[i][j] != team)
+						return false;
+					if (this.map[i][j] == TileType.Tower)
+						return false;
+					if (this.map[i][j] == TileType.Base)
+						return false;
+					if (this.map[i][j] == TileType.Spawn)
+						return false;
+					if (this.map[i][j] == TileType.Blocked)
+						return false;
+				}
+			
+			BB.inst().getPlayer().purchase(BB.inst().getTowerSelection().price);
+			return true;
 		}
-		return true;
+		else
+			return false;
 	}
 	
 	/**

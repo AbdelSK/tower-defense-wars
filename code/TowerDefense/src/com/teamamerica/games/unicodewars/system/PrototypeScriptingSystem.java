@@ -2,10 +2,8 @@ package com.teamamerica.games.unicodewars.system;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import com.teamamerica.games.unicodewars.factory.MobMaker;
 import com.teamamerica.games.unicodewars.factory.TowerMaker;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
-import com.teamamerica.games.unicodewars.utils.KeyListener;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.MouseListener;
 import com.teamamerica.games.unicodewars.utils.Team;
@@ -17,29 +15,6 @@ public class PrototypeScriptingSystem implements Subsystem
 	
 	public PrototypeScriptingSystem()
 	{
-
-		BB.inst().addKeyListener(new KeyListener() {
-			@Override
-			public void keyPressed(int key)
-			{
-				
-			}
-			
-			@Override
-			public void keyReleased(int key)
-			{
-				if (key == Input.KEY_M)
-				{
-					MobMaker.MakeMob(BB.inst().getMobTypeSelection(), BB.inst().getMobLevelSelection(), Team.Player1);
-				}
-				
-				if (key == Input.KEY_T)
-				{
-					buildTowersInRows();
-				}
-			}
-		});
-		
 		BB.inst().addMouseListenerListener(new MouseListener() {
 			private int tx[] = { -1, -1 };
 			private int ty[] = { -1, -1 };
