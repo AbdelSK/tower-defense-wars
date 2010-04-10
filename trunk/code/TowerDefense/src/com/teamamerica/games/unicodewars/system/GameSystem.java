@@ -93,6 +93,10 @@ public class GameSystem
 		if (this.tickTimer.xMilisecondsPassed(GameSystem.tickTime))
 		{
 			// Tick has passed. Update what is needed.
+			
+			// adjust the players total gold and next income value
+			BB.inst().getPlayer().addGold(BB.inst().getPlayer().getIncome());
+			BB.inst().getPlayer().addIncome(-1 * BB.inst().getPlayer().getIncome());
 		}
 	}
 
