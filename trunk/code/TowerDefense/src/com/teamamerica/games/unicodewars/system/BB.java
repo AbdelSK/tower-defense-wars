@@ -268,6 +268,6 @@ public class BB {
 	
 	public Player getPlayer()
 	{
-		return players[0];
+		return players[Team.Player1.index()];
 	}
 }
