@@ -15,40 +15,56 @@ import com.teamamerica.games.unicodewars.utils.Timer;
 public class MoverComponent extends Component
 {
 	private Path path;
+	private GameObject _owner;
 	private int pathStep;
 	private Timer stopwatch;
 	private int speedFactor;
-	private EventListener towerBuildListener;
+	private EventListener towerListener;
 	private EventType towerBuildListenerType;
+	private EventType towerSoldListenerType;
 	
 	public MoverComponent(GameObject owner)
 	{
 		super(owner);
 		// TODO Auto-generated constructor stub
 		this.stopwatch = new Timer();
+		this._owner = owner;
 		
-		towerBuildListener = new EventListener() {
+		towerListener = new EventListener() {
 			
 			@Override
 			public void onEvent(Event e)
 			{
 				// TODO Auto-generated method stub
-				checkAndUpdate(e.sender);
+				/* pjdebug */
+				System.out.println("eID: " + e.getId() + ", team: " + _owner.getTeam());
+				if ((e.getId() == EventType.P1_TOWER_SOLD && _owner.getTeam() == Team.Player2) || (e.getId() == EventType.P2_TOWER_SOLD && _owner.getTeam() == Team.Player1))
+				{
+					updatePath();
+				}
+				else
+				{
+					checkAndUpdate(e.sender);
+				}
 			}
 		};
 		switch (owner.getTeam())
 		{
 			case Player1:
 				this.towerBuildListenerType = EventType.P2_TOWER_BUILT;
+				this.towerSoldListenerType = EventType.P2_TOWER_SOLD;
 				break;
 			case Player2:
 				this.towerBuildListenerType = EventType.P1_TOWER_BUILT;
+				this.towerSoldListenerType = EventType.P1_TOWER_SOLD;
 				break;
 			default:
 				this.towerBuildListenerType = EventType.P2_TOWER_BUILT;
+				this.towerSoldListenerType = EventType.P2_TOWER_SOLD;
 				break;
 		}
-		EventManager.inst().registerForAll(towerBuildListenerType, towerBuildListener);
+		EventManager.inst().registerForAll(towerBuildListenerType, towerListener);
+		EventManager.inst().registerForAll(towerSoldListenerType, towerListener);
 		pathStep = 0;
 		
 		if (owner instanceof MobObject)
@@ -200,7 +216,8 @@ public class MoverComponent extends Component
 	public void deleteComponent()
 	{
 		GameMap.inst().leaveSpace(_parent, _parent.getPosition());
-		EventManager.inst().unregisterForAll(this.towerBuildListenerType, this.towerBuildListener);
+		EventManager.inst().unregisterForAll(this.towerBuildListenerType, this.towerListener);
+		EventManager.inst().unregisterForAll(this.towerSoldListenerType, this.towerListener);
 		super.deleteComponent();
 
 	}

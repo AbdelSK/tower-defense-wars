@@ -397,6 +397,23 @@ public abstract class TowerBase extends GameObject
 	
 	private void sellTower()
 	{
+		EventType sellType;
+		switch (this._team)
+		{
+			case Player1:
+				sellType = EventType.P1_TOWER_SOLD;
+				break;
+			case Player2:
+				sellType = EventType.P2_TOWER_SOLD;
+				break;
+			default:
+				sellType = EventType.P2_TOWER_SOLD;
+				break;
+		}
+		/* pjdebug */
+		System.out.println("sellType: " + sellType);
+		Event sellEvent = new Event(sellType);
+		EventManager.inst().dispatch(sellEvent);
 		this.deleteObject();
 	}
 

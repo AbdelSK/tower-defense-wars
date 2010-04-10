@@ -24,6 +24,16 @@ public enum EventType
 	P2_TOWER_BUILT,
 
 	/**
+	 * For when Player1 sells a tower
+	 */
+	P1_TOWER_SOLD,
+
+	/**
+	 * For when Player2 sells a tower
+	 */
+	P2_TOWER_SOLD,
+
+	/**
 	 * For when a base has been destroyed
 	 */
 	BASE_DESTROYED
