@@ -149,6 +149,11 @@ public abstract class TowerBase extends GameObject
 			if (!mob.adjustHealth(-this.attack))
 			{
 				attackMap.get(loc).remove(mob);
+				
+				// need to add this once AI is implemented
+				// if (mob.getTeam() == Team.Player2)
+				BB.inst().getPlayer().addGold(2 * mob.getLevel());
+
 				mob.deleteObject();
 			}
 		}
