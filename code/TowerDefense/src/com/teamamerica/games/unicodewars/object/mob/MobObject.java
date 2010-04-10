@@ -100,10 +100,10 @@ public abstract class MobObject extends GameObject implements Mover
 			return true;
 	}
 	
-	// returns in format [Defense, Speed, Attack, Vitality]
+	// returns in format [Defense, Speed, Attack, Total HP, Price]
 	public static int[] getStats(Type type, int level)
 	{
-		int[] stats = new int[4];
+		int[] stats = new int[5];
 		
 		switch (type)
 		{
@@ -111,25 +111,25 @@ public abstract class MobObject extends GameObject implements Mover
 				stats[0] = 4 * level;
 				stats[1] = 1 * level;
 				stats[2] = 1 * level;
-				stats[3] = 2 * level;
+				stats[3] = 2 * level * 20;
 				break;
 			case latin:
 				stats[0] = 1 * level;
 				stats[1] = 4 * level;
 				stats[2] = 2 * level;
-				stats[3] = 1 * level;
+				stats[3] = 1 * level * 20;
 				break;
 			case greek:
 				stats[0] = 2 * level;
 				stats[1] = 1 * level;
 				stats[2] = 4 * level;
-				stats[3] = 1 * level;
+				stats[3] = 1 * level * 20;
 				break;
 			case cyrillic:
 				stats[0] = 1 * level;
 				stats[1] = 2 * level;
 				stats[2] = 1 * level;
-				stats[3] = 4 * level;
+				stats[3] = 4 * level * 20;
 				break;
 			default:
 				stats[0] = 0;
@@ -138,6 +138,7 @@ public abstract class MobObject extends GameObject implements Mover
 				stats[3] = 0;
 				break;
 		}
+		stats[4] = 20 * level;
 		return stats;
 	}
 
