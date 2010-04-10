@@ -46,7 +46,8 @@ public class BB {
 	private Button currentHUD[];
 	private Player players[];
 		
-	private BB() { 
+	private BB()
+	{
 		_random = new Random(System.currentTimeMillis());
 		_nextId = 0;
 		_variableMap = new HashMap<Variable,Object>();
@@ -62,6 +63,8 @@ public class BB {
 		mobTypeSelection = MobObject.Type.chinese;
 		mobLevelSelection = 1;
 		players = new Player[2];
+		players[0] = new Player();
+		players[1] = new Player();
 	}
 		
 	public static BB inst() { 

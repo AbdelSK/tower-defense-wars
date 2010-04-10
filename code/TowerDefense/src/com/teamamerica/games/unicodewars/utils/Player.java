@@ -8,8 +8,7 @@ public class Player
 	
 	public Player()
 	{
-		System.out.println("in Player()");
-		this.gold = 30;
+		this.gold = 100;
 		this.income = 0;
 		this.score = 0;
 	}

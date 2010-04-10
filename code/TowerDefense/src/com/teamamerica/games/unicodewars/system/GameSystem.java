@@ -112,8 +112,7 @@ public class GameSystem
 
 		g.setFont(font);
 		g.setColor(Color.white);
-		String tickCountdown = "Next Income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
-		g.drawString(tickCountdown, 384, 520);
+		g.drawString("Next Income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000), 384, 520);
 		g.drawString("Gold: " + BB.inst().getPlayer().getGold(), 384, 540);
 		g.drawString("Income: " + BB.inst().getPlayer().getIncome(), 384, 560);
 		g.popTransform();
