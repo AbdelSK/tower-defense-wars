@@ -98,13 +98,8 @@ public class GameSystem
 
 	public void render(Graphics g)
 	{
-		// GameObject controlled = (GameObject)
-		// BB.inst().getVariableObject(Variable.controlledObject);
-		
 		g.pushTransform();
 		g.resetTransform();
-		// g.translate(-controlled.getPosition().x + centerX,
-		// -controlled.getPosition().y + centerY);
 
 		GameMap.inst().render(g);
 		for (List<GameObject> team : BB.inst().getAll())
@@ -117,12 +112,10 @@ public class GameSystem
 
 		g.setFont(font);
 		g.setColor(Color.white);
-		String tickCountdown = "Next income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
+		String tickCountdown = "Next Income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
 		g.drawString(tickCountdown, 384, 520);
-		// g.drawString("Gold: " +
-		// BB.inst().getAll().get(Team.Player1.getGold()), 384, 560);
-		// g.drawString("Income: " +
-		// BB.inst().getAll().get(Team.Player1.getIncome()), 384, 560);
+		g.drawString("Gold: " + BB.inst().players[0].getGold(), 384, 540);
+		g.drawString("Income: " + BB.inst().players[0].getIncome(), 384, 560);
 		g.popTransform();
 	}
 }

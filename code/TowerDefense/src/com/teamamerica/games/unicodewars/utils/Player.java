@@ -8,6 +8,7 @@ public class Player
 	
 	public Player()
 	{
+		System.out.println("in Player()");
 		this.gold = 30;
 		this.income = 0;
 		this.score = 0;
@@ -43,4 +44,13 @@ public class Player
 		return score;
 	}
 
+	public void purchase(int used)
+	{
+		this.gold -= used;
+	}
+
+	public void addGold(int income)
+	{
+		this.gold += income;
+	}
 }
