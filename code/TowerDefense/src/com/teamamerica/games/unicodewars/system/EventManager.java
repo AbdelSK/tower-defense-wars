@@ -44,6 +44,11 @@ public class EventManager
 		}
 	}
 	
+	public static void $delete()
+	{
+		_mgr = null;
+	}
+
 	public static EventManager inst()
 	{
 		if (_mgr == null)

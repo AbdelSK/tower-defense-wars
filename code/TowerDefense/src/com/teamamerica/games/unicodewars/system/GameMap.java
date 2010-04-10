@@ -79,11 +79,16 @@ public class GameMap implements TileBasedMap
 		this.pathFinder = new AStarPathFinder(this, 10000, false, new ManhattanHeuristic(1));
 		
 		this.gridColor = new Color(1.0f, 0, 0);
-		this.colorTimer = new Timer();
+		this.colorTimer = BB.inst().getNewTimer();
 		this.colorStage = 0;
 		this.alphaStage = 0;
 	}
 	
+	public static void $delete()
+	{
+		_instance = null;
+	}
+
 	/**
 	 * Returns the single instance of GameMap
 	 * 

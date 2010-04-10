@@ -3,6 +3,7 @@ package com.teamamerica.games.unicodewars.component;
 import org.newdawn.slick.util.pathfinding.Path;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
+import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.system.EventManager;
 import com.teamamerica.games.unicodewars.system.GameMap;
 import com.teamamerica.games.unicodewars.utils.Event;
@@ -27,7 +28,7 @@ public class MoverComponent extends Component
 	{
 		super(owner);
 		// TODO Auto-generated constructor stub
-		this.stopwatch = new Timer();
+		this.stopwatch = BB.inst().getNewTimer();
 		this._owner = owner;
 		
 		towerListener = new EventListener() {

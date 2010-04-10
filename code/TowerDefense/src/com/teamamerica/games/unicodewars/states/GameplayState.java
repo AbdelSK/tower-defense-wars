@@ -12,6 +12,7 @@ import org.fenggui.util.Point;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -68,6 +69,8 @@ public class GameplayState extends BHGameState
 	{
 		_gameSystem = new GameSystem(container.getWidth(), container.getHeight());
 		_gameSystem.loadLevel("Hello world");
+		BB.inst().pauseTimers();
+
 		el = new EventListener() {
 			
 			@Override
@@ -93,6 +96,7 @@ public class GameplayState extends BHGameState
 	{
 		super.enter(container, game);
 		layout(_feng.getDisplay());
+		BB.inst().unpauseTimers();
 	}
 	
 	@Override
@@ -100,6 +104,7 @@ public class GameplayState extends BHGameState
 	{
 		super.leave(container, game);
 		_feng.getDisplay().removeAllWidgets();
+		BB.inst().pauseTimers();
 	}
 	
 	@Override
@@ -122,13 +127,16 @@ public class GameplayState extends BHGameState
 		if (winner == Winner.player1)
 		{
 			winner = Winner.nobody;
+			_gameSystem.end();
 			game.enterState(Main.States.WinState.ordinal(), new FadeOutTransition(), new FadeInTransition());
 		}
 		else if (winner == Winner.player2)
 		{
 			winner = Winner.nobody;
+			_gameSystem.end();
 			game.enterState(Main.States.LoseState.ordinal(), new FadeOutTransition(), new FadeInTransition());
 		}
+
 	}
 	
 	@Override
@@ -140,7 +148,18 @@ public class GameplayState extends BHGameState
 	@Override
 	public void keyReleased(int key, char c)
 	{
-		BB.inst().keyReleased(key);
+		if (key == Input.KEY_P)
+		{
+			_gameSystem.pause();
+		}
+		else if (key == Input.KEY_LBRACKET)
+		{
+			_gameSystem.unpause();
+		}
+		else
+		{
+			BB.inst().keyReleased(key);
+		}
 	}
 	
 	@Override
