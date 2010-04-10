@@ -44,7 +44,7 @@ public class BB {
 	private Display display;
 	private TowerBase HUD;
 	private Button currentHUD[];
-	public Player players[] = new Player[2];
+	public Player players[];
 		
 	private BB() { 
 		_random = new Random(System.currentTimeMillis());
@@ -61,6 +61,7 @@ public class BB {
 		towerSelection = TowerBase.Type.diceOne;
 		mobTypeSelection = MobObject.Type.chinese;
 		mobLevelSelection = 1;
+		players = new Player[2];
 	}
 		
 	public static BB inst() { 
