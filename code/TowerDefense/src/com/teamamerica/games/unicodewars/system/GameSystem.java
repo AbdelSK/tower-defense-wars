@@ -115,6 +115,7 @@ public class GameSystem
 		g.drawString("Next Income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000), 384, 520);
 		g.drawString("Gold: " + BB.inst().getPlayer().getGold(), 384, 540);
 		g.drawString("Income: " + BB.inst().getPlayer().getIncome(), 384, 560);
+		g.drawString("Score: " + BB.inst().getPlayer().getScore(), 384, 580);
 		g.popTransform();
 	}
 }
