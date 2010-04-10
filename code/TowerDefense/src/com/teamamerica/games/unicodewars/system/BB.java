@@ -44,7 +44,7 @@ public class BB {
 	private Display display;
 	private TowerBase HUD;
 	private Button currentHUD[];
-	public Player players[];
+	private Player players[];
 		
 	private BB() { 
 		_random = new Random(System.currentTimeMillis());
@@ -65,9 +65,9 @@ public class BB {
 	}
 		
 	public static BB inst() { 
-		if (_blackboard == null) { 
+		if (_blackboard == null)
 			_blackboard = new BB();
-		}
+
 		return _blackboard;
 	}
 	
@@ -261,5 +261,10 @@ public class BB {
 	public Button[] getCurrentHUD()
 	{
 		return this.currentHUD;
+	}
+	
+	public Player getPlayer()
+	{
+		return players[0];
 	}
 }
