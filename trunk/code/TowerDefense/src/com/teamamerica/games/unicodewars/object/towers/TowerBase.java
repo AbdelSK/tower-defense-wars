@@ -65,7 +65,7 @@ public abstract class TowerBase extends GameObject
 		this._size = size;
 		setPosition(loc);
 		Random gen = BB.inst().getRandom();
-		stopWatch = new Timer();
+		stopWatch = BB.inst().getNewTimer();
 		listeners = new HashMap<Location, EventListener>();
 		attackMap = new HashMap<Location, ArrayList<MobObject>>();
 		sortedLocs = new ArrayList<Location>();

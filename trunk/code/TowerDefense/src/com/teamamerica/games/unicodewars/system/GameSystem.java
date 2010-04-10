@@ -31,6 +31,7 @@ public class GameSystem
 	{
 		
 		BB.inst().setScreen(width, height);
+		BB.inst().pauseTimers();
 		try
 		{
 			font = new UnicodeFont("data/font/Friz_Quadrata_TT.ttf", 16, false, false);
@@ -51,7 +52,31 @@ public class GameSystem
 		}
 		_systems = new TreeMap<Systems, Subsystem>();
 		_systems.put(Systems.PrototypeSubsytem, new PrototypeScriptingSystem());
-		this.tickTimer = new Timer();
+		this.tickTimer = BB.inst().getNewTimer();
+
+	}
+	
+	public void start()
+	{
+		loadLevel("");
+		this.tickTimer = BB.inst().getNewTimer();
+	}
+	
+	public void end()
+	{
+		BB.$delete();
+		EventManager.$delete();
+		GameMap.$delete();
+	}
+	
+	public void pause()
+	{
+		BB.inst().pauseTimers();
+	}
+	
+	public void unpause()
+	{
+		BB.inst().unpauseTimers();
 	}
 
 	/**
@@ -116,7 +141,16 @@ public class GameSystem
 
 		g.setFont(font);
 		g.setColor(Color.white);
-		g.drawString("Next Income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000), 384, 520);
+		String tickCountdown = "";
+		if (!this.tickTimer.paused())
+		{
+			tickCountdown = "Next income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
+		}
+		else
+		{
+			tickCountdown = "PAUSED!";
+		}
+		g.drawString(tickCountdown, 384, 520);
 		g.drawString("Gold: " + BB.inst().getPlayer().getGold(), 384, 540);
 		g.drawString("Income: " + BB.inst().getPlayer().getIncome(), 384, 560);
 		g.drawString("Score: " + BB.inst().getPlayer().getScore(), 384, 580);

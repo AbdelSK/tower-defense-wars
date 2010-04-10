@@ -10,6 +10,7 @@ import com.teamamerica.games.unicodewars.states.BHGameState;
 import com.teamamerica.games.unicodewars.states.GameplayState;
 import com.teamamerica.games.unicodewars.states.LoseState;
 import com.teamamerica.games.unicodewars.states.MainMenuState;
+import com.teamamerica.games.unicodewars.states.PauseState;
 import com.teamamerica.games.unicodewars.states.SplashState;
 import com.teamamerica.games.unicodewars.states.WinState;
 
@@ -38,6 +39,7 @@ public class Main extends StateBasedGame
 		addState(new GameplayState());
 		addState(new LoseState());
 		addState(new WinState());
+		addState(new PauseState());
 		for (States s : States.values())
 		{
 			GameState state = getState(s.ordinal());

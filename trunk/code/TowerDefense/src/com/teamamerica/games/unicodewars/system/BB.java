@@ -18,6 +18,7 @@ import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.MouseListener;
 import com.teamamerica.games.unicodewars.utils.Player;
 import com.teamamerica.games.unicodewars.utils.Team;
+import com.teamamerica.games.unicodewars.utils.Timer;
 import com.teamamerica.games.unicodewars.utils.Variable;
 
 /**
@@ -28,14 +29,17 @@ import com.teamamerica.games.unicodewars.utils.Variable;
  * @author coby
  * 
  */
-public class BB {
-    private static Logger logger = Logger.getLogger( BB.class );
-    private static BB _blackboard;
-    private Random _random;
-    private int _nextId;
-    private Map<Variable,Object> _variableMap;
+public class BB
+{
+	private static Logger logger = Logger.getLogger(BB.class);
+	private static BB _blackboard;
+	private Random _random;
+	private int _nextId;
+	private List<Timer> _timers;
+	private boolean _paused;
+	private Map<Variable, Object> _variableMap;
 	private List<List<GameObject>> _objects;
-	private List<KeyListener>     _keysPressed;
+	private List<KeyListener> _keysPressed;
 	private List<MouseListener> _mouseClicked;
 	private HashMap<Location, MouseListener> _mouseClickedAtLocation;
 	private TowerBase.Type towerSelection;
@@ -49,8 +53,9 @@ public class BB {
 	private BB()
 	{
 		_random = new Random(System.currentTimeMillis());
+		_timers = new ArrayList<Timer>();
 		_nextId = 0;
-		_variableMap = new HashMap<Variable,Object>();
+		_variableMap = new HashMap<Variable, Object>();
 		
 		_objects = new ArrayList<List<GameObject>>();
 		_objects.add(new LinkedList<GameObject>()); // Player 1's objects
@@ -66,55 +71,108 @@ public class BB {
 		players[0] = new Player();
 		players[1] = new Player();
 	}
-		
-	public static BB inst() { 
-		if (_blackboard == null)
-			_blackboard = new BB();
+	
+	public static void $delete()
+	{
+		_blackboard = null;
+	}
 
+	public static BB inst()
+	{
+		if (_blackboard == null)
+		{
+			_blackboard = new BB();
+		}
 		return _blackboard;
 	}
 	
-	public void doneLoading() { 
+	public void doneLoading()
+	{
 		for (List<GameObject> team : this._objects)
 			Collections.sort(team, GameObject.render);
 	}
 	
-	public Random getRandom() { 
+	public Random getRandom()
+	{
 		return _random;
 	}
 	
 	/**
 	 * Get the next available ID.
+	 * 
 	 * @return
 	 */
-	public int getNextId() { 
+	public int getNextId()
+	{
 		return _nextId++;
 	}
 	
 	/**
-	 * Save the screen settings.
-	 * @param width
-	 * @param height
+	 * Get a new timer
+	 * 
+	 * @return a new timer
 	 */
-	public void setScreen(int width, int height) { 
-		_variableMap.put(Variable.screenWidth, width);
-		_variableMap.put(Variable.screenHeight, height);
-		
-		_variableMap.put(Variable.centerX, width/2);
-		_variableMap.put(Variable.centerY, height/2);
+	public Timer getNewTimer()
+	{
+		Timer ret = new Timer();
+		_timers.add(ret);
+		if (_paused)
+			ret.pause();
+		return ret;
 	}
 	
 	/**
-	 * Get one of the variables that don't change after 
-	 * initialization.
+	 * Pause all the game's timers
+	 */
+	public void pauseTimers()
+	{
+		for (Timer temp : _timers)
+		{
+			temp.pause();
+		}
+		_paused = true;
+	}
+	
+	/**
+	 * Unpause all the game's timers
+	 */
+	public void unpauseTimers()
+	{
+		for (Timer temp : _timers)
+		{
+			temp.unpause();
+		}
+		_paused = false;
+	}
+
+	/**
+	 * Save the screen settings.
+	 * 
+	 * @param width
+	 * @param height
+	 */
+	public void setScreen(int width, int height)
+	{
+		_variableMap.put(Variable.screenWidth, width);
+		_variableMap.put(Variable.screenHeight, height);
+		
+		_variableMap.put(Variable.centerX, width / 2);
+		_variableMap.put(Variable.centerY, height / 2);
+	}
+	
+	/**
+	 * Get one of the variables that don't change after initialization.
+	 * 
 	 * @param name
 	 * @return
 	 */
-	public Object getVariableObject(Variable name) { 
+	public Object getVariableObject(Variable name)
+	{
 		return _variableMap.get(name);
 	}
 	
-	public void setVariableObject(Variable name, Object value) { 
+	public void setVariableObject(Variable name, Object value)
+	{
 		_variableMap.remove(name);
 		_variableMap.put(name, value);
 	}
@@ -171,22 +229,27 @@ public class BB {
 		return false;
 	}
 	
-	public void keyPressed(int key) { 
-		for (KeyListener c : _keysPressed) 
+	public void keyPressed(int key)
+	{
+		for (KeyListener c : _keysPressed)
 			c.keyPressed(key);
 	}
 	
-	public void keyReleased(int key) { 
-		for (KeyListener c : _keysPressed) { 
+	public void keyReleased(int key)
+	{
+		for (KeyListener c : _keysPressed)
+		{
 			c.keyReleased(key);
 		}
 	}
 	
-	public void addKeyListener(KeyListener c) { 
+	public void addKeyListener(KeyListener c)
+	{
 		_keysPressed.add(c);
 	}
 	
-	public void removeKeyListener(KeyListener c) { 
+	public void removeKeyListener(KeyListener c)
+	{
 		_keysPressed.remove(c);
 	}
 	
