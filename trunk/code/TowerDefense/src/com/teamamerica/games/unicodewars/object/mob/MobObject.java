@@ -100,6 +100,47 @@ public abstract class MobObject extends GameObject implements Mover
 			return true;
 	}
 	
+	// returns in format [Defense, Speed, Attack, Vitality]
+	public static int[] getStats(Type type, int level)
+	{
+		int[] stats = new int[4];
+		
+		switch (type)
+		{
+			case chinese:
+				stats[0] = 4 * level;
+				stats[1] = 1 * level;
+				stats[2] = 1 * level;
+				stats[3] = 2 * level;
+				break;
+			case latin:
+				stats[0] = 1 * level;
+				stats[1] = 4 * level;
+				stats[2] = 2 * level;
+				stats[3] = 1 * level;
+				break;
+			case greek:
+				stats[0] = 2 * level;
+				stats[1] = 1 * level;
+				stats[2] = 4 * level;
+				stats[3] = 1 * level;
+				break;
+			case cyrillic:
+				stats[0] = 1 * level;
+				stats[1] = 2 * level;
+				stats[2] = 1 * level;
+				stats[3] = 4 * level;
+				break;
+			default:
+				stats[0] = 0;
+				stats[1] = 0;
+				stats[2] = 0;
+				stats[3] = 0;
+				break;
+		}
+		return stats;
+	}
+
 	@Override
 	public void deleteObject()
 	{
