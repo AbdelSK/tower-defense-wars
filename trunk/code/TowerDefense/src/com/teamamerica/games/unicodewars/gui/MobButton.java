@@ -30,6 +30,7 @@ public class MobButton extends AwesomeButton
 		{
 			BB.inst().getPlayer().addIncome(10);
 			BB.inst().getPlayer().purchase(20);
+			BB.inst().getPlayer().addScore(this.level);
 			MobMaker.MakeMob(type, level, Team.Player1);
 			BB.inst().setMobTypeSelection(type);
 			BB.inst().setMobLevelSelection(level);
