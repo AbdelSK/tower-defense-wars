@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import org.apache.log4j.Logger;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
@@ -20,16 +21,17 @@ public class GameSystem
 	
 	public enum Systems
 	{
-		SpawnSubsystem, PrototypeSubsytem
+		BuildSubsystem, AISubsystem
 	};
 	
 	public long _frameCount;
 	private Map<Systems, Subsystem> _systems;
 	private Timer tickTimer;
+	private GameContainer _container;
 	
-	public GameSystem(int width, int height)
+	public GameSystem(GameContainer container, int width, int height)
 	{
-		
+		_container = container;
 		BB.inst().setScreen(width, height);
 		BB.inst().pauseTimers();
 		try
@@ -51,22 +53,31 @@ public class GameSystem
 			e.printStackTrace();
 		}
 		_systems = new TreeMap<Systems, Subsystem>();
-		_systems.put(Systems.PrototypeSubsytem, new PrototypeScriptingSystem());
-		this.tickTimer = BB.inst().getNewTimer();
 
 	}
 	
 	public void start()
 	{
 		loadLevel("");
+		_systems.put(Systems.BuildSubsystem, new BuildSubsystem(_container));
+		_systems.put(Systems.AISubsystem, new AISystem());
 		this.tickTimer = BB.inst().getNewTimer();
+		for (Subsystem s : _systems.values())
+		{
+			s.start();
+		}
 	}
 	
 	public void end()
 	{
+		for (Subsystem s : _systems.values())
+		{
+			s.end();
+		}
 		BB.$delete();
 		EventManager.$delete();
 		GameMap.$delete();
+		_systems.clear();
 	}
 	
 	public void pause()

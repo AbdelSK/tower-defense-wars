@@ -17,7 +17,7 @@ public interface Subsystem {
      * be called in the order that they are added.
      * @param eps
      */
-    public void update(int eps);
+	public void update(int eps);
 
     /**
      * Called every render cycle.  Most of the time there will 
@@ -32,4 +32,14 @@ public interface Subsystem {
      * you can clean up everything that is outstanding.
      */
     public void finish();
+	
+	/**
+	 * Called when the system is starting up
+	 */
+	public void start();
+	
+	/**
+	 * Called when the system is ending (i.e. game over)
+	 */
+	public void end();
 }
