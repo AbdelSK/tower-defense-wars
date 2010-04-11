@@ -85,7 +85,7 @@ public class GameplayState extends BHGameState
 		particleSystem.setUsePoints(false);
 		particleSystem.setRemoveCompletedEmitters(true);
 
-		_gameSystem = new GameSystem(container.getWidth(), container.getHeight());
+		_gameSystem = new GameSystem(container, container.getWidth(), container.getHeight());
 		_gameSystem.pause();
 
 	}
