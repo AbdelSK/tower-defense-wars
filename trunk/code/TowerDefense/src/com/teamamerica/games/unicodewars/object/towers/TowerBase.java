@@ -415,8 +415,6 @@ public abstract class TowerBase extends GameObject
 				sellType = EventType.P2_TOWER_SOLD;
 				break;
 		}
-		/* pjdebug */
-		System.out.println("sellType: " + sellType);
 		Event sellEvent = new Event(sellType);
 		EventManager.inst().dispatch(sellEvent);
 		this.deleteObject();

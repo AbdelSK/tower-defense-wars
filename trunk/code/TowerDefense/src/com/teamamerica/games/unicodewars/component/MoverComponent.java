@@ -37,8 +37,6 @@ public class MoverComponent extends Component
 			public void onEvent(Event e)
 			{
 				// TODO Auto-generated method stub
-				/* pjdebug */
-				System.out.println("eID: " + e.getId() + ", team: " + _owner.getTeam());
 				if ((e.getId() == EventType.P1_TOWER_SOLD && _owner.getTeam() == Team.Player2) || (e.getId() == EventType.P2_TOWER_SOLD && _owner.getTeam() == Team.Player1))
 				{
 					updatePath();
