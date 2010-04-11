@@ -166,7 +166,9 @@ public abstract class MobObject extends GameObject implements Mover
 		ConfigurableEmitter emitter = null;
 		try
 		{
-			File xmlFile = new File("c:/code/java/workspace/Tower Defense/src/data/effects/explode.xml");
+			// File xmlFile = new
+			// File("c:/code/java/workspace/Tower Defense/src/data/effects/explode.xml");
+			File xmlFile = new File("src/data/effects/explode.xml");
 			emitter = ParticleIO.loadEmitter(xmlFile);
 		}
 		catch (Exception e)
