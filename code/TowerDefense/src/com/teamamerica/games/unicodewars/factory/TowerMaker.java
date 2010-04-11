@@ -28,24 +28,24 @@ public class TowerMaker
 		switch (t)
 		{
 			case diceOne:
-				temp = new DiceOne(loc, team);
 				imgPath = "data/images/towers/Dice-1.png";
+				temp = new DiceOne(loc, team, imgPath);
 				break;
 			case chessOne:
-				temp = new ChessOne(loc, team);
 				imgPath = "data/images/towers/Chess-1.png";
+				temp = new ChessOne(loc, team, imgPath);
 				break;
 			case cardOne:
-				temp = new CardOne(loc, team);
 				imgPath = "data/images/towers/Card-1.png";
+				temp = new CardOne(loc, team, imgPath);
 				break;
 			case musicOne:
-				temp = new MusicOne(loc, team);
 				imgPath = "data/images/towers/Music-1.png";
+				temp = new MusicOne(loc, team, imgPath);
 				break;
 			case currencyOne:
-				temp = new CurrencyOne(loc, team);
 				imgPath = "data/images/towers/Currency-1.png";
+				temp = new CurrencyOne(loc, team, imgPath);
 				break;
 		}
 		VisualComponent looks = new VisualComponent(temp, imgPath);

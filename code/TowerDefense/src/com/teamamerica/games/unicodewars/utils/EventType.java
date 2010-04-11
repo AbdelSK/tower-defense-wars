@@ -36,5 +36,10 @@ public enum EventType
 	/**
 	 * For when a base has been destroyed
 	 */
-	BASE_DESTROYED
+	BASE_DESTROYED,
+
+	/**
+	 * For when a particle effect is ready to be started
+	 */
+	START_PARTICLE_EFFECT
 }

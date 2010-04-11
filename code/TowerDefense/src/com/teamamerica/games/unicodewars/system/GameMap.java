@@ -288,7 +288,7 @@ public class GameMap implements TileBasedMap
 				self = Team.Player1;
 				enemy = Team.Player2;
 		}
-		MobObject dummy = new MobObject(null, colorStage, colorStage, null, enemy, colorStage, MobObject.Type.chinese) {};
+		MobObject dummy = new MobObject(null, colorStage, colorStage, null, enemy, colorStage, MobObject.Type.chinese, null) {};
 		Location spawn = this.getTeamSpawnPoint(enemy);
 		Location base = this.getTeamBaseLocation(self);
 		Path path = this.pathFinder.findPath(dummy, spawn.x, spawn.y, base.x, base.y);

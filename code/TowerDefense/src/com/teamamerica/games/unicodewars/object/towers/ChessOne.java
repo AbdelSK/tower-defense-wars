@@ -11,9 +11,9 @@ public class ChessOne extends TowerBase
 	public static int BASE_SPEED = 2;
 	public static int BASE_RADIUS = 2;
 	
-	public ChessOne(Location loc, Team team)
+	public ChessOne(Location loc, Team team, String imgLoc)
 	{
-		super(TowerBase.Type.chessOne, BASE_ATTACK, price, BASE_RADIUS, BASE_SPEED, team, loc);
+		super(TowerBase.Type.chessOne, BASE_ATTACK, price, BASE_RADIUS, BASE_SPEED, team, loc, imgLoc);
 	}
 	
 	public boolean canUpgrade()

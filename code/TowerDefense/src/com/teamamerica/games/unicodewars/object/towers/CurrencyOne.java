@@ -11,9 +11,9 @@ public class CurrencyOne extends TowerBase
 	public static int BASE_SPEED = 5;
 	public static int BASE_RADIUS = 5;
 	
-	public CurrencyOne(Location loc, Team team)
+	public CurrencyOne(Location loc, Team team, String imgLoc)
 	{
-		super(TowerBase.Type.currencyOne, BASE_ATTACK, price, BASE_RADIUS, BASE_SPEED, team, loc);
+		super(TowerBase.Type.currencyOne, BASE_ATTACK, price, BASE_RADIUS, BASE_SPEED, team, loc, imgLoc);
 	}
 	
 	public boolean canUpgrade()

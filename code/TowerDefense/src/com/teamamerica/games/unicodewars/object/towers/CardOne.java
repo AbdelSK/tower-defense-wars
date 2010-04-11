@@ -11,9 +11,9 @@ public class CardOne extends TowerBase
 	public static int BASE_SPEED = 2;
 	public static int BASE_RADIUS = 5;
 	
-	public CardOne(Location loc, Team team)
+	public CardOne(Location loc, Team team, String imgLoc)
 	{
-		super(TowerBase.Type.cardOne, BASE_ATTACK, price, BASE_RADIUS, BASE_SPEED, team, loc);
+		super(TowerBase.Type.cardOne, BASE_ATTACK, price, BASE_RADIUS, BASE_SPEED, team, loc, imgLoc);
 	}
 	
 	public boolean canUpgrade()

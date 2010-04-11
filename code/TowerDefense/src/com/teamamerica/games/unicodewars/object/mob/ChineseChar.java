@@ -6,9 +6,9 @@ import com.teamamerica.games.unicodewars.utils.Team;
 
 public class ChineseChar extends MobObject
 {
-	public ChineseChar(Location loc, Team side, int level, Type type)
+	public ChineseChar(Location loc, Team side, int level, Type type, String imgLoc)
 	{
-		super("Chinese Mob", BB.inst().getNextId(), 10, loc, side, level, MobObject.Type.chinese);
+		super("Chinese Mob", BB.inst().getNextId(), 10, loc, side, level, MobObject.Type.chinese, imgLoc);
 		
 		this.defense = 4 * (int) Math.pow(this.level, 3);
 		this.vitality = 2 * (int) Math.pow(this.level, 3);

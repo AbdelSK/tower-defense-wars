@@ -26,54 +26,61 @@ public class MobMaker
 		switch (type)
 		{
 			case chinese:
-				temp = new ChineseChar(loc, team, level, type);
-				imgLoc = "data/images/mobs/Chinese";
+				imgLoc = "data/images/mobs/Chinese" + getImageSuffix(level);
+				temp = new ChineseChar(loc, team, level, type, imgLoc);
 				break;
 			case cyrillic:
-				temp = new CyrillicChar(loc, team, level, type);
-				imgLoc = "data/images/mobs/Cyrillic";
+				imgLoc = "data/images/mobs/Cyrillic" + getImageSuffix(level);
+				temp = new CyrillicChar(loc, team, level, type, imgLoc);
 				break;
 			case greek:
-				temp = new GreekChar(loc, team, level, type);
-				imgLoc = "data/images/mobs/Greek";
+				imgLoc = "data/images/mobs/Greek" + getImageSuffix(level);
+				temp = new GreekChar(loc, team, level, type, imgLoc);
 				break;
 			case latin:
-				temp = new LatinChar(loc, team, level, type);
-				imgLoc = "data/images/mobs/Latin";
+				imgLoc = "data/images/mobs/Latin" + getImageSuffix(level);
+				temp = new LatinChar(loc, team, level, type, imgLoc);
 				break;
 			default:
-				temp = new LatinChar(loc, team, level, type);
-				imgLoc = "data/images/mobs/Latin";
+				imgLoc = "data/images/mobs/Latin" + getImageSuffix(level);
+				temp = new LatinChar(loc, team, level, type, imgLoc);
 				break;
 		}
 		
-		switch (level)
-		{
-			case 1:
-				imgLoc += "-1.png";
-				break;
-			case 2:
-				imgLoc += "-2.png";
-				break;
-			case 3:
-				imgLoc += "-3.png";
-				break;
-			case 4:
-				imgLoc += "-4.png";
-				break;
-			case 5:
-				imgLoc += "-5.png";
-				break;
-			default:
-				imgLoc += "-1.png";
-				break;
-		}
-
 		MoverComponent pathPart = new MoverComponent(temp);
 		temp.addComponent(pathPart);
 		pathPart.setPath(GameMap.inst().getSpawnPath(team));
 		VisualComponent visualPart = new VisualComponent(temp, imgLoc);
 		temp.addComponent(visualPart);
 		BB.inst().addTeamObject(temp, team);
+	}
+	
+	private static String getImageSuffix(int level)
+	{
+		String suffix;
+
+		switch (level)
+		{
+			case 1:
+				suffix = "-1.png";
+				break;
+			case 2:
+				suffix = "-2.png";
+				break;
+			case 3:
+				suffix = "-3.png";
+				break;
+			case 4:
+				suffix = "-4.png";
+				break;
+			case 5:
+				suffix = "-5.png";
+				break;
+			default:
+				suffix = "-1.png";
+				break;
+		}
+		
+		return suffix;
 	}
 }
