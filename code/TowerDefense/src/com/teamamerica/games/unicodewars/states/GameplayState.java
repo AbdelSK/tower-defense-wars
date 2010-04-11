@@ -46,8 +46,7 @@ public class GameplayState extends BHGameState
 		nobody, player1, player2;
 	}
 	
-	// pjdebug
-	private ParticleSystem system;
+	private ParticleSystem particleSystem;
 	private ParticleIO particleIO;
 	private ConfigurableEmitter emitter1;
 	private ConfigurableEmitter emitter2;
@@ -81,10 +80,10 @@ public class GameplayState extends BHGameState
 	public void init(GameContainer container, StateBasedGame game) throws SlickException
 	{
 		Image image = new Image("data/images/towers/Music-1.png", false);
-		system = new ParticleSystem(image);
-		system.setBlendingMode(ParticleSystem.BLEND_ADDITIVE);
-		system.setUsePoints(false);
-		system.setRemoveCompletedEmitters(true);
+		particleSystem = new ParticleSystem(image);
+		particleSystem.setBlendingMode(ParticleSystem.BLEND_ADDITIVE);
+		particleSystem.setUsePoints(false);
+		particleSystem.setRemoveCompletedEmitters(true);
 
 		_gameSystem = new GameSystem(container.getWidth(), container.getHeight());
 		_gameSystem.pause();
@@ -123,10 +122,11 @@ public class GameplayState extends BHGameState
 			public void onEvent(Event e)
 			{
 				ConfigurableEmitter ce = (ConfigurableEmitter) e.getValue("configurableEmitter");
-				system.addEmitter(ce);
+				particleSystem.addEmitter(ce);
 			}
 		};
 		EventManager.inst().registerForAll(EventType.START_PARTICLE_EFFECT, emitterListener);
+		particleSystem.reset();
 	}
 	
 	@Override
@@ -154,14 +154,14 @@ public class GameplayState extends BHGameState
 		g.setColor(Color.black);
 		g.drawString(container.getFPS() + "", 2, 2);
 		
-		system.render();
+		particleSystem.render();
 	}
 	
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int millis) throws SlickException
 	{
 		_gameSystem.update(millis);
-		system.update(millis);
+		particleSystem.update(millis);
 		
 		if (this.paused)
 		{
