@@ -26,7 +26,7 @@ import com.teamamerica.games.unicodewars.utils.MouseListener;
 import com.teamamerica.games.unicodewars.utils.Team;
 import com.teamamerica.games.unicodewars.utils.Timer;
 
-public abstract class TowerBase extends GameObject
+public abstract class CopyOfTowerBase extends GameObject
 {
 	public static enum Type
 	{
@@ -60,7 +60,7 @@ public abstract class TowerBase extends GameObject
 	
 	private HashMap<Location, ArrayList<MobObject>> attackMap;
 
-	public TowerBase(Type type, int attack, int price, int radius, int speed, Team team, Location loc, String imgLoc)
+	public CopyOfTowerBase(Type type, int attack, int price, int radius, int speed, Team team, Location loc, String imgLoc)
 	{
 		super("Tower", BB.inst().getNextId(), team, 100);
 
@@ -117,13 +117,12 @@ public abstract class TowerBase extends GameObject
 		Event buildEvent = new Event(buildType, loc, this);
 		EventManager.inst().dispatch(buildEvent);
 		registerTower();
-		System.out.println(loc.x + "," + loc.y);
 	}
 	
 	@Override
 	public void update(int elapsed)
 	{
-		if (stopWatch.xMilisecondsPassed(2000 / this.speed))
+		if (stopWatch.xMilisecondsPassed(80 / this.speed))
 		{
 			
 			MobObject toAttack = null;
@@ -213,7 +212,7 @@ public abstract class TowerBase extends GameObject
 	{
 		return speed;
 	}
-	
+
 	public int getUpgradePrice()
 	{
 		return Math.round(.5f * price);
@@ -249,7 +248,7 @@ public abstract class TowerBase extends GameObject
 		Event buildEvent = new Event(buildType, this._position, this);
 		EventManager.inst().dispatch(buildEvent);
 		
-		price += this.getUpgradePrice();
+		price += getUpgradePrice();
 	}
 
 	public String getInfoString()
