@@ -71,6 +71,16 @@ public class GameplayState extends BHGameState
 		_gameSystem = new GameSystem(container.getWidth(), container.getHeight());
 		_gameSystem.pause();
 
+	}
+	
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException
+	{
+		super.enter(container, game);
+		this.paused = false;
+		layout(_feng.getDisplay());
+		_gameSystem.unpause();
+
 		el = new EventListener() {
 			
 			@Override
@@ -89,15 +99,6 @@ public class GameplayState extends BHGameState
 			}
 		};
 		EventManager.inst().registerForAll(EventType.BASE_DESTROYED, el);
-	}
-	
-	@Override
-	public void enter(GameContainer container, StateBasedGame game) throws SlickException
-	{
-		super.enter(container, game);
-		this.paused = false;
-		layout(_feng.getDisplay());
-		_gameSystem.unpause();
 	}
 	
 	@Override
@@ -139,12 +140,14 @@ public class GameplayState extends BHGameState
 		if (winner == Winner.player1)
 		{
 			winner = Winner.nobody;
+			EventManager.inst().unregisterForAll(EventType.BASE_DESTROYED, el);
 			_gameSystem.end();
 			game.enterState(Main.States.WinState.ordinal(), new FadeOutTransition(), new FadeInTransition());
 		}
 		else if (winner == Winner.player2)
 		{
 			winner = Winner.nobody;
+			EventManager.inst().unregisterForAll(EventType.BASE_DESTROYED, el);
 			_gameSystem.end();
 			game.enterState(Main.States.LoseState.ordinal(), new FadeOutTransition(), new FadeInTransition());
 		}
@@ -209,6 +212,11 @@ public class GameplayState extends BHGameState
 			display.addWidget(mobInterface);
 			display.addWidget(towerInterface);
 			bLayoutComplete = true;
+		}
+		else
+		{
+			display.addWidget(mobInterface);
+			display.addWidget(towerInterface);
 		}
 	}
 	

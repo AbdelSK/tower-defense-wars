@@ -69,7 +69,7 @@ public class PauseState extends BHGameState
 	@Override
 	public void keyReleased(int key, char c)
 	{
-		if (key == Input.KEY_P)
+		if (key == Input.KEY_R || key == Input.KEY_ESCAPE)
 		{
 			this.unpause = true;
 		}
