@@ -27,8 +27,14 @@ public class SplashState extends BHGameState {
 			throws SlickException {
 		_splashImage = new Image("data/images/teamamerica_1024.png");
 		_splashTheme = new Music("data/sounds/America, Fuck Yeah.ogg");
-		_splashTheme.play();
 		_timer = 160;
+	}
+	
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException
+	{
+		super.enter(container, game);
+		_splashTheme.play();
 	}
 
 	@Override

@@ -49,6 +49,7 @@ public class GameplayState extends BHGameState
 	private EventListener el;
 	private boolean bLayoutComplete;
 	private Winner winner;
+	private boolean paused;
 	
 	public GameplayState()
 	{
@@ -68,8 +69,7 @@ public class GameplayState extends BHGameState
 	public void init(GameContainer container, StateBasedGame game) throws SlickException
 	{
 		_gameSystem = new GameSystem(container.getWidth(), container.getHeight());
-		_gameSystem.loadLevel("Hello world");
-		BB.inst().pauseTimers();
+		_gameSystem.pause();
 
 		el = new EventListener() {
 			
@@ -95,8 +95,9 @@ public class GameplayState extends BHGameState
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException
 	{
 		super.enter(container, game);
+		this.paused = false;
 		layout(_feng.getDisplay());
-		BB.inst().unpauseTimers();
+		_gameSystem.unpause();
 	}
 	
 	@Override
@@ -104,9 +105,14 @@ public class GameplayState extends BHGameState
 	{
 		super.leave(container, game);
 		_feng.getDisplay().removeAllWidgets();
-		BB.inst().pauseTimers();
+		_gameSystem.pause();
 	}
 	
+	public void start()
+	{
+		_gameSystem.start();
+	}
+
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException
 	{
@@ -124,6 +130,12 @@ public class GameplayState extends BHGameState
 	public void update(GameContainer container, StateBasedGame game, int millis) throws SlickException
 	{
 		_gameSystem.update(millis);
+		
+		if (this.paused)
+		{
+			game.enterState(Main.States.PauseState.ordinal(), new FadeOutTransition(), new FadeInTransition());
+		}
+
 		if (winner == Winner.player1)
 		{
 			winner = Winner.nobody;
@@ -151,10 +163,7 @@ public class GameplayState extends BHGameState
 		if (key == Input.KEY_P)
 		{
 			_gameSystem.pause();
-		}
-		else if (key == Input.KEY_LBRACKET)
-		{
-			_gameSystem.unpause();
+			this.paused = true;
 		}
 		else
 		{

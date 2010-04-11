@@ -112,6 +112,7 @@ public class MainMenuState extends BHGameState {
 		btn.setSize(200, 50);
 		btn.addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0) {
+				((GameplayState) _game.getState(Main.States.GameplayState.ordinal())).start();
 				_game.enterState(Main.States.GameplayState.ordinal());
 			} 
 		});	
