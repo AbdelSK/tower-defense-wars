@@ -9,7 +9,7 @@ public class CardOne extends TowerBase
 	public static int price = 30;
 	public static int BASE_ATTACK = 2;
 	public static int BASE_SPEED = 2;
-	public static int BASE_RADIUS = 5;
+	public static int BASE_RADIUS = 4;
 	
 	public CardOne(Location loc, Team team, String imgLoc)
 	{
@@ -29,21 +29,21 @@ public class CardOne extends TowerBase
 		{
 			this.attack = 4;
 			this.speed = 4;
-			this.radius = 10;
+			this.radius = 5;
 			this.getVisualComponent().updateImage("data/images/towers/Card-2.png");
 		}
 		else if (level == 3)
 		{
 			this.attack = 8;
 			this.speed = 8;
-			this.radius = 15;
+			this.radius = 7;
 			this.getVisualComponent().updateImage("data/images/towers/Card-3.png");
 		}
 		else if (level == 4)
 		{
 			this.attack = 16;
 			this.speed = 16;
-			this.radius = 20;
+			this.radius = 8;
 			this.getVisualComponent().updateImage("data/images/towers/Card-4.png");
 		}
 		super.doUpgrade();
@@ -53,6 +53,23 @@ public class CardOne extends TowerBase
 	public String getInfoString()
 	{
 		return "Card Tower Level " + this.level;
+	}
+	
+	public int getUpgradePrice()
+	{
+		if (level == 1)
+		{
+			return 40;
+		}
+		else if (level == 2)
+		{
+			return 50;
+		}
+		else if (level == 3)
+		{
+			return 100;
+		}
+		return 0;
 	}
 
 }
