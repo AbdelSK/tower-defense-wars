@@ -15,6 +15,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import com.teamamerica.games.unicodewars.Main;
@@ -26,6 +27,7 @@ public class MainMenuState extends BHGameState {
 	
 	private StateBasedGame _game;
 	private Image _backgroundImage;
+	private Music _menuTheme;
 	
 	public MainMenuState() { 
 	}
@@ -39,6 +41,7 @@ public class MainMenuState extends BHGameState {
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		_game = game;
 		_backgroundImage = new Image("data/images/main-menu.png");
+		_menuTheme = new Music("data/sounds/Main Menu.ogg");
 		
 		_centerX = container.getWidth() / 2;
 		_centerY = container.getHeight() / 2;
@@ -65,6 +68,8 @@ public class MainMenuState extends BHGameState {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		_menuTheme.loop(1, .75f);
 	}
 
 	@Override
