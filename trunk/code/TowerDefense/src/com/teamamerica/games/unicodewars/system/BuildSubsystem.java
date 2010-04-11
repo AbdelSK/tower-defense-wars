@@ -1,5 +1,6 @@
 package com.teamamerica.games.unicodewars.system;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -16,6 +17,7 @@ public class BuildSubsystem implements Subsystem
 	private Input input;
 	private InputListener inputListener;
 	private boolean shiftHeld = false;
+	private boolean paused = false;
 	private int mouseLocation[];
 	
 	public BuildSubsystem(GameContainer container)
@@ -101,6 +103,12 @@ public class BuildSubsystem implements Subsystem
 				{
 					shiftHeld = false;
 				}
+				
+				if (key == Input.KEY_ESCAPE)
+				{
+					
+					BB.inst().setTowerSelection(null);
+				}
 			}
 			
 			@Override
@@ -122,8 +130,7 @@ public class BuildSubsystem implements Subsystem
 			@Override
 			public boolean isAcceptingInput()
 			{
-				// TODO Auto-generated method stub
-				return true;
+				return !paused;
 			}
 			
 			@Override
@@ -188,7 +195,7 @@ public class BuildSubsystem implements Subsystem
 
 	public void handleClickEvent(int button, int x, int y)
 	{
-		if (BB.inst().getTowerSelection() != null)
+		if (BB.inst().getTowerSelection() != null) // Build mode
 		{
 			Location loc = GameMap.inst().getGridLocationFromPixels(x, y);
 			if (loc != null)
@@ -204,24 +211,21 @@ public class BuildSubsystem implements Subsystem
 				}
 			}
 		}
+		else
+		// Not build mode
+		{
+			if (BB.inst().getCurrentHUD() != null)
+			{
+				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[0]);
+				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[1]);
+				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[2]);
+				BB.inst().setCurrentHUD(null);
+				GameMap.inst().clearSelectedTower();
+			}
+		}
 
 	}
 	
-	public void buildTowersInRows()
-	{
-		Location loc = new Location(towerCol, towerRow);
-		if (GameMap.inst().canBuildTower(loc, TowerBase.size, Team.Player2))
-		{
-			TowerMaker.MakeDiceTower(loc, Team.Player2);
-			towerRow += TowerBase.size;
-			if (towerRow >= GameMap.inst().rows)
-			{
-				towerRow = 0;
-				towerCol += TowerBase.size;
-			}
-		}
-	}
-
 	@Override
 	public void finish()
 	{
@@ -239,13 +243,46 @@ public class BuildSubsystem implements Subsystem
 	@Override
 	public void render(Graphics g)
 	{
-		// TODO Auto-generated method stub
-		
+
+		if (BB.inst().getTowerSelection() != null)
+		{
+			Location loc = GameMap.inst().getGridLocationFromPixels(mouseLocation[0], mouseLocation[1]);
+			if (loc != null)
+			{
+				int tileSize = GameMap.inst().tileSize;
+				int x = loc.x * tileSize;
+				int y = loc.y * tileSize;
+
+				g.setClip(0, 0, GameMap.inst().columns * tileSize, GameMap.inst().rows * tileSize);
+				Color drawColor;
+				if (GameMap.inst().canBuildTower(loc, (short) 2, Team.Player2))
+					drawColor = Color.green;
+				else
+					drawColor = Color.red;
+				g.setColor(drawColor);
+				g.fillRect(x, y, TowerBase.size * tileSize, TowerBase.size * tileSize);
+				g.clearClip();
+			}
+		}
 	}
 
 	@Override
 	public void update(int eps)
 	{
+		
+	}
+	
+	@Override
+	public void pause()
+	{
+		this.paused = true;
+		
+	}
+	
+	@Override
+	public void unpause()
+	{
+		this.paused = false;
 		
 	}
 	

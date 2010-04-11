@@ -42,4 +42,14 @@ public interface Subsystem {
 	 * Called when the system is ending (i.e. game over)
 	 */
 	public void end();
+	
+	/**
+	 * Called when the game is paused.
+	 */
+	public void pause();
+	
+	/**
+	 * Called when the game is unpaused.
+	 */
+	public void unpause();
 }
