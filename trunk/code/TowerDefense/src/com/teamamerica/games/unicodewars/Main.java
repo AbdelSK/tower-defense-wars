@@ -21,7 +21,7 @@ public class Main extends StateBasedGame
 	
 	public enum States
 	{
-		SplashState, MainMenuState, GameplayState, LoseState, WinState
+		SplashState, MainMenuState, GameplayState, LoseState, WinState, PauseState
 	};
 	
 	public Main()
