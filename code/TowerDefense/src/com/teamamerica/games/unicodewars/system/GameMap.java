@@ -396,7 +396,7 @@ public class GameMap implements TileBasedMap
 						return false;
 				}
 			
-			BB.inst().getPlayer().purchase(BB.inst().getTowerSelection().price);
+			// BB.inst().getPlayer().purchase(BB.inst().getTowerSelection().price);
 			return true;
 		}
 		else
@@ -671,7 +671,7 @@ public class GameMap implements TileBasedMap
 			{
 				for (int y = this.selectedTower.getPosition().y - this.selectedTower.getRadius(); y < this.selectedTower.getPosition().y + this.selectedTower.getSize() + this.selectedTower.getRadius(); y++)
 				{
-					if (x > 0 && x < columns && y > 0 && y < rows && (this.teamMap[x][y] == this.selectedTower.getTeam()))
+					if (x >= 0 && x < columns && y >= 0 && y < rows && (this.teamMap[x][y] == this.selectedTower.getTeam()))
 					{
 						g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
 					}

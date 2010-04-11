@@ -83,11 +83,19 @@ public class GameSystem
 	public void pause()
 	{
 		BB.inst().pauseTimers();
+		for (Subsystem s : _systems.values())
+		{
+			s.pause();
+		}
 	}
 	
 	public void unpause()
 	{
 		BB.inst().unpauseTimers();
+		for (Subsystem s : _systems.values())
+		{
+			s.unpause();
+		}
 	}
 
 	/**
@@ -140,14 +148,20 @@ public class GameSystem
 	{
 		g.pushTransform();
 		g.resetTransform();
-
+		
 		GameMap.inst().render(g);
+
 		for (List<GameObject> team : BB.inst().getAll())
 		{
 			for (GameObject obj : team)
 			{
 				obj.render(g);
 			}
+		}
+
+		for (Subsystem s : _systems.values())
+		{
+			s.render(g);
 		}
 
 		g.setFont(font);

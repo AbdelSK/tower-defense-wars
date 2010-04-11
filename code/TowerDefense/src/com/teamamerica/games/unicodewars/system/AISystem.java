@@ -46,4 +46,18 @@ public class AISystem implements Subsystem
 		
 	}
 	
+	@Override
+	public void pause()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void unpause()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
 }
