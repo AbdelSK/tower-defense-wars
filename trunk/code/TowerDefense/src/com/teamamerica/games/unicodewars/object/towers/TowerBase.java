@@ -112,6 +112,7 @@ public abstract class TowerBase extends GameObject
 		Event buildEvent = new Event(buildType, loc, this);
 		EventManager.inst().dispatch(buildEvent);
 		registerTower();
+		System.out.println(loc.x + "," + loc.y);
 	}
 	
 	@Override
