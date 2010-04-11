@@ -117,7 +117,7 @@ public abstract class TowerBase extends GameObject
 	@Override
 	public void update(int elapsed)
 	{
-		if (stopWatch.xMilisecondsPassed(80 / this.speed))
+		if (stopWatch.xMilisecondsPassed(2000 / this.speed))
 		{
 			
 			MobObject toAttack = null;
@@ -185,7 +185,7 @@ public abstract class TowerBase extends GameObject
 	{
 		return speed;
 	}
-
+	
 	public int getUpgradePrice()
 	{
 		return Math.round(.5f * price);
@@ -221,7 +221,7 @@ public abstract class TowerBase extends GameObject
 		Event buildEvent = new Event(buildType, this._position, this);
 		EventManager.inst().dispatch(buildEvent);
 		
-		price += getUpgradePrice();
+		price += this.getUpgradePrice();
 	}
 
 	public String getInfoString()

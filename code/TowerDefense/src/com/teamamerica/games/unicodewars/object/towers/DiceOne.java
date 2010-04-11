@@ -37,22 +37,22 @@ public class DiceOne extends TowerBase
 		}
 		else if (level == 3)
 		{
-			total = 19;
+			total = 17;
 			this.getVisualComponent().updateImage("data/images/towers/Dice-3.png");
 		}
 		else if (level == 4)
 		{
-			total = 26;
+			total = 24;
 			this.getVisualComponent().updateImage("data/images/towers/Dice-4.png");
 		}
 		else if (level == 5)
 		{
-			total = 33;
+			total = 29;
 			this.getVisualComponent().updateImage("data/images/towers/Dice-5.png");
 		}
 		else if (level == 6)
 		{
-			total = 40;
+			total = 35;
 			this.getVisualComponent().updateImage("data/images/towers/Dice-6.png");
 		}
 
@@ -85,6 +85,31 @@ public class DiceOne extends TowerBase
 	{
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public int getUpgradePrice()
+	{
+		if (level == 1)
+		{
+			return 15;
+		}
+		else if (level == 2)
+		{
+			return 20;
+		}
+		else if (level == 3)
+		{
+			return 30;
+		}
+		else if (level == 4)
+		{
+			return 40;
+		}
+		else if (level == 5)
+		{
+			return 60;
+		}
+		return 0;
 	}
 		
 }
