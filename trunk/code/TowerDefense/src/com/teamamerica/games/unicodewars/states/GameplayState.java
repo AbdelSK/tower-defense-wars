@@ -12,8 +12,12 @@ import org.fenggui.util.Point;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.particles.ConfigurableEmitter;
+import org.newdawn.slick.particles.ParticleIO;
+import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -42,11 +46,19 @@ public class GameplayState extends BHGameState
 		nobody, player1, player2;
 	}
 	
+	// pjdebug
+	private ParticleSystem system;
+	private ParticleIO particleIO;
+	private ConfigurableEmitter emitter1;
+	private ConfigurableEmitter emitter2;
+	private int x = 0;
+
 	private static Logger logger = Logger.getLogger(GameplayState.class);
 	private GameSystem _gameSystem;
 	private Container mobInterface;
 	private Container towerInterface;
-	private EventListener el;
+	private EventListener baseDestroyedListener;
+	private EventListener emitterListener;
 	private boolean bLayoutComplete;
 	private Winner winner;
 	private boolean paused;
@@ -68,6 +80,12 @@ public class GameplayState extends BHGameState
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException
 	{
+		Image image = new Image("data/images/towers/Music-1.png", false);
+		system = new ParticleSystem(image);
+		system.setBlendingMode(ParticleSystem.BLEND_ADDITIVE);
+		system.setUsePoints(false);
+		system.setRemoveCompletedEmitters(true);
+
 		_gameSystem = new GameSystem(container.getWidth(), container.getHeight());
 		_gameSystem.pause();
 
@@ -81,7 +99,7 @@ public class GameplayState extends BHGameState
 		layout(_feng.getDisplay());
 		_gameSystem.unpause();
 
-		el = new EventListener() {
+		baseDestroyedListener = new EventListener() {
 			
 			@Override
 			public void onEvent(Event e)
@@ -98,7 +116,17 @@ public class GameplayState extends BHGameState
 				}
 			}
 		};
-		EventManager.inst().registerForAll(EventType.BASE_DESTROYED, el);
+		EventManager.inst().registerForAll(EventType.BASE_DESTROYED, baseDestroyedListener);
+		emitterListener = new EventListener() {
+			
+			@Override
+			public void onEvent(Event e)
+			{
+				ConfigurableEmitter ce = (ConfigurableEmitter) e.getValue("configurableEmitter");
+				system.addEmitter(ce);
+			}
+		};
+		EventManager.inst().registerForAll(EventType.START_PARTICLE_EFFECT, emitterListener);
 	}
 	
 	@Override
@@ -125,12 +153,15 @@ public class GameplayState extends BHGameState
 		g.setBackground(Color.black);
 		g.setColor(Color.black);
 		g.drawString(container.getFPS() + "", 2, 2);
+		
+		system.render();
 	}
 	
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int millis) throws SlickException
 	{
 		_gameSystem.update(millis);
+		system.update(millis);
 		
 		if (this.paused)
 		{
@@ -140,14 +171,16 @@ public class GameplayState extends BHGameState
 		if (winner == Winner.player1)
 		{
 			winner = Winner.nobody;
-			EventManager.inst().unregisterForAll(EventType.BASE_DESTROYED, el);
+			EventManager.inst().unregisterForAll(EventType.BASE_DESTROYED, baseDestroyedListener);
+			EventManager.inst().unregisterForAll(EventType.START_PARTICLE_EFFECT, baseDestroyedListener);
 			_gameSystem.end();
 			game.enterState(Main.States.WinState.ordinal(), new FadeOutTransition(), new FadeInTransition());
 		}
 		else if (winner == Winner.player2)
 		{
 			winner = Winner.nobody;
-			EventManager.inst().unregisterForAll(EventType.BASE_DESTROYED, el);
+			EventManager.inst().unregisterForAll(EventType.BASE_DESTROYED, baseDestroyedListener);
+			EventManager.inst().unregisterForAll(EventType.START_PARTICLE_EFFECT, baseDestroyedListener);
 			_gameSystem.end();
 			game.enterState(Main.States.LoseState.ordinal(), new FadeOutTransition(), new FadeInTransition());
 		}

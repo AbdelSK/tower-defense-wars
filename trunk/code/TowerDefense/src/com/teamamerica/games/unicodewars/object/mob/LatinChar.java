@@ -6,9 +6,9 @@ import com.teamamerica.games.unicodewars.utils.Team;
 
 public class LatinChar extends MobObject
 {
-	public LatinChar(Location loc, Team side, int level, Type type)
+	public LatinChar(Location loc, Team side, int level, Type type, String imgLoc)
 	{
-		super("Latin Mob", BB.inst().getNextId(), 10, loc, side, level, MobObject.Type.latin);
+		super("Latin Mob", BB.inst().getNextId(), 10, loc, side, level, MobObject.Type.latin, imgLoc);
 
 		this.speed = 4 * (int) Math.pow(this.level, 3);
 		this.attack = 2 * (int) Math.pow(this.level, 2);

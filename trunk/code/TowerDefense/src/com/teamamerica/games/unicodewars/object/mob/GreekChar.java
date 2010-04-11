@@ -6,9 +6,9 @@ import com.teamamerica.games.unicodewars.utils.Team;
 
 public class GreekChar extends MobObject
 {
-	public GreekChar(Location loc, Team side, int level, Type type)
+	public GreekChar(Location loc, Team side, int level, Type type, String imgLoc)
 	{
-		super("Greek Mob", BB.inst().getNextId(), 10, loc, side, level, MobObject.Type.greek);
+		super("Greek Mob", BB.inst().getNextId(), 10, loc, side, level, MobObject.Type.greek, imgLoc);
 		
 		this.attack = 4 * (int) Math.pow(this.level, 2);
 		this.defense = 2 * (int) Math.pow(this.level, 3);

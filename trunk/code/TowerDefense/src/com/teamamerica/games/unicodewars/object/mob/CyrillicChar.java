@@ -6,9 +6,9 @@ import com.teamamerica.games.unicodewars.utils.Team;
 
 public class CyrillicChar extends MobObject
 {
-	public CyrillicChar(Location loc, Team side, int level, Type type)
+	public CyrillicChar(Location loc, Team side, int level, Type type, String imgLoc)
 	{
-		super("Cyrillic Mob", BB.inst().getNextId(), 10, loc, side, level, MobObject.Type.cyrillic);
+		super("Cyrillic Mob", BB.inst().getNextId(), 10, loc, side, level, MobObject.Type.cyrillic, imgLoc);
 		
 		this.vitality = 4 * (int) Math.pow(this.level, 3);
 		this.speed = 2 * (int) Math.pow(this.level, 3);

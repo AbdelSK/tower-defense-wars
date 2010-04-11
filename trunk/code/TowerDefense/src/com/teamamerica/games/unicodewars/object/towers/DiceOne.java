@@ -11,9 +11,9 @@ public class DiceOne extends TowerBase
 	public static int price = 10;
 	
 	
-	public DiceOne(Location loc, Team team)
+	public DiceOne(Location loc, Team team, String imgLoc)
 	{
-		super(TowerBase.Type.diceOne, 0, price, 0, 0, team, loc);
+		super(TowerBase.Type.diceOne, 0, price, 0, 0, team, loc, imgLoc);
 	}
 
 	@Override

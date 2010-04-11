@@ -11,9 +11,9 @@ public class MusicOne extends TowerBase
 	public static int BASE_SPEED = 5;
 	public static int BASE_RADIUS = 2;
 	
-	public MusicOne(Location loc, Team team)
+	public MusicOne(Location loc, Team team, String imgLoc)
 	{
-		super(TowerBase.Type.musicOne, BASE_ATTACK, price, BASE_RADIUS, BASE_SPEED, team, loc);
+		super(TowerBase.Type.musicOne, BASE_ATTACK, price, BASE_RADIUS, BASE_SPEED, team, loc, imgLoc);
 	}
 	
 	public boolean canUpgrade()

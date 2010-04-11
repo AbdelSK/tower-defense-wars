@@ -1,7 +1,13 @@
 package com.teamamerica.games.unicodewars.object.mob;
 
+import java.io.File;
+import org.newdawn.slick.particles.ConfigurableEmitter;
+import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.util.pathfinding.Mover;
 import com.teamamerica.games.unicodewars.object.GameObject;
+import com.teamamerica.games.unicodewars.system.EventManager;
+import com.teamamerica.games.unicodewars.utils.Event;
+import com.teamamerica.games.unicodewars.utils.EventType;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
 
@@ -22,8 +28,9 @@ public abstract class MobObject extends GameObject implements Mover
 	int price = 0;
 	int refund = 0;
 	Type type;
+	String imagePath;
 
-	public MobObject(String name, int id, int renderPriority, Location loc, Team side, int level, Type type)
+	public MobObject(String name, int id, int renderPriority, Location loc, Team side, int level, Type type, String imgLoc)
 	{
 		super(name, id, Team.Player1, renderPriority);
 		
@@ -34,6 +41,7 @@ public abstract class MobObject extends GameObject implements Mover
 		this.type = type;
 		this.price = 20 * level;
 		this.refund = this.price / 2;
+		this.imagePath = imgLoc;
 	}
 	
 	public int getAttack()
@@ -81,6 +89,11 @@ public abstract class MobObject extends GameObject implements Mover
 		return type;
 	}
 	
+	public String getImagePath()
+	{
+		return imagePath;
+	}
+
 	public int getRefundAmount()
 	{
 		return refund;
@@ -146,5 +159,27 @@ public abstract class MobObject extends GameObject implements Mover
 	public void deleteObject()
 	{
 		super.deleteObject();
+	}
+	
+	public void die()
+	{
+		ConfigurableEmitter emitter = null;
+		try
+		{
+			File xmlFile = new File("c:/code/java/workspace/Tower Defense/src/data/effects/explode.xml");
+			emitter = ParticleIO.loadEmitter(xmlFile);
+		}
+		catch (Exception e)
+		{
+			System.out.println("Exception: " + e.getMessage());
+			e.printStackTrace();
+			System.exit(0);
+		}
+		emitter.setPosition(this._positionInPixels.x + 10, this._positionInPixels.y + 8);
+		emitter.setImageName(imagePath);
+		Event event = new Event(EventType.START_PARTICLE_EFFECT);
+		event.addParameter("configurableEmitter", emitter);
+		EventManager.inst().dispatch(event);
+		deleteObject();
 	}
 }

@@ -53,16 +53,18 @@ public abstract class TowerBase extends GameObject
 	private HashMap<Location, EventListener> listeners;
 	private GameObject enemy = null;
 	private ArrayList<Location> sortedLocs;
+	private String imagePath;
 	
 	private HashMap<Location, ArrayList<MobObject>> attackMap;
 
-	public TowerBase(Type type, int attack, int price, int radius, int speed, Team team, Location loc)
+	public TowerBase(Type type, int attack, int price, int radius, int speed, Team team, Location loc, String imgLoc)
 	{
 		super("Tower", BB.inst().getNextId(), team, 100);
 
 		this.price = price;
 		this.type = type;
 		this._size = size;
+		this.imagePath = imgLoc;
 		setPosition(loc);
 		Random gen = BB.inst().getRandom();
 		stopWatch = BB.inst().getNewTimer();
@@ -154,7 +156,7 @@ public abstract class TowerBase extends GameObject
 				// if (mob.getTeam() == Team.Player2)
 				BB.inst().getPlayer().addGold(2 * mob.getLevel());
 
-				mob.deleteObject();
+				mob.die();
 			}
 		}
 	}
@@ -227,6 +229,11 @@ public abstract class TowerBase extends GameObject
 		return null;
 	}
 	
+	public String getImagePath()
+	{
+		return imagePath;
+	}
+
 	public String getStatusString()
 	{
 
