@@ -83,7 +83,7 @@ public class GameplayState extends BHGameState
 		particleSystem = new ParticleSystem(image);
 		particleSystem.setBlendingMode(ParticleSystem.BLEND_ADDITIVE);
 		particleSystem.setUsePoints(false);
-		particleSystem.setRemoveCompletedEmitters(true);
+		particleSystem.setRemoveCompletedEmitters(false);
 
 		_gameSystem = new GameSystem(container, container.getWidth(), container.getHeight());
 		_gameSystem.pause();
@@ -126,7 +126,6 @@ public class GameplayState extends BHGameState
 			}
 		};
 		EventManager.inst().registerForAll(EventType.START_PARTICLE_EFFECT, emitterListener);
-		particleSystem.reset();
 	}
 	
 	@Override
