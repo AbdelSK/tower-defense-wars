@@ -26,7 +26,7 @@ public class Main extends StateBasedGame
 	
 	public Main()
 	{
-		super("Unicode Wars - Prototype");
+		super("Unicode Wars - Beta");
 	}
 	
 	@Override

@@ -64,8 +64,8 @@ public class BB
 		_keysPressed = new ArrayList<KeyListener>();
 		_mouseClicked = new ArrayList<MouseListener>();
 		_mouseClickedAtLocation = new HashMap<Location, MouseListener>();
-		towerSelection = TowerBase.Type.diceOne;
-		mobTypeSelection = MobObject.Type.chinese;
+		towerSelection = null;
+		mobTypeSelection = null;
 		mobLevelSelection = 1;
 		players = new Player[2];
 		players[0] = new Player();
