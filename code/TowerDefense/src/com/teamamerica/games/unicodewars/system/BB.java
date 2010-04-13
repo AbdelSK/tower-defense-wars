@@ -10,6 +10,10 @@ import java.util.Random;
 import org.apache.log4j.Logger;
 import org.fenggui.Button;
 import org.fenggui.Display;
+import org.fenggui.FengGUI;
+import org.fenggui.event.ButtonPressedEvent;
+import org.fenggui.event.IButtonPressedListener;
+import org.fenggui.util.Point;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
@@ -48,8 +52,10 @@ public class BB
 	private Display display;
 	private TowerBase HUD;
 	private Button currentHUD[];
+	private IButtonPressedListener buttonPressedListeners[];
+	private boolean HUDLayedOut;
 	private Player players[];
-		
+
 	private BB()
 	{
 		_random = new Random(System.currentTimeMillis());
@@ -70,10 +76,43 @@ public class BB
 		players = new Player[2];
 		players[0] = new Player();
 		players[1] = new Player();
+		
+		currentHUD = new Button[3];
+		buttonPressedListeners = new IButtonPressedListener[3];
+		HUDLayedOut = false;
 	}
 	
 	public static void $delete()
 	{
+		if (_blackboard != null)
+		{
+			try
+			{
+				_blackboard.display.removeWidget(_blackboard.currentHUD[0]);
+			}
+			finally
+			{
+				;
+			}
+			
+			try
+			{
+				_blackboard.display.removeWidget(_blackboard.currentHUD[1]);
+			}
+			finally
+			{
+				;
+			}
+			
+			try
+			{
+				_blackboard.display.removeWidget(_blackboard.currentHUD[2]);
+			}
+			finally
+			{
+				;
+			}
+		}
 		_blackboard = null;
 	}
 
@@ -303,11 +342,6 @@ public class BB
 	{
 		this.display = disp;
 	}
-
-	public Display getDisplay()
-	{
-		return this.display;
-	}
 	
 	public TowerBase getHUD()
 	{
@@ -317,16 +351,75 @@ public class BB
 	public void setHUD(TowerBase towerBase)
 	{
 		this.HUD = towerBase;
-	}
-	
-	public void setCurrentHUD(Button buttons[])
-	{
-		this.currentHUD = buttons;
-	}
-	
-	public Button[] getCurrentHUD()
-	{
-		return this.currentHUD;
+		if (this.HUD == null)
+		{
+			this.display.removeWidget(currentHUD[0]);
+			this.display.removeWidget(currentHUD[1]);
+			this.display.removeWidget(currentHUD[2]);
+			return;
+		}
+		
+		if (!this.HUDLayedOut)
+		{
+			this.HUDLayedOut = true;
+			
+			buttonPressedListeners[0] = new IButtonPressedListener() {
+				
+				@Override
+				public void buttonPressed(ButtonPressedEvent arg0)
+				{
+					if (BB.inst().getHUD().canUpgrade())
+						BB.inst().getHUD().doUpgrade();
+					else
+						currentHUD[0].setEnabled(false);
+					System.out.println("Upgraded " + HUD.getType() + "(" + HUD.getId() + ") to level " + HUD.getLevel());
+					BB.inst().setHUD(null);
+					GameMap.inst().clearSelectedTower();
+				}
+			};
+			
+			buttonPressedListeners[1] = new IButtonPressedListener() {
+				
+				@Override
+				public void buttonPressed(ButtonPressedEvent arg0)
+				{
+					System.out.println("Sold " + HUD.getType() + "(" + HUD.getId() + ")");
+					BB.inst().getHUD().sellTower();
+					BB.inst().setHUD(null);
+					GameMap.inst().clearSelectedTower();
+					currentHUD[1].removeButtonPressedListener(this);
+				}
+			};
+			
+			for (int i = 0; i < 3; i++)
+			{
+				currentHUD[i] = FengGUI.createWidget(Button.class);
+				currentHUD[i].setShrinkable(false);
+				currentHUD[i].setMultiline(true);
+				currentHUD[i].setSize(256, 64);
+				currentHUD[i].addButtonPressedListener(buttonPressedListeners[i]);
+			}
+		}
+		
+		currentHUD[0].setPosition(new Point(382, 0));
+		
+		currentHUD[1].setPosition(new Point(382, 64));
+		
+		currentHUD[2].setPosition(new Point(382, 128));
+		currentHUD[2].setSize(128, 96);
+		currentHUD[2].setEnabled(false);
+		
+		currentHUD[0].setText("Upgrade " + this.HUD.getType() + " to level " + (this.HUD.getLevel() + 1) + "\nCost: " + this.HUD.getUpgradePrice());
+		currentHUD[1].setText("Sell " + this.HUD.getType() + " for " + this.HUD.getSellPrice() + "g.");
+		currentHUD[2].setText(this.HUD.getType() + " Level " + this.HUD.getLevel() + "\nAttack: " + this.HUD.getAttack() + "\nRange: " + this.HUD.getRadius() + "\nSpeed: " + this.HUD.getSpeed());
+		
+		if (this.HUD.canUpgrade())
+			if (currentHUD[0].getDisplay() == null)
+				this.display.addWidget(currentHUD[0]);
+		if (currentHUD[1].getDisplay() == null)
+			this.display.addWidget(currentHUD[1]);
+		if (currentHUD[2].getDisplay() == null)
+			this.display.addWidget(currentHUD[2]);
 	}
 	
 	public Player getUsersPlayer()

@@ -214,13 +214,14 @@ public class BuildSubsystem implements Subsystem
 		else
 		// Not build mode
 		{
-			if (BB.inst().getCurrentHUD() != null)
+			Location loc = GameMap.inst().getGridLocationFromPixels(x, y);
+			if (loc != null)
 			{
-				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[0]);
-				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[1]);
-				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[2]);
-				BB.inst().setCurrentHUD(null);
-				GameMap.inst().clearSelectedTower();
+				if (BB.inst().getHUD() != null)
+				{
+					BB.inst().setHUD(null);
+					GameMap.inst().clearSelectedTower();
+				}
 			}
 		}
 
