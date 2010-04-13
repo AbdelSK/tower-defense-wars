@@ -6,11 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
-import org.fenggui.Button;
-import org.fenggui.FengGUI;
-import org.fenggui.event.ButtonPressedEvent;
-import org.fenggui.event.IButtonPressedListener;
-import org.fenggui.util.Point;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
@@ -242,6 +237,11 @@ public abstract class TowerBase extends GameObject
 	{
 		return level < 4;
 	}
+	
+	public int getLevel()
+	{
+		return this.level;
+	}
 
 	public void doUpgrade()
 	{
@@ -389,67 +389,9 @@ public abstract class TowerBase extends GameObject
 	{
 		BB.inst().setHUD(this);
 		GameMap.inst().setSelectedTower(this);
-		Button buttons[] = new Button[3];
-		
-		for (int i = 0; i < 3; i++)
-		{
-			buttons[i] = FengGUI.createWidget(Button.class);
-			buttons[i].setShrinkable(false);
-			buttons[i].setMultiline(true);
-			buttons[i].setSize(256, 64);
-		}
-		
-		if (BB.inst().getHUD().canUpgrade())
-		{
-			buttons[0].setPosition(new Point(382, 0));
-			buttons[0].setText("Upgrade " + this.type + " to level " + (this.level + 1) + "\nCost: " + this.getUpgradePrice());
-			buttons[0].addButtonPressedListener(new IButtonPressedListener() {
-				public void buttonPressed(ButtonPressedEvent arg0)
-				{
-					if (BB.inst().getHUD().canUpgrade())
-						BB.inst().getHUD().doUpgrade();
-					else
-						BB.inst().getCurrentHUD()[0].setEnabled(false);
-					System.out.println("Upgraded " + BB.inst().getHUD().type + "(" + BB.inst().getHUD()._id + ") to level " + BB.inst().getHUD().level);
-					BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[0]);
-					BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[1]);
-					BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[2]);
-					BB.inst().setCurrentHUD(null);
-					GameMap.inst().clearSelectedTower();
-				}
-			});
-		}
-
-		buttons[1].setPosition(new Point(382, 64));
-		buttons[1].setText("Sell " + this.type + " for " + this.getSellPrice() + "g.");
-		buttons[1].addButtonPressedListener(new IButtonPressedListener() {
-			public void buttonPressed(ButtonPressedEvent arg0)
-			{
-				System.out.println("Sold " + BB.inst().getHUD().type + "(" + BB.inst().getHUD()._id + ")");
-				BB.inst().getHUD().sellTower();
-				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[0]);
-				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[1]);
-				BB.inst().getDisplay().removeWidget(BB.inst().getCurrentHUD()[2]);
-				BB.inst().setCurrentHUD(null);
-				GameMap.inst().clearSelectedTower();
-			}
-		});
-		
-		buttons[2].setPosition(new Point(382, 128));
-		buttons[2].setSize(128, 96);
-		buttons[2].setEnabled(false);
-		buttons[2].setText(BB.inst().getHUD().type + " Level " + BB.inst().getHUD().level + "\nAttack: " + BB.inst().getHUD().attack + "\nRange: " + BB.inst().getHUD().radius + "\nSpeed: " + BB.inst().getHUD().speed);
-
-		BB.inst().setCurrentHUD(buttons);
-
-		if (BB.inst().getHUD().canUpgrade())
-			BB.inst().getDisplay().addWidget(buttons[0]);
-
-		BB.inst().getDisplay().addWidget(buttons[1]);
-		BB.inst().getDisplay().addWidget(buttons[2]);
 	}
 	
-	private void sellTower()
+	public void sellTower()
 	{
 		EventType sellType;
 		switch (this._team)
