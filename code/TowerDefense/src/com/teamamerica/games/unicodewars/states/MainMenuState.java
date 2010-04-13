@@ -81,6 +81,7 @@ public class MainMenuState extends BHGameState {
 		// to the next state.  If you forget then the widgets (although not rendered)
 		// could actually receive button presses.
 		_feng.getDisplay().removeAllWidgets();
+		_menuTheme.stop();
 	}
 
 	@Override

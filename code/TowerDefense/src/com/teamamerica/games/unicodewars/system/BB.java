@@ -374,7 +374,6 @@ public class BB
 						currentHUD[0].setEnabled(false);
 					System.out.println("Upgraded " + HUD.getType() + "(" + HUD.getId() + ") to level " + HUD.getLevel());
 					BB.inst().setHUD(null);
-					GameMap.inst().clearSelectedTower();
 				}
 			};
 			
@@ -386,7 +385,6 @@ public class BB
 					System.out.println("Sold " + HUD.getType() + "(" + HUD.getId() + ")");
 					BB.inst().getHUD().sellTower();
 					BB.inst().setHUD(null);
-					GameMap.inst().clearSelectedTower();
 					currentHUD[1].removeButtonPressedListener(this);
 				}
 			};
