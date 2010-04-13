@@ -79,7 +79,7 @@ public class GameplayState extends BHGameState
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException
 	{
-		Image image = new Image("data/images/towers/Music-1.png", false);
+		Image image = new Image("data/effects/fireball.png", false);
 		particleSystem = new ParticleSystem(image);
 		particleSystem.setBlendingMode(ParticleSystem.BLEND_ADDITIVE);
 		particleSystem.setUsePoints(false);
