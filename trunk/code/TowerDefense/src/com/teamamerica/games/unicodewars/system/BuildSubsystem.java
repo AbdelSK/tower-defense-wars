@@ -118,6 +118,21 @@ public class BuildSubsystem implements Subsystem
 				{
 					shiftHeld = true;
 				}
+				
+				if (key == Input.KEY_ESCAPE)
+				{
+					BB.inst().setTowerSelection(null);
+					BB.inst().setHUD(null);
+				}
+				
+				if (key == Input.KEY_BACK || key == Input.KEY_DELETE)
+					if (BB.inst().getHUD() != null)
+						BB.inst().getHUD().sellTower();
+
+				if (key == Input.KEY_U)
+					if (BB.inst().getHUD() != null)
+						if (BB.inst().getHUD().canUpgrade())
+							BB.inst().getHUD().doUpgrade();
 			}
 			
 			@Override
@@ -195,34 +210,40 @@ public class BuildSubsystem implements Subsystem
 
 	public void handleClickEvent(int button, int x, int y)
 	{
-		if (BB.inst().getTowerSelection() != null) // Build mode
+		if (button == Input.MOUSE_LEFT_BUTTON)
 		{
-			Location loc = GameMap.inst().getGridLocationFromPixels(x, y);
-			if (loc != null)
+			if (BB.inst().getTowerSelection() != null) // Build mode
 			{
-				if (button == Input.MOUSE_LEFT_BUTTON)
+				Location loc = GameMap.inst().getGridLocationFromPixels(x, y);
+				if (loc != null)
 				{
-					if (GameMap.inst().canBuildTower(loc, (short) 2, Team.Player1))
+					if (button == Input.MOUSE_LEFT_BUTTON)
 					{
-						TowerMaker.createTower(BB.inst().getTowerSelection(), loc, Team.Player1);
-						if (!shiftHeld)
-							BB.inst().setTowerSelection(null);
+						if (GameMap.inst().canBuildTower(loc, (short) 2, Team.Player1))
+						{
+							TowerMaker.createTower(BB.inst().getTowerSelection(), loc, Team.Player1);
+							if (!shiftHeld)
+								BB.inst().setTowerSelection(null);
+						}
+					}
+				}
+			}
+			else
+			// Not build mode
+			{
+				Location loc = GameMap.inst().getGridLocationFromPixels(x, y);
+				if (loc != null)
+				{
+					if (BB.inst().getHUD() != null)
+					{
+						BB.inst().setHUD(null);
 					}
 				}
 			}
 		}
 		else
-		// Not build mode
 		{
-			Location loc = GameMap.inst().getGridLocationFromPixels(x, y);
-			if (loc != null)
-			{
-				if (BB.inst().getHUD() != null)
-				{
-					BB.inst().setHUD(null);
-					GameMap.inst().clearSelectedTower();
-				}
-			}
+			BB.inst().setTowerSelection(null);
 		}
 
 	}

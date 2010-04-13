@@ -388,7 +388,6 @@ public abstract class TowerBase extends GameObject
 	private void handleTowerClick()
 	{
 		BB.inst().setHUD(this);
-		GameMap.inst().setSelectedTower(this);
 	}
 	
 	public void sellTower()
@@ -439,6 +438,9 @@ public abstract class TowerBase extends GameObject
 	public void deleteObject()
 	{
 		super.deleteObject();
+		
+		if (BB.inst().getHUD() == this)
+			BB.inst().setHUD(null);
 
 		for (Location key : listeners.keySet())
 		{

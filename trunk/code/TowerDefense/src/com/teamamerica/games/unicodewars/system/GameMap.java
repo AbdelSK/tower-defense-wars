@@ -50,8 +50,6 @@ public class GameMap implements TileBasedMap
 	private Timer colorTimer;
 	private int colorStage;
 	private int alphaStage;
-	
-	private TowerBase selectedTower;
 
 	public final int rows = 32; // height
 	public final int columns = 64; // width
@@ -521,16 +519,6 @@ public class GameMap implements TileBasedMap
 		Location temp = this.baseLocations.get(team.index()).copy();
 		return temp;
 	}
-	
-	public void setSelectedTower(TowerBase obj)
-	{
-		this.selectedTower = obj;
-	}
-	
-	public void clearSelectedTower()
-	{
-		this.selectedTower = null;
-	}
 
 	private void dispatch(Event e)
 	{
@@ -661,17 +649,17 @@ public class GameMap implements TileBasedMap
 		g.drawLine(0, 0, 0, rows * tileSize); // Left
 		g.drawLine(columns * tileSize, 0, columns * tileSize, rows * tileSize); // Right
 		
-		if (this.selectedTower != null)
+		if (BB.inst().getHUD() != null)
 		{
 			Color temp = Color.red.scaleCopy(1);
 			temp.a = .5f;
 			g.setColor(temp);
 			
-			for (int x = this.selectedTower.getPosition().x - this.selectedTower.getRadius(); x < this.selectedTower.getPosition().x + this.selectedTower.getSize() + this.selectedTower.getRadius(); x++)
+			for (int x = BB.inst().getHUD().getPosition().x - BB.inst().getHUD().getRadius(); x < BB.inst().getHUD().getPosition().x + BB.inst().getHUD().getSize() + BB.inst().getHUD().getRadius(); x++)
 			{
-				for (int y = this.selectedTower.getPosition().y - this.selectedTower.getRadius(); y < this.selectedTower.getPosition().y + this.selectedTower.getSize() + this.selectedTower.getRadius(); y++)
+				for (int y = BB.inst().getHUD().getPosition().y - BB.inst().getHUD().getRadius(); y < BB.inst().getHUD().getPosition().y + BB.inst().getHUD().getSize() + BB.inst().getHUD().getRadius(); y++)
 				{
-					if (x >= 0 && x < columns && y >= 0 && y < rows && (this.teamMap[x][y] == this.selectedTower.getTeam()))
+					if (x >= 0 && x < columns && y >= 0 && y < rows && (this.teamMap[x][y] == BB.inst().getHUD().getTeam()))
 					{
 						g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
 					}

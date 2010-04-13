@@ -107,12 +107,13 @@ public class VisualComponent extends Component
 				switch (this._parent.getTeam())
 				{
 					case Player1:
-						g.setColor(Color.black);
+						g.setColor(Color.white);
+						g.getColor().a = .5f;
 						g.fillRect(renderLocTL.x, renderLocTL.y, size, size);
-						img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.cyan);
+						img.draw(renderLocTL.x, renderLocTL.y, size, size, new Color(0, 0, 128));
 						break;
 					case Player2:
-						g.setColor(Color.black);
+						g.setColor(Color.darkGray);
 						g.fillRect(renderLocTL.x, renderLocTL.y, size, size);
 						img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.red);
 						break;
