@@ -147,7 +147,7 @@ public class GameplayState extends BHGameState
 		container.setShowFPS(false);
 		_gameSystem.render(g);
 		_feng.render(container, game, g);
-		
+
 		g.setAntiAlias(true);
 		g.setBackground(Color.black);
 		g.setColor(Color.black);

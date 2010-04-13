@@ -21,7 +21,7 @@ public class GameSystem
 	
 	public enum Systems
 	{
-		BuildSubsystem, AISubsystem
+		BuildSubsystem, AiSubsystem
 	};
 	
 	public long _frameCount;
@@ -60,7 +60,7 @@ public class GameSystem
 	{
 		loadLevel("");
 		_systems.put(Systems.BuildSubsystem, new BuildSubsystem(_container));
-		_systems.put(Systems.AISubsystem, new AISystem());
+		_systems.put(Systems.AiSubsystem, new AiSystem());
 		this.tickTimer = BB.inst().getNewTimer();
 		for (Subsystem s : _systems.values())
 		{
@@ -139,8 +139,8 @@ public class GameSystem
 			// Tick has passed. Update what is needed.
 			
 			// adjust the players total gold and next income value
-			BB.inst().getPlayer().addGold(BB.inst().getPlayer().getIncome());
-			BB.inst().getPlayer().addIncome(-1 * BB.inst().getPlayer().getIncome());
+			BB.inst().getUsersPlayer().addGold(BB.inst().getUsersPlayer().getIncome());
+			BB.inst().getUsersPlayer().addIncome(-1 * BB.inst().getUsersPlayer().getIncome());
 		}
 	}
 
@@ -176,9 +176,9 @@ public class GameSystem
 			tickCountdown = "PAUSED!";
 		}
 		g.drawString(tickCountdown, 384, 520);
-		g.drawString("Gold: " + BB.inst().getPlayer().getGold(), 384, 540);
-		g.drawString("Income: " + BB.inst().getPlayer().getIncome(), 384, 560);
-		g.drawString("Score: " + BB.inst().getPlayer().getScore(), 384, 580);
+		g.drawString("Gold: " + BB.inst().getUsersPlayer().getGold(), 384, 540);
+		g.drawString("Income: " + BB.inst().getUsersPlayer().getIncome(), 384, 560);
+		g.drawString("Score: " + BB.inst().getUsersPlayer().getScore(), 384, 580);
 		g.popTransform();
 	}
 }

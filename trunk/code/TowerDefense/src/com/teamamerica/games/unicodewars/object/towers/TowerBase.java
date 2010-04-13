@@ -179,7 +179,7 @@ public abstract class TowerBase extends GameObject
 					System.out.println("setting emitter " + i + " position to " + this.boardX + "," + this.boardY);
 					Event event = new Event(EventType.START_PARTICLE_EFFECT);
 					event.addParameter("configurableEmitter", emitter[i]);
-					EventManager.inst().dispatch(event);
+					// EventManager.inst().dispatch(event);
 				}
 			}
 
@@ -187,16 +187,17 @@ public abstract class TowerBase extends GameObject
 			{
 				attackMap.get(loc).remove(mob);
 				
-				// need to add this once AI is implemented
-				// if (mob.getTeam() == Team.Player2)
-				BB.inst().getPlayer().addGold(2 * mob.getLevel());
-				for (int i = 0; i < emitter.length; i++)
+				if (mob.getTeam() == Team.Player2)
 				{
-					emitter[i].reset();
-					emitter[i].completed();
-					emitter[i].wrapUp();
-					emitter[i] = null;
+					BB.inst().getUsersPlayer().addGold(2 * mob.getLevel());
 				}
+				// for (int i = 0; i < emitter.length; i++)
+				// {
+				// emitter[i].reset();
+				// emitter[i].completed();
+				// emitter[i].wrapUp();
+				// emitter[i] = null;
+				// }
 				mob.die();
 			}
 		}
@@ -465,7 +466,7 @@ public abstract class TowerBase extends GameObject
 		}
 		Event sellEvent = new Event(sellType);
 		EventManager.inst().dispatch(sellEvent);
-		BB.inst().getPlayer().addGold(this.getSellPrice());
+		BB.inst().getUsersPlayer().addGold(this.getSellPrice());
 		this.deleteObject();
 	}
 

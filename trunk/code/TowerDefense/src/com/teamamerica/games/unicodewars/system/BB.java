@@ -329,7 +329,7 @@ public class BB
 		return this.currentHUD;
 	}
 	
-	public Player getPlayer()
+	public Player getUsersPlayer()
 	{
 		return players[Team.Player1.index()];
 	}

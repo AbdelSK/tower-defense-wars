@@ -202,9 +202,9 @@ public class BuildSubsystem implements Subsystem
 			{
 				if (button == Input.MOUSE_LEFT_BUTTON)
 				{
-					if (GameMap.inst().canBuildTower(loc, (short) 2, Team.Player2))
+					if (GameMap.inst().canBuildTower(loc, (short) 2, Team.Player1))
 					{
-						TowerMaker.createTower(BB.inst().getTowerSelection(), loc, Team.Player2);
+						TowerMaker.createTower(BB.inst().getTowerSelection(), loc, Team.Player1);
 						if (!shiftHeld)
 							BB.inst().setTowerSelection(null);
 					}
@@ -255,7 +255,7 @@ public class BuildSubsystem implements Subsystem
 
 				g.setClip(0, 0, GameMap.inst().columns * tileSize, GameMap.inst().rows * tileSize);
 				Color drawColor;
-				if (GameMap.inst().canBuildTower(loc, (short) 2, Team.Player2))
+				if (GameMap.inst().canBuildTower(loc, (short) 2, Team.Player1))
 					drawColor = Color.green;
 				else
 					drawColor = Color.red;

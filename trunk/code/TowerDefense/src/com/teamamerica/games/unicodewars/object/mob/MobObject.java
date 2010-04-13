@@ -32,7 +32,7 @@ public abstract class MobObject extends GameObject implements Mover
 
 	public MobObject(String name, int id, int renderPriority, Location loc, Team side, int level, Type type, String imgLoc)
 	{
-		super(name, id, Team.Player1, renderPriority);
+		super(name, id, side, renderPriority);
 		
 		setPosition(loc);
 		this._size = 1;
