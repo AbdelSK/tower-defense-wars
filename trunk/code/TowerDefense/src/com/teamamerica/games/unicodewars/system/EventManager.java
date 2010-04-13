@@ -104,12 +104,11 @@ public class EventManager
 	 */
 	public void update(int millis)
 	{
-		
 		List<Event> copy = new LinkedList<Event>(_eventQueue);
 		
 		// remove everything from the queue in case new events are generated.
 		_eventQueue.clear();
-		
+
 		List<Event> keep = new LinkedList<Event>();
 		for (Event event : copy)
 		{

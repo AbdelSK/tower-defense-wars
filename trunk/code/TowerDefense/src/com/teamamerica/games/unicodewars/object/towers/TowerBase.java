@@ -1,6 +1,7 @@
 package com.teamamerica.games.unicodewars.object.towers;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import org.fenggui.util.Point;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
+import org.newdawn.slick.particles.ParticleSystem;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.system.BB;
@@ -41,7 +43,8 @@ public abstract class TowerBase extends GameObject
 	}
 	
 	public static final short size = 2;
-	ConfigurableEmitter emitter = null;
+	ConfigurableEmitter emitter[] = null;
+	private ParticleSystem part_sys = null;
 	int boardX;
 	int boardY;
 	
@@ -158,21 +161,26 @@ public abstract class TowerBase extends GameObject
 			{
 				try
 				{
-					File xmlFile = new File("src/data/effects/Beeamu3.xml");
-					emitter = ParticleIO.loadEmitter(xmlFile);
+					File xml = new File("src/data/effects/blue_beam.xml");
+					this.part_sys = ParticleIO.loadConfiguredSystem(xml);
+					emitter = new ConfigurableEmitter[this.part_sys.getEmitterCount()];
 				}
-				catch (Exception e)
+				catch (IOException e)
 				{
 					System.out.println("Exception: " + e.getMessage());
 					e.printStackTrace();
 					System.exit(0);
 				}
-				emitter.setPosition(this.boardX, this.boardY);
-				emitter.setImageName("src/data/effects/fireball.png");
-				System.out.println("setting emitter position to " + this.boardX + "," + this.boardY);
-				Event event = new Event(EventType.START_PARTICLE_EFFECT);
-				event.addParameter("configurableEmitter", emitter);
-				EventManager.inst().dispatch(event);
+				
+				for (int i = 0; i < this.part_sys.getEmitterCount(); i++)
+				{
+					emitter[i] = (ConfigurableEmitter) this.part_sys.getEmitter(i);
+					emitter[i].setPosition(this.boardX, this.boardY);
+					System.out.println("setting emitter " + i + " position to " + this.boardX + "," + this.boardY);
+					Event event = new Event(EventType.START_PARTICLE_EFFECT);
+					event.addParameter("configurableEmitter", emitter[i]);
+					EventManager.inst().dispatch(event);
+				}
 			}
 
 			if (!mob.adjustHealth(-this.attack))
@@ -182,8 +190,13 @@ public abstract class TowerBase extends GameObject
 				// need to add this once AI is implemented
 				// if (mob.getTeam() == Team.Player2)
 				BB.inst().getPlayer().addGold(2 * mob.getLevel());
-				emitter.wrapUp();
-				emitter = null;
+				for (int i = 0; i < emitter.length; i++)
+				{
+					emitter[i].completed();
+					emitter[i].reset();
+					emitter[i].wrapUp();
+					emitter[i] = null;
+				}
 				mob.die();
 			}
 		}
@@ -461,7 +474,8 @@ public abstract class TowerBase extends GameObject
 		ArrayList<MobObject> inRange = attackMap.get(loc);
 		inRange.add((MobObject) obj);
 		
-		System.out.println("Mob " + obj.getId() + " is in range. Mobs in Range: " + inRange.size());
+		// System.out.println("Mob " + obj.getId() +
+		// " is in range. Mobs in Range: " + inRange.size());
 	}
 	
 	private void handleMobLeavingRange(GameObject obj, Location loc)
@@ -474,7 +488,8 @@ public abstract class TowerBase extends GameObject
 		ArrayList<MobObject> inRange = attackMap.get(loc);
 		inRange.remove((MobObject) obj);
 		
-		System.out.println("Mob " + obj.getId() + " is leaving range. Mobs in Range: " + inRange.size());
+		// System.out.println("Mob " + obj.getId() +
+		// " is leaving range. Mobs in Range: " + inRange.size());
 	}
 	
 	@Override
