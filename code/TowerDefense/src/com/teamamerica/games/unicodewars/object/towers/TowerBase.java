@@ -192,8 +192,8 @@ public abstract class TowerBase extends GameObject
 				BB.inst().getPlayer().addGold(2 * mob.getLevel());
 				for (int i = 0; i < emitter.length; i++)
 				{
-					emitter[i].completed();
 					emitter[i].reset();
+					emitter[i].completed();
 					emitter[i].wrapUp();
 					emitter[i] = null;
 				}
@@ -466,6 +466,15 @@ public abstract class TowerBase extends GameObject
 		Event sellEvent = new Event(sellType);
 		EventManager.inst().dispatch(sellEvent);
 		BB.inst().getPlayer().addGold(this.getSellPrice());
+		if (emitter != null)
+			for (int i = 0; i < emitter.length; i++)
+			{
+				emitter[i].resetState();
+				emitter[i].completed();
+				emitter[i].reset();
+				emitter[i].wrapUp();
+				emitter[i] = null;
+			}
 		this.deleteObject();
 	}
 
@@ -488,6 +497,19 @@ public abstract class TowerBase extends GameObject
 		ArrayList<MobObject> inRange = attackMap.get(loc);
 		inRange.remove((MobObject) obj);
 		
+		if (emitter != null)
+			for (int i = 0; i < emitter.length; i++)
+			{
+				if (emitter[i] != null)
+				{
+					emitter[i].resetState();
+					emitter[i].completed();
+					emitter[i].reset();
+					emitter[i].wrapUp();
+					emitter[i] = null;
+				}
+			}
+		
 		// System.out.println("Mob " + obj.getId() +
 		// " is leaving range. Mobs in Range: " + inRange.size());
 	}
@@ -496,6 +518,7 @@ public abstract class TowerBase extends GameObject
 	public void deleteObject()
 	{
 		super.deleteObject();
+
 		for (Location key : listeners.keySet())
 		{
 			GameMap.inst().unregisterSpace(this, key, listeners.get(key));

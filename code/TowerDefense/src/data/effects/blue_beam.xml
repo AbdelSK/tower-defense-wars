@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <system additive="true" points="false">
-<emitter imageName="" name="Beeamu Coa" renderType="inherit" useAdditive="false" useOriented="false">
+<emitter name="Beeamu Coa" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="40.0" min="40.0"/>
 <spawnCount enabled="true" max="1.0" min="1.0"/>
 <initialLife enabled="true" max="1000.0" min="1000.0"/>
@@ -39,7 +39,7 @@
 <step b="1.0" g="1.0" offset="1.0" r="0.6"/>
 </color>
 </emitter>
-<emitter imageName="" name="Beaamu Oora" renderType="inherit" useAdditive="false" useOriented="false">
+<emitter name="Beaamu Oora" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="80.0" min="40.0"/>
 <spawnCount enabled="true" max="1.0" min="1.0"/>
 <initialLife enabled="true" max="1000.0" min="1000.0"/>
@@ -78,7 +78,7 @@
 <step b="1.0" g="0.8" offset="1.0" r="0.0"/>
 </color>
 </emitter>
-<emitter imageName="" name="Beeamu Glow" renderType="inherit" useAdditive="false" useOriented="false">
+<emitter name="Beeamu Glow" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="90.0" min="70.0"/>
 <spawnCount enabled="true" max="1.0" min="1.0"/>
 <initialLife enabled="true" max="300.0" min="300.0"/>
