@@ -60,7 +60,7 @@ public class GameSystem
 	{
 		loadLevel("");
 		_systems.put(Systems.BuildSubsystem, new BuildSubsystem(_container));
-		_systems.put(Systems.AiSubsystem, new AiSystem());
+		_systems.put(Systems.AiSubsystem, new AiSubsystem());
 		this.tickTimer = BB.inst().getNewTimer();
 		for (Subsystem s : _systems.values())
 		{
