@@ -26,11 +26,11 @@ public class MobButton extends AwesomeButton
 	@Override
 	public void buttonPressed(ButtonPressedEvent arg0)
 	{
-		if (BB.inst().getPlayer().getGold() >= 20)
+		if (BB.inst().getUsersPlayer().getGold() >= 20)
 		{
-			BB.inst().getPlayer().addIncome(10);
-			BB.inst().getPlayer().purchase(20);
-			BB.inst().getPlayer().addScore(this.level);
+			BB.inst().getUsersPlayer().addIncome(10);
+			BB.inst().getUsersPlayer().purchase(20);
+			BB.inst().getUsersPlayer().addScore(this.level);
 			MobMaker.MakeMob(type, level, Team.Player1);
 			BB.inst().setMobTypeSelection(type);
 			BB.inst().setMobLevelSelection(level);

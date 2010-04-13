@@ -132,7 +132,7 @@ public class GameMap implements TileBasedMap
 		Location b1Loc = new Location(0, (rows / 2) - (BaseObject.size / 2));
 		BaseObject b1 = BaseMaker.MakeBase(Team.Player1, b1Loc);
 		buildBase(b1);
-		this.baseLocations.set(Team.Player1.index(), new Location(b1Loc.x + 2, b1Loc.y + 2));
+		this.baseLocations.set(Team.Player1.index(), new Location(b1Loc.x + 1, b1Loc.y + 2));
 		Location b2Loc = new Location(columns - 4, (rows / 2) - (BaseObject.size / 2));
 		BaseObject b2 = BaseMaker.MakeBase(Team.Player2, b2Loc);
 		buildBase(b2);
@@ -377,7 +377,7 @@ public class GameMap implements TileBasedMap
 	 */
 	public boolean canBuildTower(Location loc, short size, Team team)
 	{
-		if (BB.inst().getPlayer().getGold() >= BB.inst().getTowerSelection().price)
+		if (BB.inst().getUsersPlayer().getGold() >= BB.inst().getTowerSelection().price)
 		{
 			for (int i = loc.x; i < (loc.x + size); i++)
 				for (int j = loc.y; j < (loc.y + size); j++)
