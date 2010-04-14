@@ -332,7 +332,6 @@ public class BB
 		
 		if (!this.HUDLayedOut)
 		{
-			this.HUDLayedOut = true;
 			
 			buttonPressedListeners[0] = new IButtonPressedListener() {
 				
@@ -366,6 +365,8 @@ public class BB
 				currentHUD[i].setSize(256, 64);
 				currentHUD[i].addButtonPressedListener(buttonPressedListeners[i]);
 			}
+			
+			this.HUDLayedOut = true;
 		}
 		
 		currentHUD[0].setPosition(new Point(382, 0));
