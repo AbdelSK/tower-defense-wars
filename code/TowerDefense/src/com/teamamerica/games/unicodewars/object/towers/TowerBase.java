@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Random;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
@@ -69,36 +68,14 @@ public abstract class TowerBase extends GameObject
 		this._size = size;
 		this.imagePath = imgLoc;
 		setPosition(loc);
-		Random gen = BB.inst().getRandom();
 		stopWatch = BB.inst().getNewTimer();
 		listeners = new HashMap<Location, EventListener>();
 		attackMap = new HashMap<Location, ArrayList<MobObject>>();
 		sortedLocs = new ArrayList<Location>();
 		
-		if (type.equals(Type.diceOne))
-		{
-			this.attack = gen.nextInt(7);
-			if (this.attack == 0)
-			{
-				this.attack = 1;
-			}
-			this.radius = gen.nextInt(7 - this.attack);
-			if (this.radius == 0)
-			{
-				this.radius = 1;
-			}
-			this.speed = 7 - (this.attack + this.radius);
-			if (this.speed == 0)
-			{
-				this.speed = 1;
-			}
-		}
-		else
-		{
-			this.radius = radius;
-			this.attack = attack;
-			this.speed = speed;
-		}
+		this.radius = radius;
+		this.attack = attack;
+		this.speed = speed;
 		
 		EventType buildType;
 		switch (team)
