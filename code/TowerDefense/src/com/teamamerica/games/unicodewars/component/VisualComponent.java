@@ -10,6 +10,7 @@ import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.system.GameMap;
 import com.teamamerica.games.unicodewars.utils.Location;
+import com.teamamerica.games.unicodewars.utils.Team;
 
 public class VisualComponent extends Component
 {
@@ -129,10 +130,17 @@ public class VisualComponent extends Component
 		
 		if (this._parent instanceof BaseObject)
 		{
-			
-			g.setColor(Color.white);
-			g.drawString("" + ((BaseObject) this._parent).getHealth(), renderLocTL.x + 10, renderLocTL.y + 50);
+			if (this._parent.getTeam() == Team.Player2)
+			{
+				g.setColor(Color.white);
+				g.drawString("" + ((BaseObject) this._parent).getHealth(), renderLocTL.x + 10, renderLocTL.y + 50);
+			}
+			else
+			{
+				g.setColor(Color.black);
+				g.drawString("" + ((BaseObject) this._parent).getHealth(), renderLocTL.x + 10, renderLocTL.y + 50);
+			}
 		}
-	}
 
+	}
 }
