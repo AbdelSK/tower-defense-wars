@@ -27,8 +27,14 @@ public class LoseState extends BHGameState {
 			throws SlickException {
 		_loseImage = new Image("data/images/playerLoses.png");
 		_loseTheme = new Music("data/sounds/America, Fuck Yeah.ogg");
-		// _loseTheme.play();
+		
+	}
+	
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException
+	{
 		_timer = 2000;
+		// _loseTheme.play();
 	}
 
 	@Override

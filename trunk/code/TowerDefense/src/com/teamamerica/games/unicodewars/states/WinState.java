@@ -27,8 +27,13 @@ public class WinState extends BHGameState {
 			throws SlickException {
 		_winImage = new Image("data/images/playerWins.png");
 		_winTheme = new Music("data/sounds/America, Fuck Yeah.ogg");
-		// _winTheme.play();
+	}
+	
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException
+	{
 		_timer = 2000;
+		// _winTheme.play();
 	}
 
 	@Override
