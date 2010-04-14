@@ -1,5 +1,7 @@
 package com.teamamerica.games.unicodewars.utils;
 
+import com.teamamerica.games.unicodewars.object.towers.TowerBase;
+
 
 
 public class AiMazeInstruction
@@ -23,11 +25,13 @@ public class AiMazeInstruction
 	
 	private Action _action;
 	private Location _towerLoc;
+	private TowerBase.Type _towerType;
 	
-	public AiMazeInstruction(Action action, Location towerLoc)
+	public AiMazeInstruction(Action action, TowerBase.Type towerType, Location towerLoc)
 	{
 		_action = action;
 		_towerLoc = towerLoc;
+		_towerType = towerType;
 	}
 	
 	public Action getAction()
@@ -40,4 +44,8 @@ public class AiMazeInstruction
 		return _towerLoc;
 	}
 	
+	public TowerBase.Type getTowerType()
+	{
+		return _towerType;
+	}
 }
