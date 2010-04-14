@@ -362,23 +362,21 @@ public class BB
 				currentHUD[i] = FengGUI.createWidget(Button.class);
 				currentHUD[i].setShrinkable(false);
 				currentHUD[i].setMultiline(true);
-				currentHUD[i].setSize(256, 64);
+				currentHUD[i].setSize(128, 64);
 				currentHUD[i].addButtonPressedListener(buttonPressedListeners[i]);
 			}
 			
 			this.HUDLayedOut = true;
 		}
 		
-		currentHUD[0].setPosition(new Point(382, 0));
-		
-		currentHUD[1].setPosition(new Point(382, 64));
-		
-		currentHUD[2].setPosition(new Point(382, 128));
-		currentHUD[2].setSize(128, 96);
+		currentHUD[0].setPosition(new Point(384, 0));
+		currentHUD[1].setPosition(new Point(512, 0));
+		currentHUD[2].setPosition(new Point(384, 64));
+		currentHUD[2].setSize(128, 64);
 		currentHUD[2].setEnabled(false);
 		
-		currentHUD[0].setText("Upgrade " + this.HUD.getType() + " to level " + (this.HUD.getLevel() + 1) + "\nCost: " + this.HUD.getUpgradePrice());
-		currentHUD[1].setText("Sell " + this.HUD.getType() + " for " + this.HUD.getSellPrice() + "g.");
+		currentHUD[0].setText("Upgrade to level " + (this.HUD.getLevel() + 1) + "\nCost: " + this.HUD.getUpgradePrice());
+		currentHUD[1].setText("Sell for " + this.HUD.getSellPrice() + "g.");
 		currentHUD[2].setText(this.HUD.getType() + " Level " + this.HUD.getLevel() + "\nAttack: " + this.HUD.getAttack() + "\nRange: " + this.HUD.getRadius() + "\nSpeed: " + this.HUD.getSpeed());
 		
 		if (this.HUD.canUpgrade())
