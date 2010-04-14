@@ -129,7 +129,8 @@ public class VisualComponent extends Component
 		
 		if (this._parent instanceof BaseObject)
 		{
-			g.setColor(Color.black);
+			
+			g.setColor(Color.white);
 			g.drawString("" + ((BaseObject) this._parent).getHealth(), renderLocTL.x + 10, renderLocTL.y + 50);
 		}
 	}
