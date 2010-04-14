@@ -3,10 +3,10 @@ package com.teamamerica.games.unicodewars.system;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import com.teamamerica.games.unicodewars.factory.MobMaker;
+import com.teamamerica.games.unicodewars.factory.TowerMaker;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.utils.AiMazeInstruction;
@@ -24,7 +24,7 @@ public class AiSubsystem implements Subsystem
 	private final int TOWER_BUILDING_INTERVAL = 5000;
 	private final int MOB_SPAWN_INTERVAL = 2000;
 	
-	private Collection<AiMazeInstruction> _aiMazeInstructions;
+	private LinkedList<AiMazeInstruction> _aiMazeInstructions;
 	private boolean _paused = false;
 	private int _curMobWaitTime;
 	private int _curTowerWaitTime;
@@ -64,6 +64,19 @@ public class AiSubsystem implements Subsystem
 		{
 			_curMobWaitTime = 0;
 			MobMaker.MakeMob(chooseMobType(), _mobLevel, Team.Player2);
+		}
+		if (_curTowerWaitTime > TOWER_BUILDING_INTERVAL)
+		{
+			AiMazeInstruction mazeInstruction = _aiMazeInstructions.remove();
+			_curTowerWaitTime = 0;
+			if (mazeInstruction.getAction() == Action.create)
+			{
+				TowerMaker.createTower(mazeInstruction.getTowerType(), mazeInstruction.getTowerLoc(), Team.Player2);
+			}
+			else if (mazeInstruction.getAction() == Action.upgrade)
+			{
+				//TODO: need to handle tower upgrades
+			}
 		}
 	}
 	
@@ -106,18 +119,19 @@ public class AiSubsystem implements Subsystem
 			String curLine;
 			int i = 0;
 			
-			_aiMazeInstructions = new ArrayList<AiMazeInstruction>();
+			_aiMazeInstructions = new LinkedList<AiMazeInstruction>();
 			do
 			{
 				curLine = br.readLine();
 				if (curLine != null)
 				{
 					String fields[] = curLine.split(MAZE_FILE_DELIMITER);
-					TowerBase.Type baseType = TowerBase.Type.valueOf(fields[MAZE_FILE_TYPE_INDEX]);
+					TowerBase.Type towerType = TowerBase.Type.valueOf(fields[MAZE_FILE_TYPE_INDEX]);
 					int x = Integer.valueOf(fields[MAZE_FILE_XLOC_INDEX]);
 					int y = Integer.valueOf(fields[MAZE_FILE_YLOC_INDEX]);
 					Location loc = new Location(x, y);
-					_aiMazeInstructions.add(new AiMazeInstruction(Action.create, loc));
+					// TODO: need to handle tower upgrades
+					_aiMazeInstructions.add(new AiMazeInstruction(Action.create, towerType, loc));
 				}
 			} while (curLine != null);
 		}
