@@ -92,6 +92,8 @@ public abstract class TowerBase extends GameObject
 		Event buildEvent = new Event(buildType, loc, this);
 		EventManager.inst().dispatch(buildEvent);
 		registerTower();
+		if (team == Team.Player1)
+			BB.inst().getUsersPlayer().purchase(this.price);
 		System.out.println(loc.x + "," + loc.y);
 	}
 	
@@ -432,5 +434,4 @@ public abstract class TowerBase extends GameObject
 		}
 		GameMap.inst().removeTower(this);
 	}
-
 }
