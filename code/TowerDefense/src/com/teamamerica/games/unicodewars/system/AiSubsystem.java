@@ -10,31 +10,53 @@ import com.teamamerica.games.unicodewars.factory.TowerMaker;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.utils.AiMazeInstruction;
+import com.teamamerica.games.unicodewars.utils.Constants;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
 import com.teamamerica.games.unicodewars.utils.AiMazeInstruction.Action;
 
 public class AiSubsystem implements Subsystem
 {
+	private final int MAX_MOB_MEMBER_INTERVAL = 3000;
 	private final String MAZE_FILE_DELIMITER = ",";
 	private final String MAZE_FILE_NAME = "src/data/levels/maze1.txt";
 	private final int MAZE_FILE_TYPE_INDEX = 0;
 	private final int MAZE_FILE_XLOC_INDEX = 1;
 	private final int MAZE_FILE_YLOC_INDEX = 2;
+	private final int MOB_SPAWN_INTERVAL = 40000;
+	private final int MOB_SPAWN_FIRST_INTERVAL = 5000;
 	private final int TOWER_BUILDING_INTERVAL = 5000;
-	private final int MOB_SPAWN_INTERVAL = 2000;
 	
 	private LinkedList<AiMazeInstruction> _aiMazeInstructions;
-	private boolean _paused = false;
+	/* current level to be used for spawning mobs */
+	private int _curMobLevel;
+	/* interval to spawn next member, chosen randomly each time */
+	private int _curMobMemberIntervalTime;
+	/* current amount of time that has passed since spawning the last member */
+	private int _curMobMemberWaitTime;
+	/* number of members spawned so far in the current mob */
+	private int _curMobMembersSpawned;
+	/* number of members that will be spawned in the current mob */
+	private int _curMobSize;
+	/* current Type of mob to spawn */
+	private MobObject.Type _curMobType;
+	/* current index of the Type enum of mob to spawn */
+	private int _curMobTypeIndex;
+	/* current amount of time that has passed since spawning the last mob */
 	private int _curMobWaitTime;
+	/* current amount of time that has passed since building the last tower */
 	private int _curTowerWaitTime;
-	private int _mobLevel;
 	
 	public AiSubsystem()
 	{
-		_curMobWaitTime = 0;
+		_curMobMemberIntervalTime = determineMobMemberInterval();
+		_curMobMemberWaitTime = 0;
+		_curMobMembersSpawned = 0;
+		_curMobLevel = 1;
+		_curMobTypeIndex = 0;
+		_curMobSize = 0;
+		_curMobWaitTime = MOB_SPAWN_INTERVAL - MOB_SPAWN_FIRST_INTERVAL;
 		_curTowerWaitTime = 0;
-		_mobLevel = 1;
 	}
 	
 	@Override
@@ -58,14 +80,35 @@ public class AiSubsystem implements Subsystem
 	@Override
 	public void update(int millis)
 	{
+
 		_curMobWaitTime += millis;
-		_curTowerWaitTime += millis;
 		if (_curMobWaitTime > MOB_SPAWN_INTERVAL)
-		{
-			_curMobWaitTime = 0;
-			MobMaker.MakeMob(chooseMobType(), _mobLevel, Team.Player2);
+		{ // time to spawn mob
+			if (_curMobMembersSpawned < _curMobSize)
+			{ // spawn more mob members
+				_curMobMemberWaitTime += millis;
+				if (_curMobMemberWaitTime > _curMobMemberIntervalTime)
+				{ // time to spawn next member
+					MobMaker.MakeMob(_curMobType, _curMobLevel, Team.Player2);
+					_curMobMembersSpawned++;
+					_curMobMemberIntervalTime = determineMobMemberInterval();
+					_curMobMemberWaitTime = 0;
+				}
+			}
+			else
+			{
+				_curMobSize = 0;
+				_curMobMembersSpawned = 0;
+				_curMobWaitTime = 0;
+			}
 		}
-		if (_curTowerWaitTime > TOWER_BUILDING_INTERVAL)
+		else if (_curMobSize == 0)
+		{
+			_curMobSize = chooseMobSize();
+			_curMobType = chooseMobType();
+		}
+		_curTowerWaitTime += millis;
+		if (_curTowerWaitTime > TOWER_BUILDING_INTERVAL && !_aiMazeInstructions.isEmpty())
 		{
 			AiMazeInstruction mazeInstruction = _aiMazeInstructions.remove();
 			_curTowerWaitTime = 0;
@@ -95,20 +138,44 @@ public class AiSubsystem implements Subsystem
 	@Override
 	public void pause()
 	{
-		this._paused = true;
 	}
 	
 	@Override
 	public void unpause()
 	{
-		this._paused = false;
 	}
 	
 	private MobObject.Type chooseMobType()
 	{
-		return MobObject.Type.latin;
+		if (_curMobTypeIndex >= MobObject.Type.values().length)
+		{
+			_curMobTypeIndex = 0;
+			if (_curMobLevel < Constants.MAX_MOB_LEVEL)
+			{
+				_curMobLevel++;
+			}
+		}
+		return MobObject.Type.values()[_curMobTypeIndex++];
 	}
 	
+	/**
+	 * Determines what the mob size should be. Implementation may be changed
+	 * later to randomly select a size.
+	 */
+	private int chooseMobSize()
+	{
+		return 20;
+	}
+	
+	/**
+	 * Determines what the interval will be for spawning the next member of a
+	 * mob
+	 */
+	private int determineMobMemberInterval()
+	{
+		return (int) Math.round(Math.random() * MAX_MOB_MEMBER_INTERVAL);
+	}
+
 	private void readDataFile(String mazeDataFileName)
 	{
 		try
