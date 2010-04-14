@@ -84,35 +84,6 @@ public class BB
 	
 	public static void $delete()
 	{
-		if (_blackboard != null)
-		{
-			try
-			{
-				_blackboard.display.removeWidget(_blackboard.currentHUD[0]);
-			}
-			finally
-			{
-				;
-			}
-			
-			try
-			{
-				_blackboard.display.removeWidget(_blackboard.currentHUD[1]);
-			}
-			finally
-			{
-				;
-			}
-			
-			try
-			{
-				_blackboard.display.removeWidget(_blackboard.currentHUD[2]);
-			}
-			finally
-			{
-				;
-			}
-		}
 		_blackboard = null;
 	}
 
@@ -384,8 +355,6 @@ public class BB
 				{
 					System.out.println("Sold " + HUD.getType() + "(" + HUD.getId() + ")");
 					BB.inst().getHUD().sellTower();
-					BB.inst().setHUD(null);
-					currentHUD[1].removeButtonPressedListener(this);
 				}
 			};
 			
@@ -412,8 +381,16 @@ public class BB
 		currentHUD[2].setText(this.HUD.getType() + " Level " + this.HUD.getLevel() + "\nAttack: " + this.HUD.getAttack() + "\nRange: " + this.HUD.getRadius() + "\nSpeed: " + this.HUD.getSpeed());
 		
 		if (this.HUD.canUpgrade())
+		{
 			if (currentHUD[0].getDisplay() == null)
 				this.display.addWidget(currentHUD[0]);
+		}
+		else
+		{
+			if (currentHUD[0].getDisplay() != null)
+				this.display.removeWidget(currentHUD[0]);
+		}
+
 		if (currentHUD[1].getDisplay() == null)
 			this.display.addWidget(currentHUD[1]);
 		if (currentHUD[2].getDisplay() == null)

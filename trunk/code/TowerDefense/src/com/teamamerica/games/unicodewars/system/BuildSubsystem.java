@@ -132,7 +132,10 @@ public class BuildSubsystem implements Subsystem
 				if (key == Input.KEY_U)
 					if (BB.inst().getHUD() != null)
 						if (BB.inst().getHUD().canUpgrade())
+						{
 							BB.inst().getHUD().doUpgrade();
+							BB.inst().setHUD(BB.inst().getHUD());
+						}
 			}
 			
 			@Override

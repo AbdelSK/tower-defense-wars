@@ -10,10 +10,26 @@ public class DiceOne extends TowerBase
 	
 	public static int price = 10;
 	
-	
 	public DiceOne(Location loc, Team team, String imgLoc)
 	{
 		super(TowerBase.Type.diceOne, 0, price, 0, 0, team, loc, imgLoc);
+		
+		Random gen = BB.inst().getRandom();
+		this.attack = gen.nextInt(7);
+		if (this.attack == 0)
+		{
+			this.attack = 1;
+		}
+		this.radius = gen.nextInt(7 - this.attack);
+		if (this.radius == 0)
+		{
+			this.radius = 1;
+		}
+		this.speed = 7 - (this.attack + this.radius);
+		if (this.speed == 0)
+		{
+			this.speed = 1;
+		}
 	}
 
 	@Override
@@ -32,45 +48,39 @@ public class DiceOne extends TowerBase
 		
 		if (level == 2)
 		{
-			total = 12;
+			total = 5;// 12;
 			this.getVisualComponent().updateImage("data/images/towers/Dice-2.png");
 		}
 		else if (level == 3)
 		{
-			total = 17;
+			total = 5;// 17;
 			this.getVisualComponent().updateImage("data/images/towers/Dice-3.png");
 		}
 		else if (level == 4)
 		{
-			total = 24;
+			total = 7;// 24;
 			this.getVisualComponent().updateImage("data/images/towers/Dice-4.png");
 		}
 		else if (level == 5)
 		{
-			total = 29;
+			total = 5;// 29;
 			this.getVisualComponent().updateImage("data/images/towers/Dice-5.png");
 		}
 		else if (level == 6)
 		{
-			total = 35;
+			total = 6;// 35;
 			this.getVisualComponent().updateImage("data/images/towers/Dice-6.png");
 		}
 
-		this.attack = gen.nextInt(total);
-		if (this.attack == 0)
-		{
-			this.attack = 1;
-		}
-		this.radius = gen.nextInt(total - this.attack);
-		if (this.radius == 0)
-		{
-			this.radius = 1;
-		}
-		this.speed = total - (this.attack + this.radius);
-		if (this.speed == 0)
-		{
-			this.speed = 1;
-		}
+		int attkAdd = gen.nextInt(total);
+		this.attack += attkAdd;
+		
+		int radiusAdd = gen.nextInt(total - attkAdd);
+		this.radius += radiusAdd;
+		
+		int speedAdd = total - (attkAdd + radiusAdd);
+		this.speed += speedAdd;
+
 		super.doUpgrade();
 	}
 	
@@ -111,5 +121,5 @@ public class DiceOne extends TowerBase
 		}
 		return 0;
 	}
-		
+
 }
