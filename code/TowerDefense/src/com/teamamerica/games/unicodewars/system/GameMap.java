@@ -382,7 +382,7 @@ public class GameMap implements TileBasedMap
 				{
 					if (i >= columns || j >= rows)
 						return false;
-					if (this.teamMap[i][j] != team)
+					if (BB.inst().isAiEnabled() && this.teamMap[i][j] != team)
 						return false;
 					if (this.map[i][j] == TileType.Tower)
 						return false;

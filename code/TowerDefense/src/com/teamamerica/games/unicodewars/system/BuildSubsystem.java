@@ -224,7 +224,14 @@ public class BuildSubsystem implements Subsystem
 					{
 						if (GameMap.inst().canBuildTower(loc, (short) 2, Team.Player1))
 						{
-							TowerMaker.createTower(BB.inst().getTowerSelection(), loc, Team.Player1);
+							if (BB.inst().isAiEnabled())
+							{
+								TowerMaker.createTower(BB.inst().getTowerSelection(), loc, Team.Player1);
+							}
+							else
+							{
+								TowerMaker.createTower(BB.inst().getTowerSelection(), loc, Team.Player2);
+							}
 							if (!shiftHeld)
 								BB.inst().setTowerSelection(null);
 						}
