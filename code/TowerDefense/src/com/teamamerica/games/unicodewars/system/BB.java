@@ -55,6 +55,7 @@ public class BB
 	private IButtonPressedListener buttonPressedListeners[];
 	private boolean HUDLayedOut;
 	private Player players[];
+	private boolean bAiEnabled;
 
 	private BB()
 	{
@@ -70,6 +71,7 @@ public class BB
 		_keysPressed = new ArrayList<KeyListener>();
 		_mouseClicked = new ArrayList<MouseListener>();
 		_mouseClickedAtLocation = new HashMap<Location, MouseListener>();
+		bAiEnabled = true;
 		towerSelection = null;
 		mobTypeSelection = null;
 		mobLevelSelection = 1;
@@ -399,5 +401,15 @@ public class BB
 	public Player getUsersPlayer()
 	{
 		return players[Team.Player1.index()];
+	}
+	
+	public boolean isAiEnabled()
+	{
+		return bAiEnabled;
+	}
+	
+	public void setAiEnabled(boolean aiEnabled)
+	{
+		bAiEnabled = aiEnabled;
 	}
 }

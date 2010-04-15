@@ -11,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 import com.teamamerica.games.unicodewars.Main;
+import com.teamamerica.games.unicodewars.system.BB;
 
 public class PauseState extends BHGameState
 {
@@ -18,6 +19,7 @@ public class PauseState extends BHGameState
 	private Image _pauseImage;
 	private Music _pauseMusic;
 	private boolean unpause;
+	private int aiToggleButtonCount;
 	
 	@Override
 	public int getID()
@@ -30,7 +32,6 @@ public class PauseState extends BHGameState
 	{
 		_pauseImage = new Image("data/images/paused.png");
 		_pauseMusic = new Music("data/sounds/Pause Music.ogg");
-		
 	}
 	
 	@Override
@@ -38,6 +39,7 @@ public class PauseState extends BHGameState
 	{
 		super.enter(container, game);
 		_pauseMusic.loop(.75f, .25f);
+		aiToggleButtonCount = 0;
 	}
 	
 	@Override
@@ -73,6 +75,14 @@ public class PauseState extends BHGameState
 		if (key == Input.KEY_R || key == Input.KEY_ESCAPE)
 		{
 			this.unpause = true;
+		}
+		if (key == Input.KEY_1)
+		{
+			aiToggleButtonCount++;
+			if (aiToggleButtonCount > 2)
+			{
+				BB.inst().setAiEnabled(!BB.inst().isAiEnabled());
+			}
 		}
 	}
 }
