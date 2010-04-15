@@ -80,47 +80,49 @@ public class AiSubsystem implements Subsystem
 	@Override
 	public void update(int millis)
 	{
-
-		_curMobWaitTime += millis;
-		if (_curMobWaitTime > MOB_SPAWN_INTERVAL)
-		{ // time to spawn mob
-			if (_curMobMembersSpawned < _curMobSize)
-			{ // spawn more mob members
-				_curMobMemberWaitTime += millis;
-				if (_curMobMemberWaitTime > _curMobMemberIntervalTime)
-				{ // time to spawn next member
-					MobMaker.MakeMob(_curMobType, _curMobLevel, Team.Player2);
-					_curMobMembersSpawned++;
-					_curMobMemberIntervalTime = determineMobMemberInterval();
-					_curMobMemberWaitTime = 0;
-				}
-			}
-			else
-			{
-				_curMobSize = 0;
-				_curMobMembersSpawned = 0;
-				_curMobWaitTime = 0;
-			}
-		}
-		else if (_curMobSize == 0)
-		{
-			_curMobSize = chooseMobSize();
-			_curMobType = chooseMobType();
-		}
-		_curTowerWaitTime += millis;
-		if (_curTowerWaitTime > TOWER_BUILDING_INTERVAL && !_aiMazeInstructions.isEmpty())
-		{
-			AiMazeInstruction mazeInstruction = _aiMazeInstructions.remove();
-			_curTowerWaitTime = 0;
-			if (mazeInstruction.getAction() == Action.create)
-			{
-				TowerMaker.createTower(mazeInstruction.getTowerType(), mazeInstruction.getTowerLoc(), Team.Player2);
-			}
-			else if (mazeInstruction.getAction() == Action.upgrade)
-			{
-				//TODO: need to handle tower upgrades
-			}
-		}
+		if (BB.inst().isAiEnabled())
+        {
+    		_curMobWaitTime += millis;
+    		if (_curMobWaitTime > MOB_SPAWN_INTERVAL)
+    		{ // time to spawn mob
+    			if (_curMobMembersSpawned < _curMobSize)
+    			{ // spawn more mob members
+    				_curMobMemberWaitTime += millis;
+    				if (_curMobMemberWaitTime > _curMobMemberIntervalTime)
+    				{ // time to spawn next member
+    					MobMaker.MakeMob(_curMobType, _curMobLevel, Team.Player2);
+    					_curMobMembersSpawned++;
+    					_curMobMemberIntervalTime = determineMobMemberInterval();
+    					_curMobMemberWaitTime = 0;
+    				}
+    			}
+    			else
+    			{
+    				_curMobSize = 0;
+    				_curMobMembersSpawned = 0;
+    				_curMobWaitTime = 0;
+    			}
+    		}
+    		else if (_curMobSize == 0)
+    		{
+    			_curMobSize = chooseMobSize();
+    			_curMobType = chooseMobType();
+    		}
+    		_curTowerWaitTime += millis;
+    		if (_curTowerWaitTime > TOWER_BUILDING_INTERVAL && !_aiMazeInstructions.isEmpty())
+    		{
+    			AiMazeInstruction mazeInstruction = _aiMazeInstructions.remove();
+    			_curTowerWaitTime = 0;
+    			if (mazeInstruction.getAction() == Action.create)
+    			{
+    				TowerMaker.createTower(mazeInstruction.getTowerType(), mazeInstruction.getTowerLoc(), Team.Player2);
+    			}
+    			else if (mazeInstruction.getAction() == Action.upgrade)
+    			{
+    				//TODO: need to handle tower upgrades
+    			}
+    		}
+        }
 	}
 	
 	@Override
