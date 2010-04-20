@@ -3,7 +3,6 @@ package com.teamamerica.games.unicodewars.system;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -42,7 +41,7 @@ public class BB
 	private List<Timer> _timers;
 	private boolean _paused;
 	private Map<Variable, Object> _variableMap;
-	private List<List<GameObject>> _objects;
+	private List<HashMap<Location, List<GameObject>>> _objects;
 	private List<KeyListener> _keysPressed;
 	private List<MouseListener> _mouseClicked;
 	private HashMap<Location, MouseListener> _mouseClickedAtLocation;
@@ -64,9 +63,11 @@ public class BB
 		_nextId = 0;
 		_variableMap = new HashMap<Variable, Object>();
 		
-		_objects = new ArrayList<List<GameObject>>();
-		_objects.add(new LinkedList<GameObject>()); // Player 1's objects
-		_objects.add(new LinkedList<GameObject>()); // Player 2's objects
+		_objects = new ArrayList<HashMap<Location, List<GameObject>>>();
+		_objects.add(new HashMap<Location, List<GameObject>>()); // Player 1's
+		// objects
+		_objects.add(new HashMap<Location, List<GameObject>>()); // Player 2's
+		// objects
 		
 		_keysPressed = new ArrayList<KeyListener>();
 		_mouseClicked = new ArrayList<MouseListener>();
@@ -100,8 +101,8 @@ public class BB
 	
 	public void doneLoading()
 	{
-		for (List<GameObject> team : this._objects)
-			Collections.sort(team, GameObject.render);
+		// for (List<GameObject> team : this._objects)
+		// Collections.sort(team, GameObject.render);
 	}
 	
 	public Random getRandom()
@@ -189,16 +190,94 @@ public class BB
 		_variableMap.put(name, value);
 	}
 	
+	/**
+	 * Add an object to the blackboard
+	 * 
+	 * @param obj
+	 * @param player
+	 */
 	public void addTeamObject(GameObject obj, Team player)
 	{
-		_objects.get(player.index()).add(obj);
+		if (!_objects.get(player.index()).containsKey(obj.getPosition()))
+		{
+			_objects.get(player.index()).put(obj.getPosition(), new ArrayList<GameObject>());
+		}
+		_objects.get(player.index()).get(obj.getPosition()).add(obj);
 	}
 	
-	public List<List<GameObject>> getAll()
+	/**
+	 * Remove an object from the blackboard
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public boolean removeTeamObject(GameObject obj)
 	{
-		return _objects;
+		if (!_objects.get(obj.getTeam().index()).containsKey(obj.getPosition()))
+		{
+			return false;
+		}
+		return _objects.get(obj.getTeam().index()).get(obj.getPosition()).remove(obj);
+		
 	}
 	
+	/**
+	 * Update an object's location in the blackboard
+	 * 
+	 * @param obj
+	 * @param oldVal
+	 * @param newVal
+	 */
+	public void updateObjectLocation(GameObject obj, Location oldVal, Location newVal)
+	{
+		if (_objects.get(obj.getTeam().index()).containsKey(oldVal))
+		{
+			_objects.get(obj.getTeam().index()).get(oldVal).remove(obj);
+		}
+		
+		if (!_objects.get(obj.getTeam().index()).containsKey(obj.getPosition()))
+		{
+			_objects.get(obj.getTeam().index()).put(newVal, new ArrayList<GameObject>());
+		}
+		_objects.get(obj.getTeam().index()).get(newVal).add(obj);
+	}
+
+	public List<GameObject> getAll()
+	{
+		ArrayList<GameObject> temp = new ArrayList<GameObject>();
+		for (Team t : Team.values())
+		{
+			for (List<GameObject> l : _objects.get(t.index()).values())
+			{
+				temp.addAll(l);
+			}
+		}
+		Collections.sort(temp, GameObject.render);
+		return temp;
+	}
+	
+	public List<GameObject> getTeamObjectsAtLocation(Team team, Location loc)
+	{
+		ArrayList<GameObject> ret = new ArrayList<GameObject>();
+		if (_objects.get(team.index()).containsKey(loc))
+			ret.addAll(_objects.get(team.index()).get(loc));
+		return ret;
+		
+	}
+	
+	public List<GameObject> getTeamObjectsAtLocations(Team team, List<Location> locs)
+	{
+		ArrayList<GameObject> ret = new ArrayList<GameObject>();
+		
+		for (Location loc : locs)
+		{
+			if (_objects.get(team.index()).containsKey(loc))
+				ret.addAll(_objects.get(team.index()).get(loc));
+		}
+		
+		return ret;
+	}
+
 	public TowerBase.Type getTowerSelection()
 	{
 		return towerSelection;
@@ -227,18 +306,6 @@ public class BB
 	public void setMobLevelSelection(int tmpMobLevelSelection)
 	{
 		mobLevelSelection = tmpMobLevelSelection;
-	}
-
-	public boolean removeTeamObject(GameObject obj)
-	{
-		List<GameObject> teamList = _objects.get(obj.getTeam().index());
-		
-		if (teamList.remove(obj))
-		{
-			return true;
-		}
-
-		return false;
 	}
 	
 	public void keyPressed(int key)

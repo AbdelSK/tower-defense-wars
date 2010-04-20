@@ -1,5 +1,7 @@
 package com.teamamerica.games.unicodewars.utils;
 
+import com.teamamerica.games.unicodewars.system.GameMap;
+
 public class Location implements Comparable<Object>
 {
 	public int x;
@@ -66,7 +68,7 @@ public class Location implements Comparable<Object>
 	@Override
 	public int hashCode()
 	{
-		return x + (y * 100);
+		return (GameMap.inst().rows * this.y) + this.x;
 	}
 
 	public Location copy()

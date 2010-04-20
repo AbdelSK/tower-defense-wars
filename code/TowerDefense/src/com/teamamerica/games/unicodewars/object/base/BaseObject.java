@@ -1,12 +1,12 @@
 package com.teamamerica.games.unicodewars.object.base;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
+import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.system.EventManager;
-import com.teamamerica.games.unicodewars.system.GameMap;
 import com.teamamerica.games.unicodewars.utils.Event;
-import com.teamamerica.games.unicodewars.utils.EventListener;
 import com.teamamerica.games.unicodewars.utils.EventType;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
@@ -14,44 +14,20 @@ import com.teamamerica.games.unicodewars.utils.Team;
 public class BaseObject extends GameObject
 {
 	public static final short size = 4;
-	private HashMap<Location, EventListener> listeners;
 	private int health;
-	private boolean registered;
+	private ArrayList<Location> locations;
 	
 	public BaseObject(String name, int id, Team team, int renderPriority, Location loc)
 	{
-		super(name, id, team, renderPriority);
-		setPosition(loc);
+		super(name, id, team, renderPriority, loc);
 		this._size = size;
 		this.health = 200;
-		this.registered = false;
-		this.listeners = new HashMap<Location, EventListener>();
-		RegisterMapListeners();
-	}
-	
-	private void RegisterMapListeners()
-	{
-		for (int x = getPosition().x; x < getPosition().x + this._size; x++)
+		locations = new ArrayList<Location>();
+		for (int x = this.getPosition().x; x < this.getPosition().x + size; ++x)
 		{
-			for (int y = getPosition().y; y < getPosition().y + this._size; y++)
+			for (int y = this.getPosition().y; y < this.getPosition().y + size; ++y)
 			{
-				EventListener temp = new EventListener() {
-					
-					@Override
-					public void onEvent(Event e)
-					{
-						switch (e.getId())
-						{
-							case ENTER_SPACE:
-								hit(e.sender);
-								break;
-						}
-
-					}
-				};
-				Location loc = new Location(x, y);
-				GameMap.inst().registerSpace(this, loc, temp);
-				listeners.put(loc, temp);
+				locations.add(new Location(x, y));
 			}
 		}
 	}
@@ -78,13 +54,30 @@ public class BaseObject extends GameObject
 	}
 	
 	@Override
+	public void update(int elapsed)
+	{
+		Team opponent = Team.Player1;
+		switch (this._team)
+		{
+			case Player1:
+				opponent = Team.Player2;
+				break;
+			case Player2:
+				opponent = Team.Player1;
+				break;
+		}
+
+		List<GameObject> temp = BB.inst().getTeamObjectsAtLocations(opponent, locations);
+		for (GameObject obj : temp)
+		{
+			hit(obj);
+		}
+	}
+	
+	@Override
 	public void deleteObject()
 	{
 		super.deleteObject();
-		for (Location key : listeners.keySet())
-		{
-			GameMap.inst().unregisterSpace(this, key, listeners.get(key));
-		}
 	}
 
 }

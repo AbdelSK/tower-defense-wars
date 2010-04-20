@@ -102,11 +102,9 @@ public class MoverComponent extends Component
 					this.pathStep++;
 					if (this.pathStep < this.path.getLength())
 					{
-						GameMap.inst().leaveSpace(_parent, _parent.getPosition());
 						Path.Step temp = this.path.getStep(pathStep);
 						Location newLoc = new Location(temp.getX(), temp.getY());
 						this._parent.setPosition(newLoc);
-						GameMap.inst().visitSpace(_parent, _parent.getPosition());
 					}
 				}
 			}
@@ -216,7 +214,6 @@ public class MoverComponent extends Component
 	@Override
 	public void deleteComponent()
 	{
-		GameMap.inst().leaveSpace(_parent, _parent.getPosition());
 		EventManager.inst().unregisterForAll(this.towerBuildListenerType, this.towerListener);
 		EventManager.inst().unregisterForAll(this.towerSoldListenerType, this.towerListener);
 		super.deleteComponent();
