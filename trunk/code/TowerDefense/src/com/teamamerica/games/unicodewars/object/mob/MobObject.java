@@ -32,9 +32,7 @@ public abstract class MobObject extends GameObject implements Mover
 
 	public MobObject(String name, int id, int renderPriority, Location loc, Team side, int level, Type type, String imgLoc)
 	{
-		super(name, id, side, renderPriority);
-		
-		setPosition(loc);
+		super(name, id, side, renderPriority, loc);
 		this._size = 1;
 		
 		this.level = level;
@@ -180,6 +178,7 @@ public abstract class MobObject extends GameObject implements Mover
 		Event event = new Event(EventType.START_PARTICLE_EFFECT);
 		event.addParameter("configurableEmitter", emitter);
 		EventManager.inst().dispatch(event);
+		this.setPositionInPixel(-1, -1);
 		deleteObject();
 	}
 }

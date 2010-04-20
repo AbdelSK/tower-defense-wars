@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
@@ -39,8 +40,6 @@ public abstract class TowerBase extends GameObject
 	public static final short size = 2;
 	ConfigurableEmitter emitter[] = null;
 	private ParticleSystem part_sys = null;
-	int boardX;
-	int boardY;
 	
 	Type type;
 
@@ -51,26 +50,20 @@ public abstract class TowerBase extends GameObject
 	int price = 0;
 	private Timer stopWatch;
 	private HashMap<Location, EventListener> listeners;
-	private GameObject enemy = null;
 	private ArrayList<Location> sortedLocs;
 	private String imagePath;
+	private MobObject target = null;
 	
-	private HashMap<Location, ArrayList<MobObject>> attackMap;
-
 	public TowerBase(Type type, int attack, int price, int radius, int speed, Team team, Location loc, String imgLoc)
 	{
-		super("Tower", BB.inst().getNextId(), team, 100);
+		super("Tower", BB.inst().getNextId(), team, 100, loc);
 
-		this.boardX = GameMap.inst().getLocationInPixels(loc).x;
-		this.boardY = GameMap.inst().getLocationInPixels(loc).y;
 		this.price = price;
 		this.type = type;
 		this._size = size;
 		this.imagePath = imgLoc;
-		setPosition(loc);
 		stopWatch = BB.inst().getNewTimer();
 		listeners = new HashMap<Location, EventListener>();
-		attackMap = new HashMap<Location, ArrayList<MobObject>>();
 		sortedLocs = new ArrayList<Location>();
 		
 		this.radius = radius;
@@ -102,33 +95,59 @@ public abstract class TowerBase extends GameObject
 	{
 		if (stopWatch.xMilisecondsPassed(2000 / this.speed))
 		{
-			
 			MobObject toAttack = null;
 			Location attackLoc = null;
-
-			for (Location loc : sortedLocs)
+			
+			if (target != null)
 			{
-				if (attackMap.get(loc).size() > 0)
-				{
-					toAttack = attackMap.get(loc).get(0);
-					attackLoc = loc;
-					for (MobObject mob : attackMap.get(loc))
-					{
-						if (mob.getCurrentHP() < toAttack.getCurrentHP())
-						{
-							toAttack = mob;
-						}
-					}
-					break;
-				}
+				if (!sortedLocs.contains(target.getPosition()))
+					target = null;
 			}
 
+			if (target == null)
+			{
+				
+				Team attacking;
+				switch (this.getTeam())
+				{
+					case Player1:
+						attacking = Team.Player2;
+						break;
+					case Player2:
+						attacking = Team.Player1;
+						break;
+					default:
+						attacking = Team.Player2;
+				}
+				
+				List<GameObject> objs = BB.inst().getTeamObjectsAtLocations(attacking, sortedLocs);
+				
+				Collections.sort(objs, GameObject.birthTime);
+
+				for (GameObject obj : objs)
+				{
+					if (obj instanceof MobObject)
+					{
+						MobObject mob = (MobObject) obj;
+						toAttack = mob;
+						attackLoc = mob.getPosition();
+						break;
+					}
+				}
+			}
+			else
+			{
+				toAttack = target;
+				attackLoc = target.getPosition();
+			}
+			
 			this.attack(attackLoc, toAttack);
 		}
 	}
 	
 	public void attack(Location loc, MobObject mob)
 	{
+		target = mob;
 		if (mob != null)
 		{
 			if (emitter == null)
@@ -149,18 +168,15 @@ public abstract class TowerBase extends GameObject
 				for (int i = 0; i < this.part_sys.getEmitterCount(); i++)
 				{
 					emitter[i] = (ConfigurableEmitter) this.part_sys.getEmitter(i);
-					emitter[i].setPosition(this.boardX, this.boardY);
-					System.out.println("setting emitter " + i + " position to " + this.boardX + "," + this.boardY);
+					emitter[i].setPosition(this.getPositionInPixels().x, this.getPositionInPixels().y);
+					System.out.println("setting emitter " + i + " position to " + this.getPositionInPixels().x + "," + this.getPositionInPixels().x);
 					Event event = new Event(EventType.START_PARTICLE_EFFECT);
 					event.addParameter("configurableEmitter", emitter[i]);
 					// EventManager.inst().dispatch(event);
 				}
 			}
-
 			if (!mob.adjustHealth(-this.attack))
 			{
-				attackMap.get(loc).remove(mob);
-				
 				if (mob.getTeam() == Team.Player2)
 				{
 					BB.inst().getUsersPlayer().addGold(2 * mob.getLevel());
@@ -173,6 +189,7 @@ public abstract class TowerBase extends GameObject
 				// emitter[i] = null;
 				// }
 				mob.die();
+				target = null;
 			}
 		}
 	}
@@ -239,7 +256,7 @@ public abstract class TowerBase extends GameObject
 			default:
 				buildType = EventType.P2_TOWER_BUILT;
 		}
-		Event buildEvent = new Event(buildType, this._position, this);
+		Event buildEvent = new Event(buildType, this.getPosition(), this);
 		EventManager.inst().dispatch(buildEvent);
 		
 		price += this.getUpgradePrice();
@@ -261,42 +278,13 @@ public abstract class TowerBase extends GameObject
 		return null;
 	}
 	
-	protected void registerTower()
+	private void registerTower()
 	{
-		for (int x = this._position.x - this.radius; x < this._position.x + this._size + this.radius; x++)
-		{
-			for (int y = this._position.y - this.radius; y < this._position.y + this._size + this.radius; y++)
-			{
-				EventListener temp = new EventListener() {
-					
-					@Override
-					public void onEvent(Event e)
-					{
-
-						switch (e.getId())
-						{
-							case ENTER_SPACE:
-								handleMobInRange(e.sender, e.getLocation());
-								break;
-							case LEAVE_SPACE:
-								handleMobLeavingRange(e.sender, e.getLocation());
-								break;
-						}
-
-					}
-				};
-				Location loc = new Location(x, y);
-				GameMap.inst().registerSpace(this, loc, temp);
-				listeners.put(loc, temp);
-				attackMap.put(loc, new ArrayList<MobObject>());
-				sortedLocs.add(loc);
-				Collections.sort(sortedLocs);
-			}
-		}
+		registerNewSpaces();
 		
-		for (int x = this._position.x; x < this._position.x + this._size; x++)
+		for (int x = this.getPosition().x; x < this.getPosition().x + this._size; x++)
 		{
-			for (int y = this._position.y; y < this._position.y + this._size; y++)
+			for (int y = this.getPosition().y; y < this.getPosition().y + this._size; y++)
 			{
 				MouseListener temp = new MouseListener() {
 					
@@ -328,40 +316,21 @@ public abstract class TowerBase extends GameObject
 	
 	protected void registerNewSpaces()
 	{
-		for (int x = this._position.x - this.radius; x < this._position.x + this._size + this.radius; x++)
+		sortedLocs.clear();
+		for (int x = this.getPosition().x - this.radius; x < this.getPosition().x + this._size + this.radius; x++)
 		{
-			for (int y = this._position.y - this.radius; y < this._position.y + this._size + this.radius; y++)
+			if (x < 0 || x > GameMap.inst().columns)
+				continue;
+			for (int y = this.getPosition().y - this.radius; y < this.getPosition().y + this._size + this.radius; y++)
 			{
+				if (y < 0 || y > GameMap.inst().rows)
+					continue;
 				Location loc = new Location(x, y);
-				if (this.listeners.get(loc) == null)
-				{
-					EventListener temp = new EventListener() {
-						
-						@Override
-						public void onEvent(Event e)
-						{
-							
-							switch (e.getId())
-							{
-								case ENTER_SPACE:
-									handleMobInRange(e.sender, e.getLocation());
-									break;
-								case LEAVE_SPACE:
-									handleMobLeavingRange(e.sender, e.getLocation());
-									break;
-							}
-							
-						}
-					};
-					
-					GameMap.inst().registerSpace(this, loc, temp);
-					listeners.put(loc, temp);
-					attackMap.put(loc, new ArrayList<MobObject>());
+				if (GameMap.inst().getTilesTeam(loc) == this._team)
 					sortedLocs.add(loc);
-					Collections.sort(sortedLocs);
-				}
 			}
 		}
+		Collections.sort(sortedLocs);
 	}
 
 	private void handleTowerClick()
@@ -389,29 +358,6 @@ public abstract class TowerBase extends GameObject
 		BB.inst().getUsersPlayer().addGold(this.getSellPrice());
 		this.deleteObject();
 	}
-
-	private void handleMobInRange(GameObject obj, Location loc)
-	{
-		ArrayList<MobObject> inRange = attackMap.get(loc);
-		inRange.add((MobObject) obj);
-		
-		// System.out.println("Mob " + obj.getId() +
-		// " is in range. Mobs in Range: " + inRange.size());
-	}
-	
-	private void handleMobLeavingRange(GameObject obj, Location loc)
-	{
-		if (enemy != null && obj.getId() == enemy.getId())
-		{
-			enemy = null;
-		}
-		
-		ArrayList<MobObject> inRange = attackMap.get(loc);
-		inRange.remove((MobObject) obj);
-		
-		// System.out.println("Mob " + obj.getId() +
-		// " is leaving range. Mobs in Range: " + inRange.size());
-	}
 	
 	@Override
 	public void deleteObject()
@@ -421,13 +367,9 @@ public abstract class TowerBase extends GameObject
 		if (BB.inst().getHUD() == this)
 			BB.inst().setHUD(null);
 
-		for (Location key : listeners.keySet())
+		for (int x = this.getPosition().x; x < this.getPosition().x + this._size; x++)
 		{
-			GameMap.inst().unregisterSpace(this, key, listeners.get(key));
-		}
-		for (int x = this._position.x; x < this._position.x + this._size; x++)
-		{
-			for (int y = this._position.y; y < this._position.y + this._size; y++)
+			for (int y = this.getPosition().y; y < this.getPosition().y + this._size; y++)
 			{
 				BB.inst().removeMouseListenerForLocation(new Location(x, y));
 			}

@@ -30,6 +30,7 @@ public class DiceOne extends TowerBase
 		{
 			this.speed = 1;
 		}
+		this.registerNewSpaces();
 	}
 
 	@Override

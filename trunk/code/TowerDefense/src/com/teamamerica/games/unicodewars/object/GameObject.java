@@ -30,6 +30,13 @@ public class GameObject
 		}
 	};
 	
+	public static Comparator<GameObject> birthTime = new Comparator<GameObject>() {
+		public int compare(GameObject c1, GameObject c2)
+		{
+			return new Long(c1._createdTime).compareTo(c2._createdTime);
+		}
+	};
+
 	protected int _id;
 	protected String _name;
 	
@@ -51,13 +58,15 @@ public class GameObject
 	
 	private Map<String, Object> _userData;
 	
-	public GameObject(String name, int id, Team team, int renderPriority)
+	private long _createdTime;
+
+	public GameObject(String name, int id, Team team, int renderPriority, Location loc)
 	{
 		_name = name;
 		_id = id;
 		
-		_position = new Location(-1, -1);
-		_positionInPixels = new Location(-1, -1);
+		_position = loc;
+		_positionInPixels = GameMap.inst().getLocationInPixels(loc);
 		_team = team;
 		
 		_updateQueue = new LinkedList<Component>();
@@ -66,6 +75,7 @@ public class GameObject
 		_renderPriority = renderPriority;
 		
 		_userData = new HashMap<String, Object>();
+		_createdTime = System.currentTimeMillis();
 	}
 	
 	/**
@@ -91,6 +101,11 @@ public class GameObject
 	public Team getTeam()
 	{
 		return _team;
+	}
+	
+	public long getCreatedTime()
+	{
+		return _createdTime;
 	}
 
 	/**
@@ -153,20 +168,10 @@ public class GameObject
 	 */
 	public void setPosition(Location x)
 	{
+		Location old = _position.copy();
 		_position = x;
 		_positionInPixels = GameMap.inst().getLocationInPixels(x);
-	}
-	
-	/**
-	 * Sets the position of this GameObject
-	 * 
-	 * @param v
-	 */
-	public void setPosition(int row, int column)
-	{
-		_position.x = row;
-		_position.y = column;
-		_positionInPixels = GameMap.inst().getLocationInPixels(_position);
+		BB.inst().updateObjectLocation(this, old, _position);
 	}
 	
 	/**

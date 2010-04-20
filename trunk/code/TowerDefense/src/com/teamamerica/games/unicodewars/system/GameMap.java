@@ -1,10 +1,6 @@
 package com.teamamerica.games.unicodewars.system;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 import org.apache.log4j.Logger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -19,10 +15,6 @@ import com.teamamerica.games.unicodewars.factory.BaseMaker;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.base.BaseObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
-import com.teamamerica.games.unicodewars.object.towers.TowerBase;
-import com.teamamerica.games.unicodewars.utils.Event;
-import com.teamamerica.games.unicodewars.utils.EventListener;
-import com.teamamerica.games.unicodewars.utils.EventType;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
 import com.teamamerica.games.unicodewars.utils.Timer;
@@ -40,8 +32,6 @@ public class GameMap implements TileBasedMap
 	private TileType[][] map;
 	private Team[][] teamMap;
 	private int[][] costMap;
-	private HashMap<Location, List<EventListener>> listeners;
-	private Queue<Event> eventQueue;
 	private PathFinder pathFinder;
 	private ArrayList<Location> spawnPoints;
 	private ArrayList<Path> spawnPaths;
@@ -71,9 +61,6 @@ public class GameMap implements TileBasedMap
 			this.spawnPaths.add(null);
 		}
 
-		eventQueue = new LinkedList<Event>();
-		this.listeners = new HashMap<Location, List<EventListener>>();
-		
 		this.pathFinder = new AStarPathFinder(this, 10000, false, new ManhattanHeuristic(1));
 		
 		this.gridColor = new Color(1.0f, 0, 0);
@@ -107,7 +94,6 @@ public class GameMap implements TileBasedMap
 		{
 			for (int x = 0; x < columns; x++)
 			{
-				this.listeners.put(new Location(x, y), new ArrayList<EventListener>());
 				this.map[x][y] = TileType.Free;
 				this.costMap[x][y] = 1;
 				if (x < columns / 2)
@@ -234,6 +220,11 @@ public class GameMap implements TileBasedMap
 	{
 		return this.spawnPaths.get(team.index());
 	}
+	
+	public Team getTilesTeam(Location loc)
+	{
+		return this.teamMap[loc.x][loc.y];
+	}
 
 	private void buildBase(BaseObject obj)
 	{
@@ -300,48 +291,7 @@ public class GameMap implements TileBasedMap
 		return path;
 	}
 	
-	/**
-	 * Register to listen for any event to happen in that location
-	 * 
-	 * @param loc
-	 *            the location to listen to
-	 * @param callback
-	 *            the EventListener to call
-	 */
-	public void registerSpace(GameObject obj, Location loc, EventListener callback)
-	{
-		if (loc.x < 0 || loc.x >= this.columns || loc.y < 0 || loc.y >= this.rows)
-			return;
-		if (obj.getTeam() != this.teamMap[loc.x][loc.y])
-			return;
-		
-		if (obj instanceof TowerBase)
-			this.costMap[loc.x][loc.y]++;
 
-		if (listeners.get(loc) == null)
-		{
-			listeners.put(loc, new ArrayList<EventListener>());
-		}
-		listeners.get(loc).add(callback);
-	}
-	
-	/**
-	 * Unregister listening to that location.
-	 * 
-	 * @param loc
-	 *            the location being listened to
-	 * @param callback
-	 *            the EventListener registered with this space to unregister
-	 */
-	public void unregisterSpace(GameObject obj, Location loc, EventListener callback)
-	{
-		if (loc.x < 0 || loc.x >= this.columns || loc.y < 0 || loc.y >= this.rows)
-			return;
-		if (obj instanceof TowerBase)
-			this.costMap[loc.x][loc.y]--;
-
-		listeners.get(loc).remove(callback);
-	}
 	
 	/**
 	 * Sets the area once occupied by a tower to free space
@@ -392,45 +342,23 @@ public class GameMap implements TileBasedMap
 						return false;
 					if (this.map[i][j] == TileType.Blocked)
 						return false;
+					switch (team)
+					{
+						case Player1:
+							if (!BB.inst().getTeamObjectsAtLocation(Team.Player2, new Location(i, j)).isEmpty())
+								return false;
+							break;
+						case Player2:
+							if (!BB.inst().getTeamObjectsAtLocation(Team.Player1, new Location(i, j)).isEmpty())
+								return false;
+							break;
+					}
 				}
 			
-			// BB.inst().getPlayer().purchase(BB.inst().getTowerSelection().price);
 			return true;
 		}
 		else
 			return false;
-	}
-	
-	/**
-	 * Meant to be called by Mobs or other moving objects. Notifies listeners of
-	 * that space that that object is entering that space.
-	 * 
-	 * @param obj
-	 *            the object entering the location
-	 * @param loc
-	 *            the location being visited
-	 */
-	public void visitSpace(GameObject obj, Location loc)
-	{
-		Event event = new Event(EventType.ENTER_SPACE, loc, obj);
-		event.addParameter("id", obj.getId());
-		dispatch(event);
-	}
-	
-	/**
-	 * Meant to be called by Mobs or other moving objects. Notifies listeners of
-	 * that space that that object is leaving that space.
-	 * 
-	 * @param obj
-	 *            the object entering the location
-	 * @param loc
-	 *            the location being left
-	 */
-	public void leaveSpace(GameObject obj, Location loc)
-	{
-		Event event = new Event(EventType.LEAVE_SPACE, loc, obj);
-		event.addParameter("id", obj.getId());
-		dispatch(event);
 	}
 	
 	/**
@@ -519,11 +447,6 @@ public class GameMap implements TileBasedMap
 		Location temp = this.baseLocations.get(team.index()).copy();
 		return temp;
 	}
-
-	private void dispatch(Event e)
-	{
-		eventQueue.add(e);
-	}
 	
 	/**
 	 * The update method for the map, handles firing the queued events.
@@ -533,29 +456,6 @@ public class GameMap implements TileBasedMap
 	 */
 	public void update(int elapsed)
 	{
-		List<Event> copy = new LinkedList<Event>(eventQueue);
-		
-		// remove everything from the queue in case new events are generated.
-		eventQueue.clear();
-		
-		List<Event> keep = new LinkedList<Event>();
-		for (Event event : copy)
-		{
-			// if we need to delay this event add it to the keep list.
-			logger.debug("Dispatching: " + event.getId() + " at location " + event.getLocation());
-			
-			if (listeners.get(event.getLocation()) == null)
-			{
-				listeners.put(event.getLocation(), new ArrayList<EventListener>());
-			}
-			for (EventListener callback : listeners.get(event.getLocation()))
-			{
-				callback.onEvent(event);
-			}
-			
-		}
-		
-		eventQueue.addAll(keep);
 		
 		if (this.colorTimer.xMilisecondsPassed(99))
 		{

@@ -1,6 +1,5 @@
 package com.teamamerica.games.unicodewars.system;
 
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import org.apache.log4j.Logger;
@@ -126,12 +125,9 @@ public class GameSystem
 		EventManager.inst().update(elapsed);
 		GameMap.inst().update(elapsed);
 		
-		for (List<GameObject> team : BB.inst().getAll())
+		for (GameObject obj : BB.inst().getAll())
 		{
-			for (GameObject obj : team)
-			{
-				obj.update(elapsed);
-			}
+			obj.update(elapsed);
 		}
 		
 		if (this.tickTimer.xMilisecondsPassed(GameSystem.tickTime))
@@ -148,13 +144,10 @@ public class GameSystem
 		g.resetTransform();
 		
 		GameMap.inst().render(g);
-
-		for (List<GameObject> team : BB.inst().getAll())
+		
+		for (GameObject obj : BB.inst().getAll())
 		{
-			for (GameObject obj : team)
-			{
-				obj.render(g);
-			}
+			obj.render(g);
 		}
 
 		for (Subsystem s : _systems.values())
