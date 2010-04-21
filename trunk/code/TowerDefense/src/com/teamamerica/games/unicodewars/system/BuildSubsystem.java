@@ -12,8 +12,6 @@ import com.teamamerica.games.unicodewars.utils.Team;
 
 public class BuildSubsystem implements Subsystem
 {
-
-	private int towerRow, towerCol;
 	private Input input;
 	private InputListener inputListener;
 	private boolean shiftHeld = false;
@@ -199,9 +197,6 @@ public class BuildSubsystem implements Subsystem
 	
 	public void start()
 	{
-		towerCol = (GameMap.inst().columns * 3) / 4;
-		towerRow = 0;
-		
 		input.addListener(inputListener);
 	}
 	

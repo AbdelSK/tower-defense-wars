@@ -13,6 +13,11 @@ public class Location implements Comparable<Object>
 		this.y = y;
 	}
 	
+	public int distance(Location loc)
+	{
+		return Math.abs(this.x - loc.x) + Math.abs(this.y - loc.y);
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{

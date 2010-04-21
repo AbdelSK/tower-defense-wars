@@ -15,4 +15,17 @@ public enum Team
 	{
 		return this.index;
 	}
+	
+	public Team opponent()
+	{
+		switch (this)
+		{
+			case Player1:
+				return Player2;
+			case Player2:
+				return Player1;
+			default:
+				return Player2;
+		}
+	}
 }
