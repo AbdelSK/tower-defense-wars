@@ -317,7 +317,7 @@ public class GameMap implements TileBasedMap
 			}
 		}
 
-		for (Location loc : obj.getCoveredLocations())
+		for (Location loc : obj.getLocationsInRange())
 		{
 			this.costMap[loc.x][loc.y] *= 2;
 		}
@@ -346,7 +346,7 @@ public class GameMap implements TileBasedMap
 				this.map[x][y] = TileType.Free;
 			}
 		}
-		for (Location l : obj.getCoveredLocations())
+		for (Location l : obj.getLocationsInRange())
 		{
 			this.costMap[l.x][l.y] /= 2;
 		}
@@ -570,15 +570,9 @@ public class GameMap implements TileBasedMap
 			temp.a = .5f;
 			g.setColor(temp);
 			
-			for (int x = BB.inst().getHUD().getPosition().x - BB.inst().getHUD().getRadius(); x < BB.inst().getHUD().getPosition().x + BB.inst().getHUD().getSize() + BB.inst().getHUD().getRadius(); x++)
+			for (Location loc : BB.inst().getHUD().getLocationsInRange())
 			{
-				for (int y = BB.inst().getHUD().getPosition().y - BB.inst().getHUD().getRadius(); y < BB.inst().getHUD().getPosition().y + BB.inst().getHUD().getSize() + BB.inst().getHUD().getRadius(); y++)
-				{
-					if (x >= 0 && x < columns && y >= 0 && y < rows && (this.teamMap[x][y] == BB.inst().getHUD().getTeam()))
-					{
-						g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
-					}
-				}
+				g.fillRect(loc.x * tileSize, loc.y * tileSize, tileSize, tileSize);
 			}
 		}
 	}
