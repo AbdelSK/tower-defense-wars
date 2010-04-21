@@ -14,6 +14,6 @@ public class GreekChar extends MobObject
 		this.defense = 2 * (int) Math.pow(this.level, 3);
 		this.speed = this.vitality = 1 * (int) Math.pow(this.level, 3);
 		
-		this.currentHP = this.totalHP = this.vitality * 80;
+		this.currentHP = this.totalHP = this.vitality * 20;
 	}
 }

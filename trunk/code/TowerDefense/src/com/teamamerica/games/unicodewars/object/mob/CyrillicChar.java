@@ -14,6 +14,6 @@ public class CyrillicChar extends MobObject
 		this.speed = 2 * (int) Math.pow(this.level, 3);
 		this.defense = this.attack = 1 * (int) Math.pow(this.level, 2);
 		
-		this.currentHP = this.totalHP = this.vitality * 80;
+		this.currentHP = this.totalHP = this.vitality * 20;
 	}
 }

@@ -14,6 +14,6 @@ public class LatinChar extends MobObject
 		this.attack = 2 * (int) Math.pow(this.level, 2);
 		this.defense = this.vitality = 1 * (int) Math.pow(this.level, 3);
 		
-		this.currentHP = this.totalHP = this.vitality * 80;
+		this.currentHP = this.totalHP = this.vitality * 20;
 	}
 }
