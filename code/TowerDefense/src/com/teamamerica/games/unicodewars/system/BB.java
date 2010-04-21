@@ -1,6 +1,7 @@
 package com.teamamerica.games.unicodewars.system;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -265,7 +266,7 @@ public class BB
 		
 	}
 	
-	public List<GameObject> getTeamObjectsAtLocations(Team team, List<Location> locs)
+	public List<GameObject> getTeamObjectsAtLocations(Team team, Collection<Location> locs)
 	{
 		ArrayList<GameObject> ret = new ArrayList<GameObject>();
 		
@@ -347,15 +348,13 @@ public class BB
 	
 	public void mouseReleased(int button, int x, int y)
 	{
+		
+		for (MouseListener d : _mouseClicked)
+			d.MouseReleased(button, x, y);
 		Location loc = GameMap.inst().getGridLocationFromPixels(x, y);
 		MouseListener c = _mouseClickedAtLocation.get(loc);
 		if (c != null)
 			c.MouseReleased(button, x, y);
-		else
-		{
-			for (MouseListener d : _mouseClicked)
-				d.MouseReleased(button, x, y);
-		}
 	}
 	
 	public void addMouseListenerListener(MouseListener c)
@@ -479,4 +478,5 @@ public class BB
 	{
 		bAiEnabled = aiEnabled;
 	}
+
 }

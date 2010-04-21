@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.particles.ConfigurableEmitter;
@@ -47,7 +48,7 @@ public abstract class TowerBase extends GameObject
 	int speed = 0;
 	int price = 0;
 	private Timer stopWatch;
-	private ArrayList<Location> sortedLocs;
+	private HashSet<Location> locsInRange;
 	private String imagePath;
 	private MobObject target = null;
 	
@@ -60,7 +61,7 @@ public abstract class TowerBase extends GameObject
 		this._size = size;
 		this.imagePath = imgLoc;
 		stopWatch = BB.inst().getNewTimer();
-		sortedLocs = new ArrayList<Location>();
+		locsInRange = new HashSet<Location>();
 		
 		this.radius = radius;
 		this.attack = attack;
@@ -96,7 +97,7 @@ public abstract class TowerBase extends GameObject
 			
 			if (target != null)
 			{
-				if (!sortedLocs.contains(target.getPosition()) || !target.isAlive())
+				if (!locsInRange.contains(target.getPosition()) || !target.isAlive())
 					target = null;
 			}
 
@@ -116,7 +117,8 @@ public abstract class TowerBase extends GameObject
 						attacking = Team.Player2;
 				}
 				
-				List<GameObject> objs = BB.inst().getTeamObjectsAtLocations(attacking, sortedLocs);
+				ArrayList<Location> temp = new ArrayList<Location>(locsInRange);
+				List<GameObject> objs = BB.inst().getTeamObjectsAtLocations(attacking, temp);
 				
 				Collections.sort(objs, GameObject.birthTime);
 
@@ -312,26 +314,26 @@ public abstract class TowerBase extends GameObject
 	
 	protected void registerNewSpaces()
 	{
-		sortedLocs.clear();
-		for (int x = this.getPosition().x - this.radius; x < this.getPosition().x + this._size + this.radius; x++)
+		for (int x = this.getPosition().x; x < this.getPosition().x + this._size; x++)
 		{
-			if (x < 0 || x >= GameMap.inst().columns)
-				continue;
-			for (int y = this.getPosition().y - this.radius; y < this.getPosition().y + this._size + this.radius; y++)
+			for (int y = this.getPosition().y; y < this.getPosition().y + this._size; y++)
 			{
-				if (y < 0 || y >= GameMap.inst().rows)
-					continue;
 				Location loc = new Location(x, y);
-				if (GameMap.inst().getTilesTeam(loc) == this._team)
-					sortedLocs.add(loc);
+				locsInRange.addAll(loc.getLocsWithinDistance(this.radius));
 			}
 		}
-		Collections.sort(sortedLocs);
+		ArrayList<Location> retain = new ArrayList<Location>();
+		for (Location loc : locsInRange)
+		{
+			if (loc.x >= 0 && loc.x < GameMap.inst().columns && loc.y >= 0 && loc.y < GameMap.inst().rows && (GameMap.inst().getTilesTeam(loc) == getTeam()))
+				retain.add(loc);
+		}
+		locsInRange.retainAll(retain);
 	}
 	
-	public List<Location> getCoveredLocations()
+	public List<Location> getLocationsInRange()
 	{
-		return this.sortedLocs;
+		return new ArrayList<Location>(locsInRange);
 	}
 
 	private void handleTowerClick()

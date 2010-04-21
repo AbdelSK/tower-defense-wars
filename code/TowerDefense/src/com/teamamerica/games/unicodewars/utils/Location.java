@@ -1,7 +1,7 @@
 package com.teamamerica.games.unicodewars.utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import com.teamamerica.games.unicodewars.system.GameMap;
 
 public class Location implements Comparable<Object>
@@ -31,22 +31,23 @@ public class Location implements Comparable<Object>
 		return Math.abs(l1.x - l2.x) + Math.abs(l1.y - l2.y);
 	}
 	
-	public List<Location> getLocsWithinDistance(int distance)
+	public Set<Location> getLocsWithinDistance(int distance)
 	{
 		return getLocsWithinDistance(this, distance);
 	}
 
-	public static List<Location> getLocsWithinDistance(Location loc, int distance)
+	public static Set<Location> getLocsWithinDistance(Location loc, int distance)
 	{
-		ArrayList<Location> ret = new ArrayList<Location>();
+		HashSet<Location> ret = new HashSet<Location>();
 		
-		for (int x = loc.x - distance; x <= loc.x + distance; x++)
+		for (int i = distance; i > 0; i--)
 		{
-			for (int y = loc.y - distance; y <= loc.y + distance; y++)
+			for (int x = i, y = 0; x >= 0 && y <= i; x--, y++)
 			{
-				Location temp = new Location(x, y);
-				if (loc.distance(temp) <= distance)
-					ret.add(temp);
+				ret.add(new Location(loc.x - x, loc.y - y));
+				ret.add(new Location(loc.x - x, loc.y + y));
+				ret.add(new Location(loc.x + x, loc.y - y));
+				ret.add(new Location(loc.x + x, loc.y + y));
 			}
 		}
 		
