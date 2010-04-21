@@ -14,6 +14,6 @@ public class ChineseChar extends MobObject
 		this.vitality = 2 * (int) Math.pow(this.level, 3);
 		this.speed = this.attack = 1 * (int) Math.pow(this.level, 2);
 		
-		this.currentHP = this.totalHP = this.vitality * 80;
+		this.currentHP = this.totalHP = this.vitality * 20;
 	}
 }
