@@ -12,9 +12,9 @@ import org.newdawn.slick.util.pathfinding.TileBasedMap;
 import org.newdawn.slick.util.pathfinding.Path.Step;
 import org.newdawn.slick.util.pathfinding.heuristics.ManhattanHeuristic;
 import com.teamamerica.games.unicodewars.factory.BaseMaker;
-import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.base.BaseObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
+import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
 import com.teamamerica.games.unicodewars.utils.Timer;
@@ -225,7 +225,7 @@ public class GameMap implements TileBasedMap
 	{
 		return this.teamMap[loc.x][loc.y];
 	}
-
+	
 	private void buildBase(BaseObject obj)
 	{
 		for (int i = obj.getPosition().x; i < (obj.getPosition().x + obj.getSize()); i++)
@@ -235,81 +235,6 @@ public class GameMap implements TileBasedMap
 				this.map[i][j] = TileType.Base;
 			}
 		}
-	}
-
-	/**
-	 * Sets the tiles covered by a towers location to having a tower
-	 * 
-	 * @param obj
-	 *            the tower just built. Must have location set.
-	 */
-	public boolean buildTower(GameObject obj)
-	{
-		for (int i = obj.getPosition().x; i < (obj.getPosition().x + obj.getSize()); i++)
-		{
-			for (int j = obj.getPosition().y; j < (obj.getPosition().y + obj.getSize()); j++)
-			{
-				this.map[i][j] = TileType.Tower;
-			}
-		}
-		
-		if (updateDefaultMobPath(obj.getTeam()) == null)
-		{
-			return false;
-		}
-		return true;
-	}
-	
-	public Path updateDefaultMobPath(Team team)
-	{
-		Team self, enemy;
-		switch (team)
-		{
-			case Player1:
-				self = Team.Player1;
-				enemy = Team.Player2;
-				break;
-			case Player2:
-				self = Team.Player2;
-				enemy = Team.Player1;
-				break;
-			default:
-				self = Team.Player1;
-				enemy = Team.Player2;
-		}
-		MobObject dummy = new MobObject(null, colorStage, colorStage, null, enemy, colorStage, MobObject.Type.chinese, null) {};
-		Location spawn = this.getTeamSpawnPoint(enemy);
-		Location base = this.getTeamBaseLocation(self);
-		Path path = this.pathFinder.findPath(dummy, spawn.x, spawn.y, base.x, base.y);
-
-		if (path != null)
-		{
-			this.spawnPaths.set(enemy.index(), path);
-		}
-		dummy = null;
-		
-		return path;
-	}
-	
-
-	
-	/**
-	 * Sets the area once occupied by a tower to free space
-	 * 
-	 * @param obj
-	 *            the tower being removed
-	 */
-	public void removeTower(GameObject obj)
-	{
-		for (int i = obj.getPosition().x; i < (obj.getPosition().x + obj.getSize()); i++)
-		{
-			for (int j = obj.getPosition().y; j < (obj.getPosition().y + obj.getSize()); j++)
-			{
-				if (this.map[i][j] == TileType.Tower)
-					this.map[i][j] = TileType.Free;
-			}
-		}
-		updateDefaultMobPath(obj.getTeam());
 	}
 	
 	/**
@@ -334,31 +259,112 @@ public class GameMap implements TileBasedMap
 						return false;
 					if (BB.inst().isAiEnabled() && this.teamMap[i][j] != team)
 						return false;
-					if (this.map[i][j] == TileType.Tower)
+					if (this.map[i][j] != TileType.Free)
 						return false;
-					if (this.map[i][j] == TileType.Base)
-						return false;
-					if (this.map[i][j] == TileType.Spawn)
-						return false;
-					if (this.map[i][j] == TileType.Blocked)
-						return false;
-					switch (team)
+					
+					for (Team t : Team.values())
 					{
-						case Player1:
-							if (!BB.inst().getTeamObjectsAtLocation(Team.Player2, new Location(i, j)).isEmpty())
-								return false;
-							break;
-						case Player2:
-							if (!BB.inst().getTeamObjectsAtLocation(Team.Player1, new Location(i, j)).isEmpty())
-								return false;
-							break;
+						// Towers can't build on top of any mobs
+						if (!BB.inst().getTeamObjectsAtLocation(t, new Location(i, j)).isEmpty())
+							return false;
 					}
 				}
+			boolean result = true;
+			// Now that its not building on top of something check and see if it
+			// will block
+			// any path from a spawn point
+			for (int x = loc.x; x < (loc.x + size); x++)
+			{
+				for (int y = loc.y; y < (loc.y + size); y++)
+				{
+					this.map[x][y] = TileType.Tower;
+				}
+			}
 			
-			return true;
+			Location spawn = this.getTeamSpawnPoint(team.opponent());
+			MobObject dummy = new MobObject(null, -1, -1, spawn, team.opponent(), -1, MobObject.Type.chinese, null) {};
+			Location base = this.getTeamBaseLocation(team);
+			Path path = this.pathFinder.findPath(dummy, spawn.x, spawn.y, base.x, base.y);
+			if (path == null)
+				result = false;
+			for (int x = loc.x; x < (loc.x + size); x++)
+			{
+				for (int y = loc.y; y < (loc.y + size); y++)
+				{
+					this.map[x][y] = TileType.Free;
+				}
+			}
+			
+			return result;
 		}
 		else
 			return false;
+	}
+
+	/**
+	 * Sets the tiles covered by a towers location to having a tower
+	 * 
+	 * @param obj
+	 *            the tower just built. Must have location set.
+	 */
+	public boolean buildTower(TowerBase obj)
+	{
+		for (int i = obj.getPosition().x; i < (obj.getPosition().x + obj.getSize()); i++)
+		{
+			for (int j = obj.getPosition().y; j < (obj.getPosition().y + obj.getSize()); j++)
+			{
+				this.map[i][j] = TileType.Tower;
+			}
+		}
+
+		for (Location loc : obj.getCoveredLocations())
+		{
+			this.costMap[loc.x][loc.y] *= 2;
+		}
+
+		if (updateDefaultMobPath(obj.getTeam()) == null)
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Sets the area once occupied by a tower to free space
+	 * 
+	 * @param obj
+	 *            the tower being removed
+	 */
+	public void removeTower(TowerBase obj)
+	{
+		for (Location loc : obj.getCoveredLocations())
+		{
+			this.costMap[loc.x][loc.y] /= 2;
+		}
+		updateDefaultMobPath(obj.getTeam().opponent());
+	}
+	
+	/**
+	 * Update the mob path for a certain team
+	 * 
+	 * @param team
+	 *            the team to update the path for
+	 * @return
+	 */
+	public Path updateDefaultMobPath(Team team)
+	{
+		Location spawn = this.getTeamSpawnPoint(team);
+		MobObject dummy = new MobObject(null, -1, -1, spawn, team, -1, MobObject.Type.chinese, null) {};
+		Location base = this.getTeamBaseLocation(team.opponent());
+		Path path = this.pathFinder.findPath(dummy, spawn.x, spawn.y, base.x, base.y);
+
+		if (path != null)
+		{
+			this.spawnPaths.set(team.index(), path);
+		}
+		dummy = null;
+		
+		return path;
 	}
 	
 	/**

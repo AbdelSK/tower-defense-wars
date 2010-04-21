@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.particles.ConfigurableEmitter;
@@ -16,7 +15,6 @@ import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.system.EventManager;
 import com.teamamerica.games.unicodewars.system.GameMap;
 import com.teamamerica.games.unicodewars.utils.Event;
-import com.teamamerica.games.unicodewars.utils.EventListener;
 import com.teamamerica.games.unicodewars.utils.EventType;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.MouseListener;
@@ -49,7 +47,6 @@ public abstract class TowerBase extends GameObject
 	int speed = 0;
 	int price = 0;
 	private Timer stopWatch;
-	private HashMap<Location, EventListener> listeners;
 	private ArrayList<Location> sortedLocs;
 	private String imagePath;
 	private MobObject target = null;
@@ -63,7 +60,6 @@ public abstract class TowerBase extends GameObject
 		this._size = size;
 		this.imagePath = imgLoc;
 		stopWatch = BB.inst().getNewTimer();
-		listeners = new HashMap<Location, EventListener>();
 		sortedLocs = new ArrayList<Location>();
 		
 		this.radius = radius;
@@ -319,11 +315,11 @@ public abstract class TowerBase extends GameObject
 		sortedLocs.clear();
 		for (int x = this.getPosition().x - this.radius; x < this.getPosition().x + this._size + this.radius; x++)
 		{
-			if (x < 0 || x > GameMap.inst().columns)
+			if (x < 0 || x >= GameMap.inst().columns)
 				continue;
 			for (int y = this.getPosition().y - this.radius; y < this.getPosition().y + this._size + this.radius; y++)
 			{
-				if (y < 0 || y > GameMap.inst().rows)
+				if (y < 0 || y >= GameMap.inst().rows)
 					continue;
 				Location loc = new Location(x, y);
 				if (GameMap.inst().getTilesTeam(loc) == this._team)
@@ -331,6 +327,11 @@ public abstract class TowerBase extends GameObject
 			}
 		}
 		Collections.sort(sortedLocs);
+	}
+	
+	public List<Location> getCoveredLocations()
+	{
+		return this.sortedLocs;
 	}
 
 	private void handleTowerClick()
