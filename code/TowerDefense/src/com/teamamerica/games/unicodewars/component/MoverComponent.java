@@ -116,19 +116,10 @@ public class MoverComponent extends Component
 		if (this._parent instanceof MobObject)
 		{
 			MobObject temp = (MobObject) this._parent;
-			Location startLoc = this._parent.getPosition();
-			Location endLoc = null;
-			switch (temp.getTeam())
-			{
-				case Player1:
-					endLoc = GameMap.inst().getTeamBaseLocation(Team.Player2);
-					break;
-				case Player2:
-					endLoc = GameMap.inst().getTeamBaseLocation(Team.Player1);
-					break;
-			}
-			if (startLoc.equals(GameMap.inst().getTeamSpawnPoint(_parent.getTeam())))
-				this.path = GameMap.inst().getSpawnPath(_parent.getTeam());
+			Location startLoc = temp.getPosition();
+			Location endLoc = GameMap.inst().getTeamBaseLocation(temp.getTeam().opponent());
+			if (startLoc.equals(GameMap.inst().getTeamSpawnPoint(temp.getTeam())))
+				this.path = GameMap.inst().getSpawnPath(temp.getTeam());
 			else
 				this.path = GameMap.inst().getPathFinder().findPath(temp, startLoc.x, startLoc.y, endLoc.x, endLoc.y);
 			this.pathStep = 0;
@@ -146,34 +137,11 @@ public class MoverComponent extends Component
 		this.path = path;
 	}
 
-	/**
-	 * Returns true if the specified location is being used by the specified
-	 * GameObject, false otherwise
-	 * 
-	 * @return boolean
-	 */
-	public boolean containsLocation(GameObject gameObj, Location loc)
-	{
-		boolean bCollisionExists = false;
-		
-		for (int x = gameObj.getPosition().x; x < gameObj.getPosition().x + gameObj.getSize(); x++)
-		{
-			for (int y = gameObj.getPosition().y; y < gameObj.getPosition().y + gameObj.getSize(); y++)
-			{
-				if ((loc.x == x) && (loc.y == y))
-				{
-					bCollisionExists = true;
-					break;
-				}
-			}
-		}
-		
-		return bCollisionExists;
-	}
+
 
 	private void checkAndUpdate(GameObject obj)
 	{
-		if (containsLocation(obj, _parent.getPosition()))
+		if (obj.coversLocation(_parent.getPosition()))
 		{
 			obj.deleteObject();
 			return;
@@ -198,7 +166,7 @@ public class MoverComponent extends Component
 			for (int i = 0; i < oldPath.getLength(); i++)
 			{
 				Path.Step step = oldPath.getStep(i);
-				if (containsLocation(obj, new Location(step.getX(), step.getY())))
+				if (obj.coversLocation(new Location(step.getX(), step.getY())))
 				{
 					if (i < this.pathStep)
 						return;

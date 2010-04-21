@@ -337,9 +337,18 @@ public class GameMap implements TileBasedMap
 	 */
 	public void removeTower(TowerBase obj)
 	{
-		for (Location loc : obj.getCoveredLocations())
+		Location loc = obj.getPosition();
+		short size = obj.getSize();
+		for (int x = loc.x; x < (loc.x + size); x++)
 		{
-			this.costMap[loc.x][loc.y] /= 2;
+			for (int y = loc.y; y < (loc.y + size); y++)
+			{
+				this.map[x][y] = TileType.Free;
+			}
+		}
+		for (Location l : obj.getCoveredLocations())
+		{
+			this.costMap[l.x][l.y] /= 2;
 		}
 		updateDefaultMobPath(obj.getTeam().opponent());
 	}

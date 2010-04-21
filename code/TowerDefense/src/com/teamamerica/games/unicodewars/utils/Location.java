@@ -1,5 +1,7 @@
 package com.teamamerica.games.unicodewars.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.teamamerica.games.unicodewars.system.GameMap;
 
 public class Location implements Comparable<Object>
@@ -13,9 +15,42 @@ public class Location implements Comparable<Object>
 		this.y = y;
 	}
 	
+	/**
+	 * Return the manhanttan distance
+	 * 
+	 * @param loc
+	 * @return
+	 */
 	public int distance(Location loc)
 	{
-		return Math.abs(this.x - loc.x) + Math.abs(this.y - loc.y);
+		return distance(this, loc);
+	}
+	
+	public static int distance(Location l1, Location l2)
+	{
+		return Math.abs(l1.x - l2.x) + Math.abs(l1.y - l2.y);
+	}
+	
+	public List<Location> getLocsWithinDistance(int distance)
+	{
+		return getLocsWithinDistance(this, distance);
+	}
+
+	public static List<Location> getLocsWithinDistance(Location loc, int distance)
+	{
+		ArrayList<Location> ret = new ArrayList<Location>();
+		
+		for (int x = loc.x - distance; x <= loc.x + distance; x++)
+		{
+			for (int y = loc.y - distance; y <= loc.y + distance; y++)
+			{
+				Location temp = new Location(x, y);
+				if (loc.distance(temp) <= distance)
+					ret.add(temp);
+			}
+		}
+		
+		return ret;
 	}
 
 	@Override

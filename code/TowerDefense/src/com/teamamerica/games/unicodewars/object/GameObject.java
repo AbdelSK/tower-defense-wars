@@ -186,6 +186,7 @@ public class GameObject
 		return _positionInPixels;
 	}
 	
+
 	/**
 	 * Sets the pixel location of this GameObject. This is used for visual
 	 * effects only. The object is considered to be occupying whatever tile
@@ -207,6 +208,31 @@ public class GameObject
 	{
 		_positionInPixels.x = x;
 		_positionInPixels.y = y;
+	}
+	
+	/**
+	 * Returns true if the specified location is being used by the specified
+	 * GameObject, false otherwise
+	 * 
+	 * @return boolean
+	 */
+	public boolean coversLocation(Location loc)
+	{
+		boolean bCollisionExists = false;
+		
+		for (int x = getPosition().x; x < getPosition().x + getSize(); x++)
+		{
+			for (int y = getPosition().y; y < getPosition().y + getSize(); y++)
+			{
+				if ((loc.x == x) && (loc.y == y))
+				{
+					bCollisionExists = true;
+					break;
+				}
+			}
+		}
+		
+		return bCollisionExists;
 	}
 
 	public short getSize()
