@@ -96,7 +96,7 @@ public abstract class TowerBase extends GameObject
 			
 			if (target != null)
 			{
-				if (!sortedLocs.contains(target.getPosition()))
+				if (!sortedLocs.contains(target.getPosition()) || !target.isAlive())
 					target = null;
 			}
 
@@ -363,8 +363,6 @@ public abstract class TowerBase extends GameObject
 	@Override
 	public void deleteObject()
 	{
-		super.deleteObject();
-		
 		if (BB.inst().getHUD() == this)
 			BB.inst().setHUD(null);
 
@@ -376,5 +374,6 @@ public abstract class TowerBase extends GameObject
 			}
 		}
 		GameMap.inst().removeTower(this);
+		super.deleteObject();
 	}
 }
