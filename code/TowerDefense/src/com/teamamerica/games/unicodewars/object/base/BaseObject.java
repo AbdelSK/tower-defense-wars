@@ -1,7 +1,7 @@
 package com.teamamerica.games.unicodewars.object.base;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.system.BB;
@@ -67,7 +67,7 @@ public class BaseObject extends GameObject
 				break;
 		}
 
-		List<GameObject> temp = BB.inst().getTeamObjectsAtLocations(opponent, locations);
+		Collection<GameObject> temp = BB.inst().getTeamObjectsAtLocations(opponent, locations);
 		for (GameObject obj : temp)
 		{
 			hit(obj);

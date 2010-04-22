@@ -118,7 +118,7 @@ public abstract class TowerBase extends GameObject
 				}
 				
 				ArrayList<Location> temp = new ArrayList<Location>(locsInRange);
-				List<GameObject> objs = BB.inst().getTeamObjectsAtLocations(attacking, temp);
+				List<GameObject> objs = new ArrayList<GameObject>(BB.inst().getTeamObjectsAtLocations(attacking, temp));
 				
 				Collections.sort(objs, GameObject.birthTime);
 
