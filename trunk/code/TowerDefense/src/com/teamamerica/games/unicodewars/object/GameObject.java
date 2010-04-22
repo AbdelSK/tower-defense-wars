@@ -59,6 +59,7 @@ public class GameObject
 	private List<Component> _renderQueue;
 	
 	private Map<String, Object> _userData;
+	protected HashSet<Location> _covering;
 	
 	private long _createdTime;
 
@@ -225,15 +226,19 @@ public class GameObject
 	
 	public Collection<Location> locationsCovered()
 	{
-		HashSet<Location> ret = new HashSet<Location>();
-		for (int x = _position.x; x < _position.x + _size; ++x)
+		if (_covering == null)
 		{
-			for (int y = _position.y; y < _position.y + _size; ++y)
+			_covering = new HashSet<Location>();
+			for (int x = _position.x; x < _position.x + _size; ++x)
 			{
-				ret.add(new Location(x, y));
+				for (int y = _position.y; y < _position.y + _size; ++y)
+				{
+					_covering.add(new Location(x, y));
+				}
 			}
 		}
-		return ret;
+		
+		return _covering;
 	}
 
 	public short getSize()

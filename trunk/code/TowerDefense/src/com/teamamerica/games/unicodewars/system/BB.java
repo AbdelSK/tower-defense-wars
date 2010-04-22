@@ -2,11 +2,12 @@ package com.teamamerica.games.unicodewars.system;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import org.apache.log4j.Logger;
 import org.fenggui.Button;
 import org.fenggui.Display;
@@ -42,7 +43,7 @@ public class BB
 	private List<Timer> _timers;
 	private boolean _paused;
 	private Map<Variable, Object> _variableMap;
-	private List<HashMap<Location, List<GameObject>>> _objects;
+	private List<HashMap<Location, Set<GameObject>>> _objects;
 	private List<KeyListener> _keysPressed;
 	private List<MouseListener> _mouseClicked;
 	private HashMap<Location, MouseListener> _mouseClickedAtLocation;
@@ -64,10 +65,10 @@ public class BB
 		_nextId = 0;
 		_variableMap = new HashMap<Variable, Object>();
 		
-		_objects = new ArrayList<HashMap<Location, List<GameObject>>>();
-		_objects.add(new HashMap<Location, List<GameObject>>()); // Player 1's
+		_objects = new ArrayList<HashMap<Location, Set<GameObject>>>();
+		_objects.add(new HashMap<Location, Set<GameObject>>()); // Player 1's
 		// objects
-		_objects.add(new HashMap<Location, List<GameObject>>()); // Player 2's
+		_objects.add(new HashMap<Location, Set<GameObject>>()); // Player 2's
 		// objects
 		
 		_keysPressed = new ArrayList<KeyListener>();
@@ -204,7 +205,7 @@ public class BB
 		{
 			if (!_objects.get(player.index()).containsKey(loc))
 			{
-				_objects.get(player.index()).put(loc, new ArrayList<GameObject>());
+				_objects.get(player.index()).put(loc, new HashSet<GameObject>());
 			}
 			
 			_objects.get(player.index()).get(loc).add(obj);
@@ -248,39 +249,37 @@ public class BB
 		
 		if (!_objects.get(obj.getTeam().index()).containsKey(obj.getPosition()))
 		{
-			_objects.get(obj.getTeam().index()).put(newVal, new ArrayList<GameObject>());
+			_objects.get(obj.getTeam().index()).put(newVal, new HashSet<GameObject>());
 		}
 		_objects.get(obj.getTeam().index()).get(newVal).add(obj);
 	}
 
-	public List<GameObject> getAll()
+	public Collection<GameObject> getAll()
 	{
-		ArrayList<GameObject> temp = new ArrayList<GameObject>();
+		HashSet<GameObject> temp = new HashSet<GameObject>();
 		for (Team t : Team.values())
 		{
-			for (List<GameObject> l : _objects.get(t.index()).values())
+			for (Set<GameObject> l : _objects.get(t.index()).values())
 			{
 				temp.addAll(l);
 			}
 		}
-		Collections.sort(temp, GameObject.render);
 		return temp;
 	}
 	
-	public List<GameObject> getAllForTeam(Team team)
+	public Collection<GameObject> getAllForTeam(Team team)
 	{
-		ArrayList<GameObject> temp = new ArrayList<GameObject>();
-		for (List<GameObject> l : _objects.get(team.index()).values())
+		HashSet<GameObject> temp = new HashSet<GameObject>();
+		for (Set<GameObject> l : _objects.get(team.index()).values())
 		{
 			temp.addAll(l);
 		}
-		Collections.sort(temp, GameObject.render);
 		return temp;
 	}
 	
-	public List<TowerBase> getAllTowersForTeam(Team team)
+	public Collection<TowerBase> getAllTowersForTeam(Team team)
 	{
-		ArrayList<TowerBase> ret = new ArrayList<TowerBase>();
+		HashSet<TowerBase> ret = new HashSet<TowerBase>();
 		for (GameObject obj : getAllForTeam(team))
 		{
 			if (obj instanceof TowerBase)
@@ -291,9 +290,9 @@ public class BB
 		return ret;
 	}
 	
-	public List<MobObject> getAllMobsForTeam(Team team)
+	public Collection<MobObject> getAllMobsForTeam(Team team)
 	{
-		ArrayList<MobObject> ret = new ArrayList<MobObject>();
+		HashSet<MobObject> ret = new HashSet<MobObject>();
 		for (GameObject obj : getAllForTeam(team))
 		{
 			if (obj instanceof MobObject)
@@ -304,18 +303,18 @@ public class BB
 		return ret;
 	}
 
-	public List<GameObject> getTeamObjectsAtLocation(Team team, Location loc)
+	public Collection<GameObject> getTeamObjectsAtLocation(Team team, Location loc)
 	{
-		ArrayList<GameObject> ret = new ArrayList<GameObject>();
+		HashSet<GameObject> ret = new HashSet<GameObject>();
 		if (_objects.get(team.index()).containsKey(loc))
 			ret.addAll(_objects.get(team.index()).get(loc));
 		return ret;
 		
 	}
 	
-	public List<GameObject> getTeamObjectsAtLocations(Team team, Collection<Location> locs)
+	public Collection<GameObject> getTeamObjectsAtLocations(Team team, Collection<Location> locs)
 	{
-		ArrayList<GameObject> ret = new ArrayList<GameObject>();
+		HashSet<GameObject> ret = new HashSet<GameObject>();
 		
 		for (Location loc : locs)
 		{
