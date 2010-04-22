@@ -184,10 +184,10 @@ public class GameMap implements TileBasedMap
 				}
 			}
 			
-			if (this.tempBuildLocs.contains(new Location(tx, ty)))
-			{
-				return true;
-			}
+			// if (this.tempBuildLocs.contains(new Location(tx, ty)))
+			// {
+			// return true;
+			// }
 
 		}
 
@@ -277,21 +277,24 @@ public class GameMap implements TileBasedMap
 			// Now that its not building on top of something check and see if it
 			// will block
 			// any path from a spawn point
-			TowerBase noName = new TowerBase(TowerBase.Type.cardOne, 0, 0, 0, 0, team, loc, null) {};
-			this.tempBuildLocs.addAll(noName.locationsCovered());
-			
-			Location spawn = this.getTeamSpawnPoint(team.opponent());
-			MobObject dummy = new MobObject(null, -1, -1, spawn, team.opponent(), -1, MobObject.Type.chinese, null) {};
-			Location base = this.getTeamBaseLocation(team);
-			Path path = this.pathFinder.findPath(dummy, spawn.x, spawn.y, base.x, base.y);
-			if (path == null)
-				result = false;
-			// Clean up the temp objects
-			this.tempBuildLocs.clear();
-			noName.deleteObject();
-			dummy.deleteObject();
-			noName = null;
-			dummy = null;
+			// TowerBase noName = new TowerBase(TowerBase.Type.cardOne, 0, 0, 0,
+			// 0, team, loc, null) {};
+			// this.tempBuildLocs.addAll(noName.locationsCovered());
+			//			
+			// Location spawn = this.getTeamSpawnPoint(team.opponent());
+			// MobObject dummy = new MobObject(null, -1, -1, spawn,
+			// team.opponent(), -1, MobObject.Type.chinese, null) {};
+			// Location base = this.getTeamBaseLocation(team);
+			// Path path = this.pathFinder.findPath(dummy, spawn.x, spawn.y,
+			// base.x, base.y);
+			// if (path == null)
+			// result = false;
+			// // Clean up the temp objects
+			// this.tempBuildLocs.clear();
+			// noName.deleteObject();
+			// dummy.deleteObject();
+			// noName = null;
+			// dummy = null;
 			
 			return result;
 		}

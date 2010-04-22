@@ -139,6 +139,7 @@ public class GameplayState extends BHGameState
 	public void start()
 	{
 		_gameSystem.start();
+		BB.inst().setDisplay(_feng.getDisplay());
 	}
 
 	@Override
