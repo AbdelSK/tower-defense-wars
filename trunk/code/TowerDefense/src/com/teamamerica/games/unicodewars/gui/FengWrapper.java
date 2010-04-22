@@ -12,7 +12,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.InputListener;
 import org.newdawn.slick.opengl.SlickCallable;
-import com.teamamerica.games.unicodewars.system.BB;
 
 /**
  *
@@ -34,7 +33,6 @@ public class FengWrapper implements InputListener
 		_fengDisplay = new Display(binding);
 		_fengDisplay.setDepthTestEnabled(true);
 		Binding.getInstance().setUseClassLoader(true);
-		BB.inst().setDisplay(_fengDisplay);
 	}
 	
 	/**
