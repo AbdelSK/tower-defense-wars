@@ -1,6 +1,7 @@
 package com.teamamerica.games.unicodewars.system;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import org.apache.log4j.Logger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -12,6 +13,7 @@ import org.newdawn.slick.util.pathfinding.TileBasedMap;
 import org.newdawn.slick.util.pathfinding.Path.Step;
 import org.newdawn.slick.util.pathfinding.heuristics.ManhattanHeuristic;
 import com.teamamerica.games.unicodewars.factory.BaseMaker;
+import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.base.BaseObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
@@ -23,7 +25,7 @@ public class GameMap implements TileBasedMap
 {
 	private enum TileType
 	{
-		Base, Tower, Spawn, Blocked, Free
+		Spawn, Blocked, Free
 	}
 	
 	private static GameMap _instance;
@@ -36,6 +38,7 @@ public class GameMap implements TileBasedMap
 	private ArrayList<Location> spawnPoints;
 	private ArrayList<Path> spawnPaths;
 	private ArrayList<Location> baseLocations;
+	private HashSet<Location> tempBuildLocs;
 	private Color gridColor;
 	private Timer colorTimer;
 	private int colorStage;
@@ -53,8 +56,10 @@ public class GameMap implements TileBasedMap
 		this.spawnPoints = new ArrayList<Location>();
 		this.baseLocations = new ArrayList<Location>();
 		this.spawnPaths = new ArrayList<Path>();
+		this.tempBuildLocs = new HashSet<Location>();
 
-		for (Team team : Team.values())
+		for (@SuppressWarnings("unused")
+		Team team : Team.values())
 		{
 			this.spawnPoints.add(new Location(-1, -1));
 			this.baseLocations.add(new Location(-1, -1));
@@ -114,12 +119,11 @@ public class GameMap implements TileBasedMap
 		
 		// Set up the bases
 		Location b1Loc = new Location(0, (rows / 2) - (BaseObject.size / 2));
-		BaseObject b1 = BaseMaker.MakeBase(Team.Player1, b1Loc);
-		buildBase(b1);
+		BaseMaker.MakeBase(Team.Player1, b1Loc);
 		this.baseLocations.set(Team.Player1.index(), new Location(b1Loc.x + 1, b1Loc.y + 2));
+
 		Location b2Loc = new Location(columns - 4, (rows / 2) - (BaseObject.size / 2));
-		BaseObject b2 = BaseMaker.MakeBase(Team.Player2, b2Loc);
-		buildBase(b2);
+		BaseMaker.MakeBase(Team.Player2, b2Loc);
 		this.baseLocations.set(Team.Player2.index(), new Location(b2Loc.x + 2, b2Loc.y + 2));
 		
 		// Set up the spawn paths
@@ -162,19 +166,29 @@ public class GameMap implements TileBasedMap
 			{
 				return true;
 			}
+			
+			if (map[tx][ty] != TileType.Free)
+			{
+				return true;
+			}
 
-			if (map[tx][ty] == TileType.Base)
+			for (GameObject obj : BB.inst().getTeamObjectsAtLocation(temp.getTeam().opponent(), new Location(tx, ty)))
 			{
-				return false;
+				if (obj instanceof TowerBase)
+				{
+					return true;
+				}
+				else if (obj instanceof BaseObject)
+				{
+					return false;
+				}
 			}
-			else if (map[tx][ty] == TileType.Tower)
+			
+			if (this.tempBuildLocs.contains(new Location(tx, ty)))
 			{
 				return true;
 			}
-			else if (map[tx][ty] == TileType.Blocked)
-			{
-				return true;
-			}
+
 		}
 
 		return false;
@@ -226,17 +240,6 @@ public class GameMap implements TileBasedMap
 		return this.teamMap[loc.x][loc.y];
 	}
 	
-	private void buildBase(BaseObject obj)
-	{
-		for (int i = obj.getPosition().x; i < (obj.getPosition().x + obj.getSize()); i++)
-		{
-			for (int j = obj.getPosition().y; j < (obj.getPosition().y + obj.getSize()); j++)
-			{
-				this.map[i][j] = TileType.Base;
-			}
-		}
-	}
-	
 	/**
 	 * Checks to see whether or not it is possible to build a tower at that
 	 * location
@@ -270,16 +273,12 @@ public class GameMap implements TileBasedMap
 					}
 				}
 			boolean result = true;
+
 			// Now that its not building on top of something check and see if it
 			// will block
 			// any path from a spawn point
-			for (int x = loc.x; x < (loc.x + size); x++)
-			{
-				for (int y = loc.y; y < (loc.y + size); y++)
-				{
-					this.map[x][y] = TileType.Tower;
-				}
-			}
+			TowerBase noName = new TowerBase(TowerBase.Type.cardOne, 0, 0, 0, 0, team, loc, null) {};
+			this.tempBuildLocs.addAll(noName.locationsCovered());
 			
 			Location spawn = this.getTeamSpawnPoint(team.opponent());
 			MobObject dummy = new MobObject(null, -1, -1, spawn, team.opponent(), -1, MobObject.Type.chinese, null) {};
@@ -287,13 +286,12 @@ public class GameMap implements TileBasedMap
 			Path path = this.pathFinder.findPath(dummy, spawn.x, spawn.y, base.x, base.y);
 			if (path == null)
 				result = false;
-			for (int x = loc.x; x < (loc.x + size); x++)
-			{
-				for (int y = loc.y; y < (loc.y + size); y++)
-				{
-					this.map[x][y] = TileType.Free;
-				}
-			}
+			// Clean up the temp objects
+			this.tempBuildLocs.clear();
+			noName.deleteObject();
+			dummy.deleteObject();
+			noName = null;
+			dummy = null;
 			
 			return result;
 		}
@@ -309,14 +307,6 @@ public class GameMap implements TileBasedMap
 	 */
 	public boolean buildTower(TowerBase obj)
 	{
-		for (int i = obj.getPosition().x; i < (obj.getPosition().x + obj.getSize()); i++)
-		{
-			for (int j = obj.getPosition().y; j < (obj.getPosition().y + obj.getSize()); j++)
-			{
-				this.map[i][j] = TileType.Tower;
-			}
-		}
-
 		for (Location loc : obj.getLocationsInRange())
 		{
 			this.costMap[loc.x][loc.y] *= 2;

@@ -1,8 +1,10 @@
 package com.teamamerica.games.unicodewars.object;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -218,21 +220,20 @@ public class GameObject
 	 */
 	public boolean coversLocation(Location loc)
 	{
-		boolean bCollisionExists = false;
-		
-		for (int x = getPosition().x; x < getPosition().x + getSize(); x++)
+		return locationsCovered().contains(loc);
+	}
+	
+	public Collection<Location> locationsCovered()
+	{
+		HashSet<Location> ret = new HashSet<Location>();
+		for (int x = _position.x; x < _position.x + _size; ++x)
 		{
-			for (int y = getPosition().y; y < getPosition().y + getSize(); y++)
+			for (int y = _position.y; y < _position.y + _size; ++y)
 			{
-				if ((loc.x == x) && (loc.y == y))
-				{
-					bCollisionExists = true;
-					break;
-				}
+				ret.add(new Location(x, y));
 			}
 		}
-		
-		return bCollisionExists;
+		return ret;
 	}
 
 	public short getSize()

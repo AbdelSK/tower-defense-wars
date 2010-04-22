@@ -192,18 +192,23 @@ public class BB
 	}
 	
 	/**
-	 * Add an object to the blackboard
+	 * Add an object to the blackboard. An object is added to each location it
+	 * covers physically
 	 * 
 	 * @param obj
 	 * @param player
 	 */
 	public void addTeamObject(GameObject obj, Team player)
 	{
-		if (!_objects.get(player.index()).containsKey(obj.getPosition()))
+		for (Location loc : obj.locationsCovered())
 		{
-			_objects.get(player.index()).put(obj.getPosition(), new ArrayList<GameObject>());
+			if (!_objects.get(player.index()).containsKey(loc))
+			{
+				_objects.get(player.index()).put(loc, new ArrayList<GameObject>());
+			}
+			
+			_objects.get(player.index()).get(loc).add(obj);
 		}
-		_objects.get(player.index()).get(obj.getPosition()).add(obj);
 	}
 	
 	/**
@@ -214,12 +219,17 @@ public class BB
 	 */
 	public boolean removeTeamObject(GameObject obj)
 	{
-		if (!_objects.get(obj.getTeam().index()).containsKey(obj.getPosition()))
+		boolean result = true;
+		for (Location loc : obj.locationsCovered())
 		{
-			return false;
+			if (!_objects.get(obj.getTeam().index()).containsKey(loc))
+			{
+				continue;
+			}
+			
+			result = _objects.get(obj.getTeam().index()).get(loc).remove(obj) ? result : false;
 		}
-		return _objects.get(obj.getTeam().index()).get(obj.getPosition()).remove(obj);
-		
+		return true;
 	}
 	
 	/**
@@ -257,6 +267,43 @@ public class BB
 		return temp;
 	}
 	
+	public List<GameObject> getAllForTeam(Team team)
+	{
+		ArrayList<GameObject> temp = new ArrayList<GameObject>();
+		for (List<GameObject> l : _objects.get(team.index()).values())
+		{
+			temp.addAll(l);
+		}
+		Collections.sort(temp, GameObject.render);
+		return temp;
+	}
+	
+	public List<TowerBase> getAllTowersForTeam(Team team)
+	{
+		ArrayList<TowerBase> ret = new ArrayList<TowerBase>();
+		for (GameObject obj : getAllForTeam(team))
+		{
+			if (obj instanceof TowerBase)
+			{
+				ret.add((TowerBase) obj);
+			}
+		}
+		return ret;
+	}
+	
+	public List<MobObject> getAllMobsForTeam(Team team)
+	{
+		ArrayList<MobObject> ret = new ArrayList<MobObject>();
+		for (GameObject obj : getAllForTeam(team))
+		{
+			if (obj instanceof MobObject)
+			{
+				ret.add((MobObject) obj);
+			}
+		}
+		return ret;
+	}
+
 	public List<GameObject> getTeamObjectsAtLocation(Team team, Location loc)
 	{
 		ArrayList<GameObject> ret = new ArrayList<GameObject>();
