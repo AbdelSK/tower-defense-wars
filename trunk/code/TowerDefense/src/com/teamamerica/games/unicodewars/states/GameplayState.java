@@ -83,7 +83,7 @@ public class GameplayState extends BHGameState
 		particleSystem = new ParticleSystem(image);
 		particleSystem.setBlendingMode(ParticleSystem.BLEND_ADDITIVE);
 		particleSystem.setUsePoints(false);
-		particleSystem.setRemoveCompletedEmitters(false);
+		particleSystem.setRemoveCompletedEmitters(true);
 
 		_gameSystem = new GameSystem(container, container.getWidth(), container.getHeight());
 		_gameSystem.pause();
