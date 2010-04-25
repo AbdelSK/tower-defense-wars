@@ -29,6 +29,7 @@ public abstract class MobObject extends GameObject implements Mover
 	int refund = 0;
 	Type type;
 	String imagePath;
+	private boolean dead = false;
 
 	public MobObject(String name, int id, int renderPriority, Location loc, Team side, int level, Type type, String imgLoc)
 	{
@@ -161,24 +162,28 @@ public abstract class MobObject extends GameObject implements Mover
 	
 	public void die()
 	{
-		ConfigurableEmitter emitter = null;
-		try
+		if (!dead)
 		{
-			File xmlFile = new File("src/data/effects/explode.xml");
-			emitter = ParticleIO.loadEmitter(xmlFile);
+			dead = true;
+			ConfigurableEmitter emitter = null;
+			try
+			{
+				File xmlFile = new File("src/data/effects/explode.xml");
+				emitter = ParticleIO.loadEmitter(xmlFile);
+			}
+			catch (Exception e)
+			{
+				System.out.println("Exception: " + e.getMessage());
+				e.printStackTrace();
+				System.exit(0);
+			}
+			emitter.setPosition(this._positionInPixels.x + 10, this._positionInPixels.y + 8);
+			emitter.setImageName(imagePath);
+			Event event = new Event(EventType.START_PARTICLE_EFFECT);
+			event.addParameter("configurableEmitter", emitter);
+			EventManager.inst().dispatch(event);
+			this.setPositionInPixel(-1, -1);
+			deleteObject();
 		}
-		catch (Exception e)
-		{
-			System.out.println("Exception: " + e.getMessage());
-			e.printStackTrace();
-			System.exit(0);
-		}
-		emitter.setPosition(this._positionInPixels.x + 10, this._positionInPixels.y + 8);
-		emitter.setImageName(imagePath);
-		Event event = new Event(EventType.START_PARTICLE_EFFECT);
-		event.addParameter("configurableEmitter", emitter);
-		EventManager.inst().dispatch(event);
-		this.setPositionInPixel(-1, -1);
-		deleteObject();
 	}
 }
