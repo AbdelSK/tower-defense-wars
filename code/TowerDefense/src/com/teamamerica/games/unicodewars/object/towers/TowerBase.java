@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
@@ -51,6 +52,7 @@ public abstract class TowerBase extends GameObject
 	private HashSet<Location> locsInRange;
 	private String imagePath;
 	private MobObject target = null;
+	private Sound laserEffect;
 	
 	public TowerBase(Type type, int attack, int price, int radius, int speed, Team team, Location loc, String imgLoc)
 	{
@@ -62,6 +64,14 @@ public abstract class TowerBase extends GameObject
 		this.imagePath = imgLoc;
 		stopWatch = BB.inst().getNewTimer();
 		locsInRange = new HashSet<Location>();
+		try
+		{
+		laserEffect = new Sound("data/sounds/quick_laser.wav");
+		}
+		catch (Exception e)
+		{
+			laserEffect = null;
+		}
 		
 		this.radius = radius;
 		this.attack = attack;
@@ -176,6 +186,12 @@ public abstract class TowerBase extends GameObject
 					// EventManager.inst().dispatch(event);
 				}
 			}
+			
+			if (laserEffect != null)
+			{
+				laserEffect.play();
+			}
+
 			if (!mob.adjustHealth(-this.attack))
 			{
 				if (mob.getTeam() == Team.Player2)
