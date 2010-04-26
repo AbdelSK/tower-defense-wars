@@ -185,5 +185,9 @@ public abstract class MobObject extends GameObject implements Mover
 			this.setPositionInPixel(-1, -1);
 			deleteObject();
 		}
+		else
+		{
+			System.err.println("WARNING: Mob being killed multiple times!!");
+		}
 	}
 }

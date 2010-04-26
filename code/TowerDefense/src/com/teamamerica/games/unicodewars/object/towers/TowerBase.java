@@ -84,7 +84,10 @@ public abstract class TowerBase extends GameObject
 		registerTower();
 		if (team == Team.Player1)
 			BB.inst().getUsersPlayer().purchase(this.price);
-		System.out.println(this.type + "," + loc.x + "," + loc.y);
+		if (!BB.inst().isAiEnabled())
+		{
+			System.out.println(this.type + "," + loc.x + "," + loc.y);
+		}
 	}
 	
 	@Override
