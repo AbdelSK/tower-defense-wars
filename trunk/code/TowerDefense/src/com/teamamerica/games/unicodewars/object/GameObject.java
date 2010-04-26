@@ -172,6 +172,7 @@ public class GameObject
 	public void setPosition(Location x)
 	{
 		Location old = _position.copy();
+		locationsCovered().remove(old);
 		_position = x;
 		_positionInPixels = GameMap.inst().getLocationInPixels(x);
 		BB.inst().updateObjectLocation(this, old, _position);
@@ -229,6 +230,9 @@ public class GameObject
 		if (_covering == null)
 		{
 			_covering = new HashSet<Location>();
+		}
+		if (_covering.size() == 0)
+		{
 			for (int x = _position.x; x < _position.x + _size; ++x)
 			{
 				for (int y = _position.y; y < _position.y + _size; ++y)
