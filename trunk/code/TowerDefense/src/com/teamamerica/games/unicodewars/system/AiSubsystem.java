@@ -3,6 +3,7 @@ package com.teamamerica.games.unicodewars.system;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import com.teamamerica.games.unicodewars.factory.MobMaker;
@@ -19,7 +20,8 @@ public class AiSubsystem implements Subsystem
 {
 	private final int MAX_MOB_MEMBER_INTERVAL = 3000;
 	private final String MAZE_FILE_DELIMITER = ",";
-	private final String MAZE_FILE_NAME = "src/data/levels/maze1.txt";
+	private final String MAZE_FILE_DIR_NAME = "src/data/levels/";
+	private final String MAZE_LIST_FILE_NAME = "src/data/levels/MazeList.txt";
 	private final int MAZE_FILE_TYPE_INDEX = 0;
 	private final int MAZE_FILE_XLOC_INDEX = 1;
 	private final int MAZE_FILE_YLOC_INDEX = 2;
@@ -128,7 +130,8 @@ public class AiSubsystem implements Subsystem
 	@Override
 	public void start()
 	{
-		readDataFile(MAZE_FILE_NAME);
+		String mazeFileName = chooseMazeFile(MAZE_LIST_FILE_NAME);
+		readDataFile(mazeFileName);
 	}
 	
 	@Override
@@ -147,6 +150,36 @@ public class AiSubsystem implements Subsystem
 	{
 	}
 	
+	private String chooseMazeFile(String mazeListFileName)
+	{
+		ArrayList<String> listFileNames = new ArrayList<String>();
+		try
+		{
+			File mazeListFile = new File(mazeListFileName);
+			FileReader mazeListInputStream = new FileReader(mazeListFile);
+			BufferedReader br = new BufferedReader(mazeListInputStream);
+			String curFileName;
+			int i = 0;
+			
+			do
+			{
+				curFileName = br.readLine();
+				if (curFileName != null)
+				{
+					listFileNames.add(curFileName);
+				}
+			} while (curFileName != null);
+		}
+		catch (Exception e)
+		{
+			System.err.println("ERROR: Problem parsing CPU's maze list file - '" + mazeListFileName + "'");
+			e.printStackTrace(System.err);
+			return "";
+		}
+		
+		return MAZE_FILE_DIR_NAME + listFileNames.get((int) Math.round(Math.random() * (listFileNames.size() - 1)));
+	}
+
 	private MobObject.Type chooseMobType()
 	{
 		if (_curMobTypeIndex >= MobObject.Type.values().length)
