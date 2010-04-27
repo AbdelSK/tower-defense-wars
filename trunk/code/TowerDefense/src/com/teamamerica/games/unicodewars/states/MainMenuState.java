@@ -41,7 +41,7 @@ public class MainMenuState extends BHGameState {
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		_game = game;
 		_backgroundImage = new Image("data/images/main-menu.png");
-		_menuTheme = new Music("data/sounds/Main Menu.ogg");
+		_menuTheme = new Music("data/sounds/Main.ogg");
 		
 		_centerX = container.getWidth() / 2;
 		_centerY = container.getHeight() / 2;
