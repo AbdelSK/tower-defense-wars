@@ -1,7 +1,5 @@
 package com.teamamerica.games.unicodewars.object.towers;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -9,7 +7,6 @@ import java.util.List;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.particles.ConfigurableEmitter;
-import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
@@ -162,36 +159,27 @@ public abstract class TowerBase extends GameObject
 		target = mob;
 		if (mob != null)
 		{
-			if (emitter == null)
-			{
-				try
-				{
-					File xml = new File("src/data/effects/blue_beam.xml");
-					this.part_sys = ParticleIO.loadConfiguredSystem(xml);
-					emitter = new ConfigurableEmitter[this.part_sys.getEmitterCount()];
-				}
-				catch (IOException e)
-				{
-					System.out.println("Exception: " + e.getMessage());
-					e.printStackTrace();
-					System.exit(0);
-				}
-				
-				for (int i = 0; i < this.part_sys.getEmitterCount(); i++)
-				{
-					emitter[i] = (ConfigurableEmitter) this.part_sys.getEmitter(i);
-					emitter[i].setPosition(this.getPositionInPixels().x, this.getPositionInPixels().y);
-					System.out.println("setting emitter " + i + " position to " + this.getPositionInPixels().x + "," + this.getPositionInPixels().x);
-					Event event = new Event(EventType.START_PARTICLE_EFFECT);
-					event.addParameter("configurableEmitter", emitter[i]);
-					// EventManager.inst().dispatch(event);
-				}
-			}
-			
-			if (laserEffect != null)
-			{
-				laserEffect.play();
-			}
+			/*
+			 * if (emitter == null) { try { File xml = new
+			 * File("src/data/effects/blue_beam.xml"); this.part_sys =
+			 * ParticleIO.loadConfiguredSystem(xml); emitter = new
+			 * ConfigurableEmitter[this.part_sys.getEmitterCount()]; } catch
+			 * (IOException e) { System.out.println("Exception: " +
+			 * e.getMessage()); e.printStackTrace(); System.exit(0); }
+			 * 
+			 * for (int i = 0; i < this.part_sys.getEmitterCount(); i++) {
+			 * emitter[i] = (ConfigurableEmitter) this.part_sys.getEmitter(i);
+			 * emitter[i].setPosition(this.getPositionInPixels().x,
+			 * this.getPositionInPixels().y);
+			 * System.out.println("setting emitter " + i + " position to " +
+			 * this.getPositionInPixels().x + "," +
+			 * this.getPositionInPixels().x); Event event = new
+			 * Event(EventType.START_PARTICLE_EFFECT);
+			 * event.addParameter("configurableEmitter", emitter[i]); //
+			 * EventManager.inst().dispatch(event); } }
+			 * 
+			 * if (laserEffect != null) { laserEffect.play(); }
+			 */
 			
 			this.currentDamage = ((this.attack * 5) - mob.getDefense());
 			// the defense mitigated all of the damage
