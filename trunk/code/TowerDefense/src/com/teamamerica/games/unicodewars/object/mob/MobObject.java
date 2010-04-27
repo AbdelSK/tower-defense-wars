@@ -38,7 +38,7 @@ public abstract class MobObject extends GameObject implements Mover
 		
 		this.level = level;
 		this.type = type;
-		this.price = 20 * level;
+		this.price = (int) (5 * Math.pow(2, this.level)); // 10,20,40,80,160
 		this.refund = this.price / 2;
 		this.imagePath = imgLoc;
 	}
