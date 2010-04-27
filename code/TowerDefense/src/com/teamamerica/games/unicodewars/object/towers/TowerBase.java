@@ -48,6 +48,7 @@ public abstract class TowerBase extends GameObject
 	int attack = 0;
 	int speed = 0;
 	int price = 0;
+	int currentDamage = 0;
 	private Timer stopWatch;
 	private HashSet<Location> locsInRange;
 	private String imagePath;
@@ -66,7 +67,7 @@ public abstract class TowerBase extends GameObject
 		locsInRange = new HashSet<Location>();
 		try
 		{
-		laserEffect = new Sound("data/sounds/quick_laser.wav");
+			laserEffect = new Sound("data/sounds/quick_laser.wav");
 		}
 		catch (Exception e)
 		{
@@ -191,12 +192,17 @@ public abstract class TowerBase extends GameObject
 			{
 				laserEffect.play();
 			}
-
-			if (!mob.adjustHealth(-this.attack))
+			
+			this.currentDamage = ((this.attack * 5) - mob.getDefense());
+			// the defense mitigated all of the damage
+			if (this.currentDamage < 0)
+				this.currentDamage = 0;
+			
+			if (!mob.adjustHealth(-(this.currentDamage)))
 			{
 				if (mob.getTeam() == Team.Player2)
 				{
-					BB.inst().getUsersPlayer().addGold(2 * mob.getLevel());
+					BB.inst().getUsersPlayer().addGold((int) (Math.pow(2, mob.getLevel())));
 				}
 				// for (int i = 0; i < emitter.length; i++)
 				// {
@@ -208,6 +214,10 @@ public abstract class TowerBase extends GameObject
 				mob.die();
 				target = null;
 			}
+			// else
+			// {
+			// System.out.println("Hit for " + (this.currentDamage));
+			// }
 		}
 	}
 
