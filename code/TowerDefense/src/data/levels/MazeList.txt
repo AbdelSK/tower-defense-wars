@@ -1,2 +1,3 @@
 easy-1.txt
 maze1.txt
+hard.txt
