@@ -37,25 +37,16 @@ public class Timer
 
 	public boolean oneSecondPassed()
 	{
-		if (_paused)
-			return false;
-		long currentTime = System.currentTimeMillis();
-		if (currentTime - _start > 1000)
-		{
-			_start = currentTime;
-			return true;
-		}
-		return false;
+		return xMilisecondsPassed(1000);
 	}
 	
 	public boolean xMilisecondsPassed(long interval)
 	{
 		if (_paused)
 			return false;
-		long currentTime = System.currentTimeMillis();
-		if (currentTime - this._start > interval)
+		if (getElapsedTime() >= interval)
 		{
-			this._start = currentTime;
+			this._start = System.currentTimeMillis();
 			this._pauseEnd = 0;
 			this._pauseStart = 0;
 			_pausedTime = 0;
