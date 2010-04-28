@@ -10,6 +10,7 @@ import com.teamamerica.games.unicodewars.states.BHGameState;
 import com.teamamerica.games.unicodewars.states.GameplayState;
 import com.teamamerica.games.unicodewars.states.LoseState;
 import com.teamamerica.games.unicodewars.states.MainMenuState;
+import com.teamamerica.games.unicodewars.states.OptionsMenuState;
 import com.teamamerica.games.unicodewars.states.PauseState;
 import com.teamamerica.games.unicodewars.states.SplashState;
 import com.teamamerica.games.unicodewars.states.WinState;
@@ -36,6 +37,7 @@ public class Main extends StateBasedGame
 
 		addState(new SplashState());
 		addState(new MainMenuState());
+		addState(new OptionsMenuState());
 		addState(new GameplayState());
 		addState(new LoseState());
 		addState(new WinState());
