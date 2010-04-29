@@ -25,7 +25,7 @@ public class GameMap implements TileBasedMap
 {
 	private enum TileType
 	{
-		Spawn, Blocked, Free
+		Spawn, Blocked, Free, Tower
 	}
 	
 	private static GameMap _instance;
@@ -174,20 +174,16 @@ public class GameMap implements TileBasedMap
 
 			for (GameObject obj : BB.inst().getTeamObjectsAtLocation(temp.getTeam().opponent(), new Location(tx, ty)))
 			{
-				if (obj instanceof TowerBase)
-				{
-					return true;
-				}
-				else if (obj instanceof BaseObject)
+				
+				if (obj instanceof BaseObject)
 				{
 					return false;
 				}
+				else if (obj instanceof TowerBase)
+				{
+					return true;
+				}
 			}
-			
-			// if (this.tempBuildLocs.contains(new Location(tx, ty)))
-			// {
-			// return true;
-			// }
 
 		}
 
@@ -310,6 +306,11 @@ public class GameMap implements TileBasedMap
 	 */
 	public boolean buildTower(TowerBase obj)
 	{
+		for (Location loc : obj.locationsCovered())
+		{
+			this.map[loc.x][loc.y] = TileType.Tower;
+		}
+
 		for (Location loc : obj.getLocationsInRange())
 		{
 			this.costMap[loc.x][loc.y] *= 2;
@@ -330,15 +331,11 @@ public class GameMap implements TileBasedMap
 	 */
 	public void removeTower(TowerBase obj)
 	{
-		Location loc = obj.getPosition();
-		short size = obj.getSize();
-		for (int x = loc.x; x < (loc.x + size); x++)
+		for (Location loc : obj.locationsCovered())
 		{
-			for (int y = loc.y; y < (loc.y + size); y++)
-			{
-				this.map[x][y] = TileType.Free;
-			}
+			this.map[loc.x][loc.y] = TileType.Free;
 		}
+
 		for (Location l : obj.getLocationsInRange())
 		{
 			this.costMap[l.x][l.y] /= 2;
@@ -566,6 +563,26 @@ public class GameMap implements TileBasedMap
 			for (Location loc : BB.inst().getHUD().getLocationsInRange())
 			{
 				g.fillRect(loc.x * tileSize, loc.y * tileSize, tileSize, tileSize);
+			}
+		}
+		
+		Color temp = Color.green.scaleCopy(1);
+		temp.a = .5f;
+		g.setColor(temp);
+		if (this.spawnPaths.get((Team.Player1.index())) != null)
+		{
+			Path path = this.spawnPaths.get((Team.Player1.index()));
+			for (int i = 0; i < path.getLength(); i++)
+			{
+				g.fillRect(path.getX(i) * tileSize, path.getY(i) * tileSize, tileSize, tileSize);
+			}
+		}
+		if (this.spawnPaths.get((Team.Player2.index())) != null)
+		{
+			Path path = this.spawnPaths.get((Team.Player2.index()));
+			for (int i = 0; i < path.getLength(); i++)
+			{
+				g.fillRect(path.getX(i) * tileSize, path.getY(i) * tileSize, tileSize, tileSize);
 			}
 		}
 	}
