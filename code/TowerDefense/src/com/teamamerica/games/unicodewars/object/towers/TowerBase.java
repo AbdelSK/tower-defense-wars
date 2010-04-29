@@ -159,27 +159,59 @@ public abstract class TowerBase extends GameObject
 		target = mob;
 		if (mob != null)
 		{
-			/*
-			 * if (emitter == null) { try { File xml = new
-			 * File("src/data/effects/blue_beam.xml"); this.part_sys =
-			 * ParticleIO.loadConfiguredSystem(xml); emitter = new
-			 * ConfigurableEmitter[this.part_sys.getEmitterCount()]; } catch
-			 * (IOException e) { System.out.println("Exception: " +
-			 * e.getMessage()); e.printStackTrace(); System.exit(0); }
-			 * 
-			 * for (int i = 0; i < this.part_sys.getEmitterCount(); i++) {
-			 * emitter[i] = (ConfigurableEmitter) this.part_sys.getEmitter(i);
-			 * emitter[i].setPosition(this.getPositionInPixels().x,
-			 * this.getPositionInPixels().y);
-			 * System.out.println("setting emitter " + i + " position to " +
-			 * this.getPositionInPixels().x + "," +
-			 * this.getPositionInPixels().x); Event event = new
-			 * Event(EventType.START_PARTICLE_EFFECT);
-			 * event.addParameter("configurableEmitter", emitter[i]); //
-			 * EventManager.inst().dispatch(event); } }
-			 * 
-			 * if (laserEffect != null) { laserEffect.play(); }
-			 */
+			// if (emitter == null)
+			// {
+			// try
+			// {
+			// File xml = new File("src/data/effects/blue_beam.xml");
+			// this.part_sys = ParticleIO.loadConfiguredSystem(xml);
+			// emitter = new
+			// ConfigurableEmitter[this.part_sys.getEmitterCount()];
+			// }
+			// catch (IOException e)
+			// {
+			// System.out.println("Exception: " + e.getMessage());
+			// e.printStackTrace();
+			// System.exit(0);
+			// }
+			//				
+			// for (int i = 0; i < this.part_sys.getEmitterCount(); i++)
+			// {
+			// emitter[i] = (ConfigurableEmitter) this.part_sys.getEmitter(i);
+			// emitter[i].setPosition(this.getPositionInPixels().x,
+			// this.getPositionInPixels().y);
+			// System.out.println("setting emitter " + i + " position to " +
+			// this.getPositionInPixels().x + "," +
+			// this.getPositionInPixels().x);
+			// Event event = new Event(EventType.START_PARTICLE_EFFECT);
+			// event.addParameter("configurableEmitter", emitter[i]);
+			// // EventManager.inst().dispatch(event);
+			// }
+			// }
+			
+			if (laserEffect != null)
+			{
+				if (this.level == 1)
+				{
+					laserEffect.play(.4f, 1);
+				}
+				else if (this.level == 2)
+				{
+					laserEffect.play(.6f, 1);
+				}
+				else if (this.level == 3)
+				{
+					laserEffect.play(.8f, 1);
+				}
+				else if (this.level == 4)
+				{
+					laserEffect.play(1, 1);
+				}
+				else
+				{
+					laserEffect.play(.2f, 1);
+				}
+			}
 			
 			this.currentDamage = ((this.attack * 5) - mob.getDefense());
 			// the defense mitigated all of the damage
