@@ -56,7 +56,7 @@ public class SplashState extends BHGameState {
 			try
 			{
 				Thread.currentThread();
-				Thread.sleep(8000);
+				Thread.sleep(1000);
 			}
 			catch (InterruptedException e)
 			{
