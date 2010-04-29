@@ -51,6 +51,10 @@ public abstract class TowerBase extends GameObject
 	private String imagePath;
 	private MobObject target = null;
 	private Sound laserEffect;
+	private Sound gunEffect;
+	private Sound clickEffect;
+	private Sound slapEffect;
+	private Sound coinEffect;
 	
 	public TowerBase(Type type, int attack, int price, int radius, int speed, Team team, Location loc, String imgLoc)
 	{
@@ -69,6 +73,38 @@ public abstract class TowerBase extends GameObject
 		catch (Exception e)
 		{
 			laserEffect = null;
+		}
+		try
+		{
+			gunEffect = new Sound("data/sounds/gun.wav");
+		}
+		catch (Exception e)
+		{
+			gunEffect = null;
+		}
+		try
+		{
+			clickEffect = new Sound("data/sounds/click.wav");
+		}
+		catch (Exception e)
+		{
+			clickEffect = null;
+		}
+		try
+		{
+			slapEffect = new Sound("data/sounds/slap.wav");
+		}
+		catch (Exception e)
+		{
+			slapEffect = null;
+		}
+		try
+		{
+			coinEffect = new Sound("data/sounds/coin.wav");
+		}
+		catch (Exception e)
+		{
+			coinEffect = null;
 		}
 		
 		this.radius = radius;
@@ -189,7 +225,8 @@ public abstract class TowerBase extends GameObject
 			// }
 			// }
 			
-			if (laserEffect != null)
+			// && this.type == TowerBase.Type.cardOne
+			if (laserEffect != null && this.type == TowerBase.Type.cardOne)
 			{
 				if (this.level == 1)
 				{
@@ -210,6 +247,106 @@ public abstract class TowerBase extends GameObject
 				else
 				{
 					laserEffect.play(.2f, 1);
+				}
+			}
+			if (gunEffect != null && this.type == TowerBase.Type.chessOne)
+			{
+				if (this.level == 1)
+				{
+					gunEffect.play(.4f, 1);
+				}
+				else if (this.level == 2)
+				{
+					gunEffect.play(.6f, 1);
+				}
+				else if (this.level == 3)
+				{
+					gunEffect.play(.8f, 1);
+				}
+				else if (this.level == 4)
+				{
+					gunEffect.play(1, 1);
+				}
+				else
+				{
+					gunEffect.play(.2f, 1);
+				}
+			}
+			if (coinEffect != null && this.type == TowerBase.Type.currencyOne)
+			{
+				if (this.level == 1)
+				{
+					coinEffect.play(.4f, 1);
+				}
+				else if (this.level == 2)
+				{
+					coinEffect.play(.6f, 1);
+				}
+				else if (this.level == 3)
+				{
+					coinEffect.play(.8f, 1);
+				}
+				else if (this.level == 4)
+				{
+					coinEffect.play(1, 1);
+				}
+				else
+				{
+					coinEffect.play(.2f, 1);
+				}
+			}
+			if (clickEffect != null && this.type == TowerBase.Type.musicOne)
+			{
+				if (this.level == 1)
+				{
+					clickEffect.play(.4f, 1);
+				}
+				else if (this.level == 2)
+				{
+					clickEffect.play(.6f, 1);
+				}
+				else if (this.level == 3)
+				{
+					clickEffect.play(.8f, 1);
+				}
+				else if (this.level == 4)
+				{
+					clickEffect.play(1, 1);
+				}
+				else
+				{
+					clickEffect.play(.2f, 1);
+				}
+			}
+			if (slapEffect != null && this.type == TowerBase.Type.diceOne)
+			{
+				if (this.level == 1)
+				{
+					slapEffect.play(.1f, 1);
+				}
+				else if (this.level == 2)
+				{
+					slapEffect.play(.2f, 1);
+				}
+				else if (this.level == 3)
+				{
+					slapEffect.play(.4f, 1);
+				}
+				else if (this.level == 4)
+				{
+					slapEffect.play(.6f, 1);
+				}
+				else if (this.level == 5)
+				{
+					slapEffect.play(.8f, 1);
+				}
+				else if (this.level == 6)
+				{
+					slapEffect.play(1, 1);
+				}
+				else
+				{
+					slapEffect.play(1, 1);
 				}
 			}
 			
