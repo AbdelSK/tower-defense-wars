@@ -25,7 +25,7 @@ public class GameMap implements TileBasedMap
 {
 	private enum TileType
 	{
-		Spawn, Blocked, Free, Tower
+		Spawn, Blocked, Free
 	}
 	
 	private static GameMap _instance;
@@ -174,16 +174,20 @@ public class GameMap implements TileBasedMap
 
 			for (GameObject obj : BB.inst().getTeamObjectsAtLocation(temp.getTeam().opponent(), new Location(tx, ty)))
 			{
-				
-				if (obj instanceof BaseObject)
-				{
-					return false;
-				}
-				else if (obj instanceof TowerBase)
+				if (obj instanceof TowerBase)
 				{
 					return true;
 				}
+				else if (obj instanceof BaseObject)
+				{
+					return false;
+				}
 			}
+			
+			// if (this.tempBuildLocs.contains(new Location(tx, ty)))
+			// {
+			// return true;
+			// }
 
 		}
 
@@ -306,17 +310,12 @@ public class GameMap implements TileBasedMap
 	 */
 	public boolean buildTower(TowerBase obj)
 	{
-		for (Location loc : obj.locationsCovered())
-		{
-			this.map[loc.x][loc.y] = TileType.Tower;
-		}
-
 		for (Location loc : obj.getLocationsInRange())
 		{
 			this.costMap[loc.x][loc.y] *= 2;
 		}
 
-		if (updateDefaultMobPath(obj.getTeam()) == null)
+		if (updateDefaultMobPath(obj.getTeam().opponent()) == null)
 		{
 			return false;
 		}
@@ -331,11 +330,6 @@ public class GameMap implements TileBasedMap
 	 */
 	public void removeTower(TowerBase obj)
 	{
-		for (Location loc : obj.locationsCovered())
-		{
-			this.map[loc.x][loc.y] = TileType.Free;
-		}
-
 		for (Location l : obj.getLocationsInRange())
 		{
 			this.costMap[l.x][l.y] /= 2;
