@@ -15,6 +15,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
@@ -64,6 +65,7 @@ public class GameplayState extends BHGameState
 	private Winner winner;
 	private boolean paused;
 	private int listEmittersIndex;
+	private Music _gameTheme;
 	
 	public GameplayState()
 	{
@@ -89,7 +91,8 @@ public class GameplayState extends BHGameState
 		particleSystem.setBlendingMode(ParticleSystem.BLEND_ADDITIVE);
 		particleSystem.setUsePoints(false);
 		particleSystem.setRemoveCompletedEmitters(false);
-
+		
+		_gameTheme = new Music("data/sounds/Game1.ogg");
 		_gameSystem = new GameSystem(container, container.getWidth(), container.getHeight());
 		_gameSystem.pause();
 
@@ -102,6 +105,7 @@ public class GameplayState extends BHGameState
 		this.paused = false;
 		layout(_feng.getDisplay());
 		_gameSystem.unpause();
+		_gameTheme.loop(1, .75f);
 
 		baseDestroyedListener = new EventListener() {
 			
