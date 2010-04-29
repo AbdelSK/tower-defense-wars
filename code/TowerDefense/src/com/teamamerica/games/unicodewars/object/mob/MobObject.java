@@ -15,7 +15,7 @@ public abstract class MobObject extends GameObject implements Mover
 {
 	public static enum Type
 	{
-		chinese, latin, greek, cyrillic;
+		chinese, latin, greek, cyrillic, boss;
 	}
 
 	int attack = 0;
