@@ -26,14 +26,14 @@ public class WinState extends BHGameState {
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		_winImage = new Image("data/images/playerWins.png");
-		_winTheme = new Music("data/sounds/America, Fuck Yeah.ogg");
+		_winTheme = new Music("data/sounds/You win.ogg");
 	}
 	
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException
 	{
 		_timer = 2000;
-		// _winTheme.play();
+		_winTheme.play();
 	}
 
 	@Override
@@ -49,9 +49,8 @@ public class WinState extends BHGameState {
 	public void update(GameContainer container, StateBasedGame game, int millis) throws SlickException {
 		_timer -= millis;
 		
-		if (_timer < 0)
+		if (!_winTheme.playing())
 		{
-			_winTheme.stop();
 			game.enterState(Main.States.MainMenuState.ordinal(), 
 					new FadeOutTransition(), new FadeInTransition());
 		}

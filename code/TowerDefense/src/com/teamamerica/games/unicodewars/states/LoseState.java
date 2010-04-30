@@ -26,7 +26,7 @@ public class LoseState extends BHGameState {
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		_loseImage = new Image("data/images/playerLoses.png");
-		_loseTheme = new Music("data/sounds/America, Fuck Yeah.ogg");
+		_loseTheme = new Music("data/sounds/You Lose.ogg");
 		
 	}
 	
@@ -34,7 +34,7 @@ public class LoseState extends BHGameState {
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException
 	{
 		_timer = 2000;
-		// _loseTheme.play();
+		_loseTheme.play();
 	}
 
 	@Override
@@ -50,9 +50,8 @@ public class LoseState extends BHGameState {
 	public void update(GameContainer container, StateBasedGame game, int millis) throws SlickException {
 		_timer -= millis;
 		
-		if (_timer < 0)
+		if (!_loseTheme.playing())
 		{
-			_loseTheme.stop();
 			game.enterState(Main.States.MainMenuState.ordinal(), 
 					new FadeOutTransition(), new FadeInTransition());
 		}

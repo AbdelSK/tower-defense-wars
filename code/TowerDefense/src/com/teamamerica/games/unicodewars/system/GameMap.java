@@ -529,9 +529,11 @@ public class GameMap implements TileBasedMap
 			g.setColor(Color.green);
 			g.fillRect(loc.x * tileSize, loc.y * tileSize, tileSize, tileSize);
 		}
+		g.setLineWidth(1.2f);
 		for (int i = 1; i < rows; i++)
 		{
 			g.setColor(this.gridColor);
+
 			g.drawLine(0, i * tileSize, columns * tileSize, i * tileSize);
 		}
 		

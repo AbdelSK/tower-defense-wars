@@ -142,9 +142,11 @@ public class GameSystem
 	{
 		g.pushTransform();
 		g.resetTransform();
+		g.setFont(font);
 		
 		GameMap.inst().render(g);
 		
+
 		for (GameObject obj : BB.inst().getAll())
 		{
 			obj.render(g);
@@ -155,7 +157,7 @@ public class GameSystem
 			s.render(g);
 		}
 
-		g.setFont(font);
+
 		g.setColor(Color.white);
 		String tickCountdown = "";
 		if (!this.tickTimer.paused())

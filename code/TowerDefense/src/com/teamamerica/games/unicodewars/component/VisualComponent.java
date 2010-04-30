@@ -49,7 +49,7 @@ public class VisualComponent extends Component
 	public void render(Graphics g)
 	{
 		Location renderLocTL = this._parent.getPositionInPixels();
-		int size = this._parent.getSize() * GameMap.inst().tileSize;
+		int size = (this._parent.getSize() * GameMap.inst().tileSize) - 1;
 
 		if (this._parent instanceof TowerBase)
 		{
@@ -87,19 +87,19 @@ public class VisualComponent extends Component
 				switch (temp.getType())
 				{
 					case chinese:
-						img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.red.brighter());
+						img.draw(renderLocTL.x + 1, renderLocTL.y + 1, size, size, Color.red.brighter());
 						break;
 					case latin:
-						img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.blue.brighter());
+						img.draw(renderLocTL.x + 1, renderLocTL.y + 1, size, size, Color.blue.brighter());
 						break;
 					case greek:
-						img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.green.brighter());
+						img.draw(renderLocTL.x + 1, renderLocTL.y + 1, size, size, Color.green.brighter());
 						break;
 					case cyrillic:
-						img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.orange.brighter());
+						img.draw(renderLocTL.x + 1, renderLocTL.y + 1, size, size, Color.orange.brighter());
 						break;
 					default:
-						img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.cyan.brighter());
+						img.draw(renderLocTL.x + 1, renderLocTL.y + 1, size, size, Color.cyan.brighter());
 						break;
 				}
 			}
@@ -110,35 +110,35 @@ public class VisualComponent extends Component
 					case Player1:
 						g.setColor(Color.white);
 						g.getColor().a = .5f;
-						g.fillRect(renderLocTL.x, renderLocTL.y, size, size);
-						img.draw(renderLocTL.x, renderLocTL.y, size, size, new Color(0, 0, 128));
+						g.fillRect(renderLocTL.x + 1, renderLocTL.y + 1, size, size);
+						img.draw(renderLocTL.x + 1, renderLocTL.y, size + 1, size, new Color(0, 0, 128));
 						break;
 					case Player2:
 						g.setColor(Color.darkGray);
-						g.fillRect(renderLocTL.x, renderLocTL.y, size, size);
-						img.draw(renderLocTL.x, renderLocTL.y, size, size, Color.red);
+						g.fillRect(renderLocTL.x + 1, renderLocTL.y + 1, size, size);
+						img.draw(renderLocTL.x + 1, renderLocTL.y + 1, size, size, Color.red);
 						break;
 					default:
-						img.draw(renderLocTL.x, renderLocTL.y, size, size);
+						img.draw(renderLocTL.x + 1, renderLocTL.y + 1, size, size);
 						break;
 				}
 			}
 			
 		}
 		else
-			g.fillRect(renderLocTL.x, renderLocTL.y, size, size);
+			g.fillRect(renderLocTL.x + 1, renderLocTL.y + 1, size, size);
 		
 		if (this._parent instanceof BaseObject)
 		{
 			if (this._parent.getTeam() == Team.Player2)
 			{
 				g.setColor(Color.white);
-				g.drawString("" + ((BaseObject) this._parent).getHealth(), renderLocTL.x + 10, renderLocTL.y + 50);
+				g.drawString("" + ((BaseObject) this._parent).getHealth(), renderLocTL.x + 10, renderLocTL.y + 45);
 			}
 			else
 			{
 				g.setColor(Color.black);
-				g.drawString("" + ((BaseObject) this._parent).getHealth(), renderLocTL.x + 10, renderLocTL.y + 50);
+				g.drawString("" + ((BaseObject) this._parent).getHealth(), renderLocTL.x + 10, renderLocTL.y + 45);
 			}
 		}
 
