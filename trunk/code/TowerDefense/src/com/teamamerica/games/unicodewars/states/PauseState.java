@@ -40,7 +40,7 @@ public class PauseState extends BHGameState
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException
 	{
 		super.enter(container, game);
-		_pauseMusic.loop(.75f, .25f);
+		_pauseMusic.loop(.75f, .75f);
 		aiToggleButtonCount = 0;
 		unpause = false;
 		quit = false;

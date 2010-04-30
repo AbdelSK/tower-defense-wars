@@ -66,6 +66,7 @@ public class GameplayState extends BHGameState
 	private boolean paused;
 	private int listEmittersIndex;
 	private Music _gameTheme;
+	private float _themePosition = -1;
 	
 	public GameplayState()
 	{
@@ -105,7 +106,10 @@ public class GameplayState extends BHGameState
 		this.paused = false;
 		layout(_feng.getDisplay());
 		_gameSystem.unpause();
+		
 		_gameTheme.loop(1, .75f);
+		if (_themePosition != -1)
+			_gameTheme.setPosition(_themePosition);
 
 		baseDestroyedListener = new EventListener() {
 			
@@ -159,6 +163,8 @@ public class GameplayState extends BHGameState
 		super.leave(container, game);
 		_feng.getDisplay().removeAllWidgets();
 		_gameSystem.pause();
+		_themePosition = _gameTheme.getPosition();
+		_gameTheme.stop();
 	}
 	
 	public void start()
@@ -170,6 +176,7 @@ public class GameplayState extends BHGameState
 	public void end()
 	{
 		_gameSystem.end();
+		_themePosition = -1;
 	}
 
 	@Override
