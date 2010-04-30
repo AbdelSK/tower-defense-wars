@@ -166,6 +166,11 @@ public class GameplayState extends BHGameState
 		_gameSystem.start();
 		BB.inst().setDisplay(_feng.getDisplay());
 	}
+	
+	public void end()
+	{
+		_gameSystem.end();
+	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException
@@ -198,7 +203,7 @@ public class GameplayState extends BHGameState
 			winner = Winner.nobody;
 			EventManager.inst().unregisterForAll(EventType.BASE_DESTROYED, baseDestroyedListener);
 			EventManager.inst().unregisterForAll(EventType.START_PARTICLE_EFFECT, baseDestroyedListener);
-			_gameSystem.end();
+			end();
 			game.enterState(Main.States.WinState.ordinal(), new FadeOutTransition(), new FadeInTransition());
 		}
 		else if (winner == Winner.player2)
@@ -206,7 +211,7 @@ public class GameplayState extends BHGameState
 			winner = Winner.nobody;
 			EventManager.inst().unregisterForAll(EventType.BASE_DESTROYED, baseDestroyedListener);
 			EventManager.inst().unregisterForAll(EventType.START_PARTICLE_EFFECT, baseDestroyedListener);
-			_gameSystem.end();
+			end();
 			game.enterState(Main.States.LoseState.ordinal(), new FadeOutTransition(), new FadeInTransition());
 		}
 

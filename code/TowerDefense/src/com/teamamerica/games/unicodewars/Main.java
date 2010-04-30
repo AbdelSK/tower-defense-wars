@@ -5,6 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.Transition;
 import com.teamamerica.games.unicodewars.gui.FengWrapper;
 import com.teamamerica.games.unicodewars.states.BHGameState;
 import com.teamamerica.games.unicodewars.states.GameplayState;
@@ -22,9 +23,11 @@ public class Main extends StateBasedGame
 	
 	public enum States
 	{
-		SplashState, MainMenuState, GameplayState, LoseState, WinState, PauseState
+		SplashState, MainMenuState, GameplayState, LoseState, WinState, PauseState, OptionsState
 	};
 	
+	public States LastState;
+
 	public Main()
 	{
 		super("Unicode Wars - Beta");
@@ -37,11 +40,11 @@ public class Main extends StateBasedGame
 
 		addState(new SplashState());
 		addState(new MainMenuState());
-		addState(new OptionsMenuState());
 		addState(new GameplayState());
 		addState(new LoseState());
 		addState(new WinState());
 		addState(new PauseState());
+		addState(new OptionsMenuState());
 		for (States s : States.values())
 		{
 			GameState state = getState(s.ordinal());
@@ -50,6 +53,18 @@ public class Main extends StateBasedGame
 		enterState(States.SplashState.ordinal());
 	}
 	
+	@Override
+	public void enterState(int id, Transition enter, Transition leave)
+	{
+		int lastId = this.getCurrentStateID();
+		for (States s : States.values())
+		{
+			if (lastId == s.ordinal())
+				LastState = s;
+		}
+		super.enterState(id, enter, leave);
+	}
+
 	public static void main(String[] args)
 	{
 		try
