@@ -19,6 +19,8 @@ public class PauseState extends BHGameState
 	private Image _pauseImage;
 	private Music _pauseMusic;
 	private boolean unpause;
+	private boolean quit;
+	private boolean leaveToOptions;
 	private int aiToggleButtonCount;
 	
 	@Override
@@ -40,6 +42,9 @@ public class PauseState extends BHGameState
 		super.enter(container, game);
 		_pauseMusic.loop(.75f, .25f);
 		aiToggleButtonCount = 0;
+		unpause = false;
+		quit = false;
+		leaveToOptions = false;
 	}
 	
 	@Override
@@ -66,6 +71,19 @@ public class PauseState extends BHGameState
 		{
 			this.unpause = false;
 			game.enterState(Main.States.GameplayState.ordinal(), new FadeOutTransition(), new FadeInTransition());
+			return;
+		}
+		if (this.quit)
+		{
+			this.quit = false;
+			GameplayState gameplayState = (GameplayState) game.getState(Main.States.GameplayState.ordinal());
+			gameplayState.end();
+			game.enterState(Main.States.MainMenuState.ordinal(), new FadeOutTransition(), new FadeInTransition());
+			return;
+		}
+		if (this.leaveToOptions)
+		{
+			game.enterState(Main.States.OptionsState.ordinal(), new FadeOutTransition(), new FadeInTransition());
 		}
 	}
 	
@@ -76,13 +94,21 @@ public class PauseState extends BHGameState
 		{
 			this.unpause = true;
 		}
-		if (key == Input.KEY_1)
+		else if (key == Input.KEY_1)
 		{
 			aiToggleButtonCount++;
 			if (aiToggleButtonCount > 2)
 			{
 				BB.inst().setAiEnabled(!BB.inst().isAiEnabled());
 			}
+		}
+		else if (key == Input.KEY_Q)
+		{
+			this.quit = true;
+		}
+		else if (key == Input.KEY_O)
+		{
+			this.leaveToOptions = true;
 		}
 	}
 }
