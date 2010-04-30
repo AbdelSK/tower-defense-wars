@@ -2,10 +2,14 @@ package com.teamamerica.games.unicodewars.gui;
 
 import org.fenggui.Display;
 import org.fenggui.binding.render.Binding;
-import org.fenggui.binding.render.Font;
+import org.fenggui.binding.render.ImageFont;
 import org.fenggui.binding.render.lwjgl.EventHelper;
 import org.fenggui.binding.render.lwjgl.LWJGLBinding;
+import org.fenggui.binding.render.text.DirectTextRenderer;
+import org.fenggui.binding.render.text.ITextRenderer;
 import org.fenggui.event.mouse.MouseButton;
+import org.fenggui.util.Alphabet;
+import org.fenggui.util.fonttoolkit.FontFactory;
 import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -20,7 +24,8 @@ public class FengWrapper implements InputListener
 {
 
 	private Display _fengDisplay;
-	private Font font;
+	private java.awt.Font awtFont;
+	private ITextRenderer renderer;
 	private GameContainer _container;
 	private Input _input;
 	
@@ -30,6 +35,27 @@ public class FengWrapper implements InputListener
 		_container.getInput().addPrimaryListener(this);
 		_container.getInput().enableKeyRepeat();
 		LWJGLBinding binding = new LWJGLBinding();
+		
+		// try
+		// {
+			//awtFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File("src/data/font/Friz_Quadrata_TT.ttf"));
+			awtFont = new java.awt.Font("Friz_Quadrata_TT",java.awt.Font.TRUETYPE_FONT, 12);
+		// }
+	/*	catch (FontFormatException e)
+		{
+			System.err.println("Caught a FontFormatException when trying to load src/data/font/Friz_Quadrata_TT.ttf");
+			// e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			System.err.println("Caught an IOException when trying to load src/data/font/Friz_Quadrata_TT.ttf");
+			// e.printStackTrace();
+		}*/
+
+		System.out.println("awtFont size = " + awtFont.getSize2D());
+		ImageFont newFont = FontFactory.renderStandardFont(awtFont, true, Alphabet.ENGLISH);
+		ImageFont.setDefaultFont(newFont);
+		renderer = new DirectTextRenderer(newFont);
 		_fengDisplay = new Display(binding);
 		_fengDisplay.setDepthTestEnabled(true);
 		Binding.getInstance().setUseClassLoader(true);
@@ -181,6 +207,11 @@ public class FengWrapper implements InputListener
 	public void setInput(Input input)
 	{
 		_input = input;
+	}
+
+	public ITextRenderer getRenderer()
+	{
+		return renderer;
 	}
 	
 }
