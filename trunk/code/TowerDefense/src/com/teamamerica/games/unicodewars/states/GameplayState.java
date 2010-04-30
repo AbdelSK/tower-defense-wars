@@ -204,7 +204,6 @@ public class GameplayState extends BHGameState
 		{
 			game.enterState(Main.States.PauseState.ordinal(), new FadeOutTransition(), new FadeInTransition());
 		}
-
 		if (winner == Winner.player1)
 		{
 			winner = Winner.nobody;
