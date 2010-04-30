@@ -519,10 +519,13 @@ public class GameMap implements TileBasedMap
 	 */
 	public void render(Graphics g)
 	{
-
-		g.setColor(Color.white);
+		Color p1Background = Color.white.scaleCopy(1);
+		p1Background.a = .5f;
+		g.setColor(p1Background);
 		g.fillRect(0, 0, (columns * tileSize) / 2, rows * tileSize);
-		g.setColor(Color.darkGray);
+		Color p2Background = Color.darkGray.scaleCopy(1);
+		p2Background.a = .5f;
+		g.setColor(p2Background);
 		g.fillRect((columns * tileSize) / 2, 0, (columns * tileSize) / 2, rows * tileSize);
 		for (Location loc : this.spawnPoints)
 		{
