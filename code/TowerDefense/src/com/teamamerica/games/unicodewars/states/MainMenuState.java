@@ -134,5 +134,17 @@ public class MainMenuState extends BHGameState {
 			} 
 		});	
 		display.addWidget(btn);
+		
+		btn = FengGUI.createWidget(Button.class);
+		btn.setText("Options");
+		btn.setPosition(new Point(800, _centerY - 100));
+		btn.setSize(200, 50);
+		btn.addButtonPressedListener(new IButtonPressedListener() {
+			public void buttonPressed(ButtonPressedEvent arg0)
+			{
+				_game.enterState(Main.States.OptionsState.ordinal());
+			}
+		});
+		display.addWidget(btn);
 	}
 }
