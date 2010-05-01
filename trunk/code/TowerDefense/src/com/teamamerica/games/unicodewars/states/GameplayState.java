@@ -194,7 +194,16 @@ public class GameplayState extends BHGameState
 		g.setColor(Color.black);
 		g.drawString(container.getFPS() + "", 2, 2);
 		
-		particleSystem.render();
+		try
+		{
+			particleSystem.render();
+		}
+		catch (Exception e)
+		{
+			System.out.println("Warning: particle system rendering");
+			e.printStackTrace(System.err);
+		}
+		logger.error("test");
 	}
 	
 	@Override
@@ -402,7 +411,7 @@ public class GameplayState extends BHGameState
 				_mobButtons[i][j].setMultiline(true);
 				_mobButtons[i][j].setShrinkable(false);
 				_mobButtons[i][j].setPosition(new Point(j * 64, i * 64));
-				_mobButtons[i][j].init(text[i] + " " + (j + 1) + "\n$" + MobObject.determinePrice(j + 1), stats[i][j], 64, 64, type[i], (j + 1));
+				_mobButtons[i][j].init(text[i] + " " + (j + 1) + "\n$" + MobObject.determinePrice(type[i], j + 1), stats[i][j], 64, 64, type[i], (j + 1));
 				_mobButtons[i][j].addButtonPressedListener(_mobButtons[i][j]);
 				buttonContainer.addWidget(_mobButtons[i][j]);
 				mobInterface.addWidget(buttonContainer);
