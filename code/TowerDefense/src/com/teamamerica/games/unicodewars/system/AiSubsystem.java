@@ -4,10 +4,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import com.teamamerica.games.unicodewars.factory.MobMaker;
 import com.teamamerica.games.unicodewars.factory.TowerMaker;
+import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.utils.AiMazeInstruction;
@@ -28,6 +30,8 @@ public class AiSubsystem implements Subsystem
 	private final int MOB_SPAWN_INTERVAL = 40000;
 	private final int MOB_SPAWN_FIRST_INTERVAL = 5000;
 	private final int TOWER_BUILDING_INTERVAL = 5000;
+	private final int TOWER_UPGRADE_INTERVAL = 5000;
+	private final int TOWER_UPGRADE_FIRST_INTERVAL = TOWER_BUILDING_INTERVAL / 2 + TOWER_BUILDING_INTERVAL * 3;
 	
 	private LinkedList<AiMazeInstruction> _aiMazeInstructions;
 	/* current level to be used for spawning mobs */
@@ -47,7 +51,9 @@ public class AiSubsystem implements Subsystem
 	/* current amount of time that has passed since spawning the last mob */
 	private int _curMobWaitTime;
 	/* current amount of time that has passed since building the last tower */
-	private int _curTowerWaitTime;
+	private int _curTowerBuildWaitTime;
+	/* current amount of time that has passed since upgrading the last tower */
+	private int _curTowerUpgradeWaitTime;
 	
 	public AiSubsystem()
 	{
@@ -58,7 +64,8 @@ public class AiSubsystem implements Subsystem
 		_curMobTypeIndex = 0;
 		_curMobSize = 0;
 		_curMobWaitTime = MOB_SPAWN_INTERVAL - MOB_SPAWN_FIRST_INTERVAL;
-		_curTowerWaitTime = 0;
+		_curTowerBuildWaitTime = 0;
+		_curTowerUpgradeWaitTime = TOWER_UPGRADE_INTERVAL - TOWER_UPGRADE_FIRST_INTERVAL;
 	}
 	
 	@Override
@@ -84,6 +91,9 @@ public class AiSubsystem implements Subsystem
 	{
 		if (BB.inst().isAiEnabled())
         {
+			//
+			// Handle mob spawning
+			//
     		_curMobWaitTime += millis;
     		if (_curMobWaitTime > MOB_SPAWN_INTERVAL)
     		{ // time to spawn mob
@@ -110,20 +120,57 @@ public class AiSubsystem implements Subsystem
     			_curMobSize = chooseMobSize();
     			_curMobType = chooseMobType();
     		}
-    		_curTowerWaitTime += millis;
-    		if (_curTowerWaitTime > TOWER_BUILDING_INTERVAL && !_aiMazeInstructions.isEmpty())
+
+    		
+			//
+			// Handle tower creation
+			//
+    		_curTowerBuildWaitTime += millis;
+    		if (_curTowerBuildWaitTime > TOWER_BUILDING_INTERVAL && !_aiMazeInstructions.isEmpty())
     		{
-    			AiMazeInstruction mazeInstruction = _aiMazeInstructions.remove();
-    			_curTowerWaitTime = 0;
-    			if (mazeInstruction.getAction() == Action.create)
+				Collection<GameObject> collObjects = null;
+				LinkedList<AiMazeInstruction> failedInstructions = new LinkedList<AiMazeInstruction>();
+				;
+				
+				//
+				// Loop until we successfully build a tower (or there aren't any
+				// towers left). The instruction may be referring to a location
+				// that is covered by a mob so need to temporarily skip that
+				// instruction and try another one.
+				//
+				do
     			{
-    				TowerMaker.createTower(mazeInstruction.getTowerType(), mazeInstruction.getTowerLoc(), Team.Player2);
-    			}
-    			else if (mazeInstruction.getAction() == Action.upgrade)
-    			{
-    				//TODO: need to handle tower upgrades
-    			}
+					AiMazeInstruction mazeInstruction = _aiMazeInstructions.remove();
+					_curTowerBuildWaitTime = 0;
+					collObjects = BB.inst().getTeamObjectsAtLocations(Team.Player1, getTowerCoveringLocations(mazeInstruction.getTowerLoc()));
+					if (collObjects.isEmpty())
+					{
+						TowerMaker.createTower(mazeInstruction.getTowerType(), mazeInstruction.getTowerLoc(), Team.Player2);
+					}
+					else
+					{
+						failedInstructions.push(mazeInstruction);
+					}
+				} while (!collObjects.isEmpty() && !_aiMazeInstructions.isEmpty());
+				
+				//
+				// Make sure we put any instructions that did not succeed back
+				// on the list
+				//
+				while (!failedInstructions.isEmpty())
+				{
+					_aiMazeInstructions.push(failedInstructions.pop());
+				}
     		}
+
+			//
+			// TODO: Handle tower upgrades
+			//
+    		_curTowerUpgradeWaitTime += millis;
+    		if (_curTowerUpgradeWaitTime > TOWER_UPGRADE_INTERVAL)
+    		{
+				_curTowerUpgradeWaitTime = 0;
+			}
         }
 	}
 	
@@ -150,6 +197,21 @@ public class AiSubsystem implements Subsystem
 	{
 	}
 	
+	private Collection<Location> getTowerCoveringLocations(Location loc)
+	{
+		ArrayList<Location> covering = new ArrayList<Location>(TowerBase.size * TowerBase.size);
+		
+		for (int x = loc.x; x < loc.x + TowerBase.size; ++x)
+		{
+			for (int y = loc.y; y < loc.y + TowerBase.size; ++y)
+			{
+				covering.add(new Location(x, y));
+			}
+		}
+		
+		return covering;
+	}
+
 	private String chooseMazeFile(String mazeListFileName)
 	{
 		ArrayList<String> listFileNames = new ArrayList<String>();
