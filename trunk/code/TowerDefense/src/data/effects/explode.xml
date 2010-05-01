@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
-<emitter imageName="data/images/towers/Music-1.png" name="Default" renderType="inherit" useAdditive="false" useOriented="true">
+<emitter imageName="data/images/towers/Music-1.png" name="Default" renderType="inherit" useAdditive="false" useOriented="false">
  
     <spawnInterval enabled="true" max="1000.0" min="1000.0"/>
     <spawnCount enabled="true" max="50.0" min="50.0"/>
@@ -12,14 +12,14 @@
  
     <initialDistance enabled="false" max="0.0" min="0.0"/>
     <speed enabled="true" max="10.0" min="10.0"/>
-    <length enabled="true" max="1000.0" min="1000.0"/>
+    <length enabled="true" max="500.0" min="500.0"/>
     <emitCount enabled="false" max="1000.0" min="1000.0"/>
  
     <spread type="random" value="100.0"/>
     <angularOffset type="simple" value="0.0"/>
     <growthFactor type="simple" value="0.0"/>
-    <gravityFactor type="simple" value="-2.0"/>
-    <windFactor type="simple" value="2.0"/>
+    <gravityFactor type="simple" value="0.0"/>
+    <windFactor type="simple" value="0.0"/>
  
     <startAlpha type="simple" value="255.0"/>
     <endAlpha type="simple" value="0.0"/>

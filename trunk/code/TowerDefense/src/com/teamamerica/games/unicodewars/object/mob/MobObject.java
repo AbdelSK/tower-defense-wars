@@ -177,7 +177,7 @@ public abstract class MobObject extends GameObject implements Mover
 				e.printStackTrace();
 				System.exit(0);
 			}
-			emitter.setPosition(this._positionInPixels.x + 10, this._positionInPixels.y + 8);
+			emitter.setPosition(this._positionInPixels.x + 10, this._positionInPixels.y + 12);
 			emitter.setImageName(imagePath);
 			Event event = new Event(EventType.START_PARTICLE_EFFECT);
 			event.addParameter("configurableEmitter", emitter);
