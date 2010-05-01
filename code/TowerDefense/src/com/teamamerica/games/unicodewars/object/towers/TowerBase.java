@@ -533,7 +533,10 @@ public abstract class TowerBase extends GameObject
 
 	private void handleTowerClick()
 	{
-		BB.inst().setHUD(this);
+		if (!BB.inst().isAiEnabled() || (_team == Team.Player1))
+		{
+			BB.inst().setHUD(this);
+		}
 	}
 	
 	public void sellTower()
