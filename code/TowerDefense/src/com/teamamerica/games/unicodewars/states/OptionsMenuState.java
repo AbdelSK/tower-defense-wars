@@ -1,5 +1,16 @@
 package com.teamamerica.games.unicodewars.states;
 
+import java.awt.FontFormatException;
+import java.io.IOException;
+import org.fenggui.Button;
+import org.fenggui.Display;
+import org.fenggui.FengGUI;
+import org.fenggui.event.ButtonPressedEvent;
+import org.fenggui.event.IButtonPressedListener;
+import org.fenggui.layout.StaticLayout;
+import org.fenggui.theme.XMLTheme;
+import org.fenggui.theme.xml.IXMLStreamableException;
+import org.fenggui.util.Point;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -14,6 +25,8 @@ public class OptionsMenuState extends BHGameState
 {
 	private Main.States stateToLeaveTo;
 	private boolean leaving;
+	private int _centerX;
+	private int _centerY;
 	GameContainer container;
 
 	@Override
@@ -33,6 +46,25 @@ public class OptionsMenuState extends BHGameState
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException
 	{
 		super.enter(container, game);
+		_centerX = container.getWidth() / 2;
+		_centerY = container.getHeight() / 2;
+		// This will add all of the widgets for your GUI to the
+		// Display for rendering and capturing input..
+		try
+		{
+			layout(_feng.getDisplay(), container, game);
+		}
+		catch (FontFormatException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		if (game instanceof Main)
 		{
 			Main realGame = (Main) game;
@@ -47,14 +79,16 @@ public class OptionsMenuState extends BHGameState
 	public void leave(GameContainer container, StateBasedGame game) throws SlickException
 	{
 		super.leave(container, game);
+		_feng.getDisplay().removeAllWidgets();
 		leaving = false;
 	}
 	
 	@Override
-	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
+	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException
 	{
-		arg2.setColor(Color.white);
-		arg2.fillRect(0, 0, arg0.getWidth(), arg0.getHeight());
+		g.setBackground(Color.white);
+		
+		_feng.render(container, game, g);
 	}
 	
 	@Override
@@ -76,9 +110,78 @@ public class OptionsMenuState extends BHGameState
 		}
 	}
 
-	private void setVolumeOnOff(boolean on)
+	private void layout(Display display, final GameContainer container, final StateBasedGame game) throws FontFormatException, IOException
 	{
-		this.container.setMusicOn(on);
+		try
+		{
+			FengGUI.setTheme(new XMLTheme("data/themes/QtCurve/QtCurve.xml"));
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IXMLStreamableException e)
+		{
+			e.printStackTrace();
+		}
+		display.setLayoutManager(new StaticLayout());
+		
+		Button btn = FengGUI.createWidget(Button.class);
+		btn.setText("Toggle Fullscreen");
+		btn.setPosition(new Point(_centerX - 100, _centerY + 75));
+		btn.setSize(200, 50);
+		btn.addButtonPressedListener(new IButtonPressedListener() {
+			public void buttonPressed(ButtonPressedEvent arg0)
+			{
+				try
+				{
+					container.setFullscreen(!container.isFullscreen());
+				}
+				catch (SlickException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		display.addWidget(btn);
+		
+		btn = FengGUI.createWidget(Button.class);
+		btn.setText("Toggle Music");
+		btn.setPosition(new Point(_centerX - 100, _centerY + 25));
+		btn.setSize(200, 50);
+		btn.addButtonPressedListener(new IButtonPressedListener() {
+			public void buttonPressed(ButtonPressedEvent arg0)
+			{
+				container.setMusicOn(!container.isMusicOn());
+			}
+		});
+		display.addWidget(btn);
+		
+		btn = FengGUI.createWidget(Button.class);
+		btn.setText("Toggle Sound");
+		btn.setPosition(new Point(_centerX - 100, _centerY - 25));
+		btn.setSize(200, 50);
+		btn.addButtonPressedListener(new IButtonPressedListener() {
+			public void buttonPressed(ButtonPressedEvent arg0)
+			{
+				container.setSoundOn(!container.isSoundOn());
+			}
+		});
+		display.addWidget(btn);
+		
+		btn = FengGUI.createWidget(Button.class);
+		btn.setText("Exit Menu");
+		btn.setPosition(new Point(_centerX - 100, _centerY - 75));
+		btn.setSize(200, 50);
+		btn.addButtonPressedListener(new IButtonPressedListener() {
+			public void buttonPressed(ButtonPressedEvent arg0)
+			{
+				leaving = true;
+			}
+		});
+		display.addWidget(btn);
+		
 	}
 
 }

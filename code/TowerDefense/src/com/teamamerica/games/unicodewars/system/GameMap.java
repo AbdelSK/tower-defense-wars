@@ -565,24 +565,27 @@ public class GameMap implements TileBasedMap
 			}
 		}
 		
-		Color temp = Color.green.scaleCopy(1);
-		temp.a = .5f;
-		g.setColor(temp);
-		if (this.spawnPaths.get((Team.Player1.index())) != null)
-		{
-			Path path = this.spawnPaths.get((Team.Player1.index()));
-			for (int i = 0; i < path.getLength(); i++)
-			{
-				g.fillRect(path.getX(i) * tileSize, path.getY(i) * tileSize, tileSize, tileSize);
-			}
-		}
-		if (this.spawnPaths.get((Team.Player2.index())) != null)
-		{
-			Path path = this.spawnPaths.get((Team.Player2.index()));
-			for (int i = 0; i < path.getLength(); i++)
-			{
-				g.fillRect(path.getX(i) * tileSize, path.getY(i) * tileSize, tileSize, tileSize);
-			}
-		}
+		// This was code for drawing the span paths
+		// Color temp = Color.green.scaleCopy(1);
+		// temp.a = .5f;
+		// g.setColor(temp);
+		// if (this.spawnPaths.get((Team.Player1.index())) != null)
+		// {
+		// Path path = this.spawnPaths.get((Team.Player1.index()));
+		// for (int i = 0; i < path.getLength(); i++)
+		// {
+		// g.fillRect(path.getX(i) * tileSize, path.getY(i) * tileSize,
+		// tileSize, tileSize);
+		// }
+		// }
+		// if (this.spawnPaths.get((Team.Player2.index())) != null)
+		// {
+		// Path path = this.spawnPaths.get((Team.Player2.index()));
+		// for (int i = 0; i < path.getLength(); i++)
+		// {
+		// g.fillRect(path.getX(i) * tileSize, path.getY(i) * tileSize,
+		// tileSize, tileSize);
+		// }
+		// }
 	}
 }

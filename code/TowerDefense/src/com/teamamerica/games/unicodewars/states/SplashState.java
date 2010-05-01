@@ -16,6 +16,7 @@ public class SplashState extends BHGameState {
 	private Image _splashImage;
 	private Music _splashTheme;
 	private int   _timer;
+	private boolean leave;
 	
 	@Override
 	public int getID() {
@@ -34,6 +35,7 @@ public class SplashState extends BHGameState {
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException
 	{
 		super.enter(container, game);
+		this.leave = false;
 		_splashTheme.play();
 	}
 
@@ -50,21 +52,8 @@ public class SplashState extends BHGameState {
 	public void update(GameContainer container, StateBasedGame game, int millis) throws SlickException {
 		_timer -= millis;
 
-		if (true)
+		if (!_splashTheme.playing() || this.leave)
 		{
-			// _splashTheme.stop();
-			try
-			{
-				Thread.currentThread();
-				Thread.sleep(1000);
-			}
-			catch (InterruptedException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}// sleep for 1000 ms
-			
-			_splashTheme.stop();
 			game.enterState(Main.States.MainMenuState.ordinal(), 
 					new FadeOutTransition(), new FadeInTransition());
 		}
@@ -73,5 +62,11 @@ public class SplashState extends BHGameState {
 		// game.enterState(Main.States.MainMenuState.ordinal(),
 		// new FadeOutTransition(), new FadeInTransition());
 		// }
+	}
+	
+	@Override
+	public void keyReleased(int key, char c)
+	{
+		this.leave = true;
 	}
 }
