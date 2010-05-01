@@ -129,7 +129,7 @@ public class BuildSubsystem implements Subsystem
 
 				if (key == Input.KEY_U)
 					if (BB.inst().getHUD() != null)
-						if (BB.inst().getHUD().canUpgrade())
+						if (BB.inst().getHUD().canUpgrade() && (BB.inst().getHUD().getUpgradePrice() <= BB.inst().getUsersPlayer().getGold()) )
 						{
 							BB.inst().getHUD().doUpgrade();
 							BB.inst().setHUD(BB.inst().getHUD());
