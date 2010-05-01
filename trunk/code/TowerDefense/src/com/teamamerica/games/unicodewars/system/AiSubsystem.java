@@ -182,7 +182,8 @@ public class AiSubsystem implements Subsystem
 
 	private MobObject.Type chooseMobType()
 	{
-		if (_curMobTypeIndex >= MobObject.Type.values().length)
+		// loop through all mobs except for the boss
+		if (_curMobTypeIndex >= (MobObject.Type.values().length - 1))
 		{
 			_curMobTypeIndex = 0;
 			if (_curMobLevel < Constants.MAX_MOB_LEVEL)
