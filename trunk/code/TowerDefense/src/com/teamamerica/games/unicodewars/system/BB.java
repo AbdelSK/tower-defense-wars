@@ -484,6 +484,15 @@ public class BB
 		}
 		
 		currentHUD[0].setPosition(new Point(384, 0));
+		if (this.getHUD().getUpgradePrice() > getUsersPlayer().getGold())
+		{
+			currentHUD[0].setEnabled(false);
+		}
+		else
+		{
+			currentHUD[0].setEnabled(true);
+		}
+
 		currentHUD[1].setPosition(new Point(512, 0));
 		currentHUD[2].setPosition(new Point(384, 64));
 		currentHUD[2].setSize(128, 64);

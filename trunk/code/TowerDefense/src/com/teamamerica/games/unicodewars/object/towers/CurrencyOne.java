@@ -1,5 +1,6 @@
 package com.teamamerica.games.unicodewars.object.towers;
 
+import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
 
@@ -23,6 +24,8 @@ public class CurrencyOne extends TowerBase
 	
 	public void doUpgrade()
 	{
+		if (_team == Team.Player1)
+			BB.inst().getUsersPlayer().addGold(-1 * this.getUpgradePrice());
 		this.level++;
 		
 		if (level == 2)
