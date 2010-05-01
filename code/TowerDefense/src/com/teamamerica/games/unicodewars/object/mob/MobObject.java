@@ -112,6 +112,11 @@ public abstract class MobObject extends GameObject implements Mover
 			return true;
 	}
 	
+	public static int determinePrice(int locLevel)
+	{
+		return (int) (5 * Math.pow(2, locLevel));
+	}
+
 	// returns in format [Defense, Speed, Attack, Total HP, Price]
 	public static int[] getStats(Type type, int level)
 	{

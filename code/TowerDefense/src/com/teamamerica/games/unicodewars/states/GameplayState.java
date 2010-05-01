@@ -67,6 +67,8 @@ public class GameplayState extends BHGameState
 	private int listEmittersIndex;
 	private Music _gameTheme;
 	private float _themePosition = -1;
+	private final MobButton _mobButtons[][] = new MobButton[4][5];
+	final TowerButton _towerButtons[] = new TowerButton[5];
 	
 	public GameplayState()
 	{
@@ -222,6 +224,33 @@ public class GameplayState extends BHGameState
 			game.enterState(Main.States.LoseState.ordinal(), new FadeOutTransition(), new FadeInTransition());
 		}
 
+		for (int i = 0; i < 5; i++)
+		{
+			if (_towerButtons[i].getType().price > BB.inst().getUsersPlayer().getGold())
+			{
+				_towerButtons[i].setVisible(false);
+			}
+			else
+			{
+				_towerButtons[i].setVisible(true);
+			}
+		}
+
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 5; j++)
+			{
+				if (_mobButtons[i][j].getPrice() > BB.inst().getUsersPlayer().getGold())
+				{
+					_mobButtons[i][j].setVisible(false);
+				}
+				else
+				{
+					_mobButtons[i][j].setVisible(true);
+				}
+			}
+		}
+
 	}
 	
 	@Override
@@ -292,44 +321,42 @@ public class GameplayState extends BHGameState
 	
 	private void layoutTowerButtons(Display display)
 	{
-		final TowerButton tb[] = new TowerButton[6];
-		final String[][] text = new String[6][2];
-		final TowerBase.Type types[] = new TowerBase.Type[6];
+		final String[][] text = new String[5][2];
+		final TowerBase.Type types[] = new TowerBase.Type[5];
 		text[0][0] = "Dice";
 		text[1][0] = "Chess Pieces";
-		text[2][0] = "Currency";
-		text[3][0] = "Card Suits";
-		text[4][0] = "Musical Notes";
-		text[5][0] = "Special";
+		text[2][0] = "Card Suits";
+		text[3][0] = "Musical Notes";
+		text[4][0] = "Currency";
 		text[0][1] = "Dice Tower\nDamage: ??\nSpeed: ??\nRange: ??\nPrice: " + DiceOne.price;
 		text[1][1] = "Chess Piece\nDamage: " + ChessOne.BASE_ATTACK + "\nSpeed: " + ChessOne.BASE_SPEED + "\nRange: " + ChessOne.BASE_RADIUS + "\nPrice: " + ChessOne.price;
-		text[2][1] = "Currency\nDamage: " + CurrencyOne.BASE_ATTACK + "\nSpeed: " + CurrencyOne.BASE_SPEED + "\nRange: " + CurrencyOne.BASE_RADIUS + "\nPrice: " + CurrencyOne.price;
-		text[3][1] = "Card Suit\nDamage: " + CardOne.BASE_ATTACK + "\nSpeed: " + CardOne.BASE_SPEED + "\nRange: " + CardOne.BASE_RADIUS + "\nPrice: " + CardOne.price;
-		text[4][1] = "Musical Note\nDamage: " + MusicOne.BASE_ATTACK + "\nSpeed: " + MusicOne.BASE_SPEED + "\nRange: " + MusicOne.BASE_RADIUS + "\nPrice: " + MusicOne.price;
-		text[5][1] = "Special\nDamage: ??\nSpeed: ??\nRange: ??\nPrice: " + MusicOne.price;
+		text[2][1] = "Card Suit\nDamage: " + CardOne.BASE_ATTACK + "\nSpeed: " + CardOne.BASE_SPEED + "\nRange: " + CardOne.BASE_RADIUS + "\nPrice: " + CardOne.price;
+		text[3][1] = "Musical Note\nDamage: " + MusicOne.BASE_ATTACK + "\nSpeed: " + MusicOne.BASE_SPEED + "\nRange: " + MusicOne.BASE_RADIUS + "\nPrice: " + MusicOne.price;
+		text[4][1] = "Currency\nDamage: " + CurrencyOne.BASE_ATTACK + "\nSpeed: " + CurrencyOne.BASE_SPEED + "\nRange: " + CurrencyOne.BASE_RADIUS + "\nPrice: " + CurrencyOne.price;
 		types[0] = TowerBase.Type.diceOne;
 		types[1] = TowerBase.Type.chessOne;
-		types[2] = TowerBase.Type.currencyOne;
-		types[3] = TowerBase.Type.cardOne;
-		types[4] = TowerBase.Type.musicOne;
-		types[5] = TowerBase.Type.diceOne;
+		types[2] = TowerBase.Type.cardOne;
+		types[3] = TowerBase.Type.musicOne;
+		types[4] = TowerBase.Type.currencyOne;
 		
 		towerInterface.setPosition(new Point(640, 0));
 		towerInterface.setHeight(256);
 		towerInterface.setWidth(384);
 
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 5; i++)
 		{
-			tb[i] = FengGUI.createWidget(TowerButton.class);
-			tb[i].init(text[i][0], text[i][1], 128, 128, types[i]);
-			tb[i].addButtonPressedListener(tb[i]);
-			towerInterface.addWidget(tb[i]);
+			Container buttonContainer = new Container(new GridLayout(1, 1));
+			_towerButtons[i] = FengGUI.createWidget(TowerButton.class);
+			_towerButtons[i].init(text[i][0] + "\n$" + types[i].price, text[i][1], 128, 128, types[i]);
+			_towerButtons[i].setPosition(new Point(0, 0));
+			_towerButtons[i].addButtonPressedListener(_towerButtons[i]);
+			buttonContainer.addWidget(_towerButtons[i]);
+			towerInterface.addWidget(buttonContainer);
 		}
 	}
 	
 	private void layoutMobButtons(Display display)
 	{
-		final MobButton buttons[][] = new MobButton[4][5];
 		String text[] = new String[4];
 		String stats[][] = new String[4][5];
 		MobObject.Type type[] = new MobObject.Type[4];
@@ -369,14 +396,16 @@ public class GameplayState extends BHGameState
 		for (int i = 0; i < 4; i++)
 			for (int j = 0; j < 5; j++)
 			{
-				buttons[i][j] = FengGUI.createWidget(MobButton.class);
-				buttons[i][j].setSize(64, 64);
-				buttons[i][j].setMultiline(true);
-				buttons[i][j].setShrinkable(false);
-				buttons[i][j].setPosition(new Point(j * 64, i * 64));
-				buttons[i][j].init(text[i] + " " + (j + 1), stats[i][j], 64, 64, type[i], (j + 1));
-				buttons[i][j].addButtonPressedListener(buttons[i][j]);
-				mobInterface.addWidget(buttons[i][j]);
+				Container buttonContainer = new Container(new GridLayout(1, 1));
+				_mobButtons[i][j] = FengGUI.createWidget(MobButton.class);
+				_mobButtons[i][j].setSize(64, 64);
+				_mobButtons[i][j].setMultiline(true);
+				_mobButtons[i][j].setShrinkable(false);
+				_mobButtons[i][j].setPosition(new Point(j * 64, i * 64));
+				_mobButtons[i][j].init(text[i] + " " + (j + 1) + "\n$" + MobObject.determinePrice(j + 1), stats[i][j], 64, 64, type[i], (j + 1));
+				_mobButtons[i][j].addButtonPressedListener(_mobButtons[i][j]);
+				buttonContainer.addWidget(_mobButtons[i][j]);
+				mobInterface.addWidget(buttonContainer);
 			}
 	}
 }

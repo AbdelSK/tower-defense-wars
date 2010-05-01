@@ -10,6 +10,7 @@ public class MobButton extends AwesomeButton
 {
 	private MobObject.Type type;
 	private int level;
+	private int price;
 	
 	public MobButton()
 	{
@@ -21,19 +22,25 @@ public class MobButton extends AwesomeButton
 		super.init(text, hover, x, y);
 		this.type = mt;
 		this.level = level;
+		this.price = MobObject.determinePrice(this.level);
 	}
 
 	@Override
 	public void buttonPressed(ButtonPressedEvent arg0)
 	{
-		if (BB.inst().getUsersPlayer().getGold() >= (int) (5 * Math.pow(2, this.level)))
+		if (BB.inst().getUsersPlayer().getGold() >= price)
 		{
-			BB.inst().getUsersPlayer().addIncome((int) (5 * Math.pow(2, this.level)) / 2);
-			BB.inst().getUsersPlayer().purchase((int) (5 * Math.pow(2, this.level)));
+			BB.inst().getUsersPlayer().addIncome(price / 2);
+			BB.inst().getUsersPlayer().purchase(price);
 			BB.inst().getUsersPlayer().addScore(this.level);
 			MobMaker.MakeMob(type, level, Team.Player1);
 			BB.inst().setMobTypeSelection(type);
 			BB.inst().setMobLevelSelection(level);
 		}
+	}
+	
+	public int getPrice()
+	{
+		return this.price;
 	}
 }
