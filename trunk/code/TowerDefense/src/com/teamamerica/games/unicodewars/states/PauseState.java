@@ -84,6 +84,7 @@ public class PauseState extends BHGameState
 		if (this.leaveToOptions)
 		{
 			game.enterState(Main.States.OptionsState.ordinal(), new FadeOutTransition(), new FadeInTransition());
+			return;
 		}
 	}
 	
