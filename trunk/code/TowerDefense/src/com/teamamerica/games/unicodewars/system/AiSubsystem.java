@@ -31,7 +31,7 @@ public class AiSubsystem implements Subsystem
 	private final int MOB_SPAWN_FIRST_INTERVAL = 5000;
 	private final int TOWER_BUILDING_INTERVAL = 5000;
 	private final int TOWER_UPGRADE_INTERVAL = 5000;
-	private final int TOWER_UPGRADE_FIRST_INTERVAL = TOWER_BUILDING_INTERVAL / 2 + TOWER_BUILDING_INTERVAL * 3;
+	private final int TOWER_UPGRADE_FIRST_INTERVAL = TOWER_BUILDING_INTERVAL / 2 + TOWER_BUILDING_INTERVAL * 7;
 	
 	private LinkedList<AiMazeInstruction> _aiMazeInstructions;
 	/* current level to be used for spawning mobs */
@@ -54,6 +54,7 @@ public class AiSubsystem implements Subsystem
 	private int _curTowerBuildWaitTime;
 	/* current amount of time that has passed since upgrading the last tower */
 	private int _curTowerUpgradeWaitTime;
+	private LinkedList<TowerBase> _towerLists[];
 	
 	public AiSubsystem()
 	{
@@ -66,6 +67,11 @@ public class AiSubsystem implements Subsystem
 		_curMobWaitTime = MOB_SPAWN_INTERVAL - MOB_SPAWN_FIRST_INTERVAL;
 		_curTowerBuildWaitTime = 0;
 		_curTowerUpgradeWaitTime = TOWER_UPGRADE_INTERVAL - TOWER_UPGRADE_FIRST_INTERVAL;
+		_towerLists = new LinkedList[Constants.MAX_TOWER_LEVEL];
+		for (int i = 0; i < _towerLists.length; i++)
+		{
+			_towerLists[i] = new LinkedList<TowerBase>();
+		}
 	}
 	
 	@Override
@@ -145,7 +151,15 @@ public class AiSubsystem implements Subsystem
 					collObjects = BB.inst().getTeamObjectsAtLocations(Team.Player1, getTowerCoveringLocations(mazeInstruction.getTowerLoc()));
 					if (collObjects.isEmpty())
 					{
-						TowerMaker.createTower(mazeInstruction.getTowerType(), mazeInstruction.getTowerLoc(), Team.Player2);
+						TowerBase tb = TowerMaker.createTower(mazeInstruction.getTowerType(), mazeInstruction.getTowerLoc(), Team.Player2);
+						if (tb != null) // should never be null but just in case
+						{
+							_towerLists[0].add(tb);
+						}
+						else
+						{
+							System.out.println("WARNING: could not create tower at loc " + mazeInstruction.getTowerLoc().x + "." + mazeInstruction.getTowerLoc().y);
+						}
 					}
 					else
 					{
@@ -170,6 +184,7 @@ public class AiSubsystem implements Subsystem
     		if (_curTowerUpgradeWaitTime > TOWER_UPGRADE_INTERVAL)
     		{
 				_curTowerUpgradeWaitTime = 0;
+				upgradeTower();
 			}
         }
 	}
@@ -179,6 +194,10 @@ public class AiSubsystem implements Subsystem
 	{
 		String mazeFileName = chooseMazeFile(MAZE_LIST_FILE_NAME);
 		readDataFile(mazeFileName);
+		for (int i = 0; i < _towerLists.length; i++)
+		{
+			_towerLists[i].clear();
+		}
 	}
 	
 	@Override
@@ -197,6 +216,55 @@ public class AiSubsystem implements Subsystem
 	{
 	}
 	
+	private void upgradeTower()
+	{
+		boolean bCandidateFound = false;
+		int upgradeIndex = 0;
+		int levelIndex = -1;
+		TowerBase curCandidate = null;
+		
+		//
+		// Find a tower at the lowest possible level and the one with the
+		// highest number of escapes at that level. Don't bother looking in the
+		// last level.
+		//
+		for (int i = 0; i < _towerLists.length - 1 && !bCandidateFound; i++)
+		{
+			if (!_towerLists[i].isEmpty())
+			{
+				bCandidateFound = true;
+				levelIndex = i;
+				for (int j = 1; j < _towerLists[i].size(); j++)
+			    {
+					if (((TowerBase) _towerLists[i].get(j)).getNumEscapes() > ((TowerBase) _towerLists[i].get(upgradeIndex)).getNumEscapes())
+			    	{
+						upgradeIndex = j;
+			    	}
+			    }
+			}
+		}
+		
+		//
+		// Upgrade the tower. If the tower can still be upgraded after that then
+		// put it on the next higher list, otherwise put it on the highest
+		// level. This will ensure we stop upgrading when the tower is at its
+		// highest level regardless of what its highest level is
+		//
+		if (bCandidateFound)
+		{
+			curCandidate = (TowerBase) _towerLists[levelIndex].remove(upgradeIndex);
+			curCandidate.doUpgrade();
+			if (curCandidate.canUpgrade())
+			{
+				_towerLists[curCandidate.getLevel() - 1].add(curCandidate);
+			}
+			else
+			{
+				_towerLists[_towerLists.length - 1].add(curCandidate);
+			}
+		}
+	}
+
 	private Collection<Location> getTowerCoveringLocations(Location loc)
 	{
 		ArrayList<Location> covering = new ArrayList<Location>(TowerBase.size * TowerBase.size);

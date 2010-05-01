@@ -46,6 +46,8 @@ public abstract class TowerBase extends GameObject
 	int speed = 0;
 	int price = 0;
 	int currentDamage = 0;
+	private int numAttacks = 0;
+	private int numKills = 0;
 	private Timer stopWatch;
 	private HashSet<Location> locsInRange;
 	private String imagePath;
@@ -226,6 +228,7 @@ public abstract class TowerBase extends GameObject
 			// }
 			
 			// && this.type == TowerBase.Type.cardOne
+			numAttacks++;
 			if (laserEffect != null && this.type == TowerBase.Type.cardOne)
 			{
 				if (this.level == 1)
@@ -369,6 +372,7 @@ public abstract class TowerBase extends GameObject
 				// emitter[i] = null;
 				// }
 				mob.die();
+				numKills++;
 				target = null;
 			}
 			// else
@@ -421,6 +425,11 @@ public abstract class TowerBase extends GameObject
 	public int getLevel()
 	{
 		return this.level;
+	}
+	
+	public int getNumEscapes()
+	{
+		return numAttacks - numKills;
 	}
 
 	public void doUpgrade()

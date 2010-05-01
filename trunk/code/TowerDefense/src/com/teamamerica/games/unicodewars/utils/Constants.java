@@ -18,6 +18,7 @@ public class Constants {
     public static final float MAX_ROTATION = 20;
     
 	public static final int MAX_MOB_LEVEL = 5;
+	public static final int MAX_TOWER_LEVEL = 5;
 
     public static Color fontColor = new Color(0f,0f,0f, 0.75f);
 }
