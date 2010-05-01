@@ -38,7 +38,7 @@ public abstract class MobObject extends GameObject implements Mover
 		
 		this.level = level;
 		this.type = type;
-		this.price = (int) (5 * Math.pow(2, this.level)); // 10,20,40,80,160
+		this.price = determinePrice(type, level);
 		this.refund = this.price / 2;
 		this.imagePath = imgLoc;
 	}
@@ -112,9 +112,28 @@ public abstract class MobObject extends GameObject implements Mover
 			return true;
 	}
 	
-	public static int determinePrice(int locLevel)
+	public static int determinePrice(MobObject.Type type, int locLevel)
 	{
-		return (int) (5 * Math.pow(2, locLevel));
+		int basePrice;
+		switch (type)
+		{
+			case chinese:
+				basePrice = 1;
+				break;
+			case latin:
+				basePrice = 2;
+				break;
+			case greek:
+				basePrice = 3;
+				break;
+			case cyrillic:
+				basePrice = 4;
+				break;
+			default:
+				basePrice = 0;
+				break;
+		}
+		return (int) (basePrice * Math.pow(2, locLevel - 1));
 	}
 
 	// returns in format [Defense, Speed, Attack, Total HP, Price]

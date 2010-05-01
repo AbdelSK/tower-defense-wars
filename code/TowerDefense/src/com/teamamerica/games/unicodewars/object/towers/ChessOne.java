@@ -25,7 +25,7 @@ public class ChessOne extends TowerBase
 	public void doUpgrade()
 	{
 		if (_team == Team.Player1)
-			BB.inst().getUsersPlayer().addGold(-1 * this.getUpgradePrice());
+			BB.inst().getUsersPlayer().purchase(this.getUpgradePrice());
 		this.level++;
 		
 		if (level == 2)

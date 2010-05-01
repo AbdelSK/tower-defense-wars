@@ -22,7 +22,7 @@ public class MobButton extends AwesomeButton
 		super.init(text, hover, x, y);
 		this.type = mt;
 		this.level = level;
-		this.price = MobObject.determinePrice(this.level);
+		this.price = MobObject.determinePrice(mt, this.level);
 	}
 
 	@Override

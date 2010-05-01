@@ -498,7 +498,7 @@ public class BB
 		currentHUD[2].setSize(128, 64);
 		currentHUD[2].setEnabled(false);
 		
-		currentHUD[0].setText("Upgrade to level " + (this.HUD.getLevel() + 1) + "\nCost: " + this.HUD.getUpgradePrice());
+		currentHUD[0].setText("Upgrade to level " + (this.HUD.getLevel() + 1) + "\nCost: $" + this.HUD.getUpgradePrice());
 		currentHUD[1].setText("Sell for " + this.HUD.getSellPrice() + "g.");
 		currentHUD[2].setText(this.HUD.getType() + " Level " + this.HUD.getLevel() + "\nAttack: " + this.HUD.getAttack() + "\nRange: " + this.HUD.getRadius() + "\nSpeed: " + this.HUD.getSpeed());
 		
