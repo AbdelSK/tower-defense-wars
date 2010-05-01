@@ -24,4 +24,9 @@ public class TowerButton extends AwesomeButton
 	{
 		BB.inst().setTowerSelection(this.type);
 	}
+	
+	public TowerBase.Type getType()
+	{
+		return type;
+	}
 }
