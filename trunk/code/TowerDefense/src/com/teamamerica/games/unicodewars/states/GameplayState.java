@@ -171,6 +171,7 @@ public class GameplayState extends BHGameState
 	{
 		_gameSystem.start();
 		BB.inst().setDisplay(_feng.getDisplay());
+		particleSystem.removeAllEmitters();
 	}
 	
 	public void end()
