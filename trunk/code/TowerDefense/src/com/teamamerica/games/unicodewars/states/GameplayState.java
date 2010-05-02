@@ -167,6 +167,10 @@ public class GameplayState extends BHGameState
 		_gameSystem.pause();
 		_themePosition = _gameTheme.getPosition();
 		_gameTheme.stop();
+		particleSystem.removeAllEmitters();
+		particleSystem.reset();
+		particleSystem = particleSystem.duplicate();
+		listEmittersIndex = 0;
 	}
 	
 	public void start()
@@ -174,6 +178,7 @@ public class GameplayState extends BHGameState
 		_gameSystem.start();
 		BB.inst().setDisplay(_feng.getDisplay());
 		particleSystem.removeAllEmitters();
+		listEmittersIndex = 0;
 	}
 	
 	public void end()
@@ -203,7 +208,6 @@ public class GameplayState extends BHGameState
 			System.out.println("Warning: particle system rendering");
 			e.printStackTrace(System.err);
 		}
-		logger.error("test");
 	}
 	
 	@Override
