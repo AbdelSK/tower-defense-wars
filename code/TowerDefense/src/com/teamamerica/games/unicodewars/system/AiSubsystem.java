@@ -27,10 +27,10 @@ public class AiSubsystem implements Subsystem
 	private final int MAZE_FILE_TYPE_INDEX = 0;
 	private final int MAZE_FILE_XLOC_INDEX = 1;
 	private final int MAZE_FILE_YLOC_INDEX = 2;
-	private final int MOB_SPAWN_INTERVAL = 40000;
+	private final int MOB_SPAWN_INTERVAL = 20000;
 	private final int MOB_SPAWN_FIRST_INTERVAL = 5000;
-	private final int TOWER_BUILDING_INTERVAL = 5000;
-	private final int TOWER_UPGRADE_INTERVAL = 5000;
+	private final int TOWER_BUILDING_INTERVAL = 15000;
+	private final int TOWER_UPGRADE_INTERVAL = 15000;
 	private final int TOWER_UPGRADE_FIRST_INTERVAL = TOWER_BUILDING_INTERVAL / 2 + TOWER_BUILDING_INTERVAL * 7;
 	
 	private LinkedList<AiMazeInstruction> _aiMazeInstructions;
@@ -330,7 +330,7 @@ public class AiSubsystem implements Subsystem
 	 */
 	private int chooseMobSize()
 	{
-		return 20;
+		return 30;
 	}
 	
 	/**
