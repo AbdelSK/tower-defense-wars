@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 import com.teamamerica.games.unicodewars.Main;
+import com.teamamerica.games.unicodewars.system.BB;
 
 public class WinState extends BHGameState {
 
@@ -51,8 +52,17 @@ public class WinState extends BHGameState {
 		
 		if (!_winTheme.playing())
 		{
-			game.enterState(Main.States.MainMenuState.ordinal(), 
-					new FadeOutTransition(), new FadeInTransition());
+			if (BB.inst().hasNextGameLevel())
+			{
+				BB.inst().incrementGameLevel();
+				((GameplayState) game.getState(Main.States.GameplayState.ordinal())).start();
+				game.enterState(Main.States.GameplayState.ordinal(), new FadeOutTransition(), new FadeInTransition());
+			}
+			else
+			{
+				BB.$delete();
+				game.enterState(Main.States.MainMenuState.ordinal(), new FadeOutTransition(), new FadeInTransition());
+			}
 		}
 	}
 }
