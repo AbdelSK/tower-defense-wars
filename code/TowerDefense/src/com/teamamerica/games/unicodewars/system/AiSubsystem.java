@@ -22,15 +22,13 @@ public class AiSubsystem implements Subsystem
 {
 	private final int MAX_MOB_MEMBER_INTERVAL = 3000;
 	private final String MAZE_FILE_DELIMITER = ",";
-	private final String MAZE_FILE_DIR_NAME = "src/data/levels/";
-	private final String MAZE_LIST_FILE_NAME = "src/data/levels/MazeList.txt";
 	private final int MAZE_FILE_TYPE_INDEX = 0;
 	private final int MAZE_FILE_XLOC_INDEX = 1;
 	private final int MAZE_FILE_YLOC_INDEX = 2;
 	private final int MOB_SPAWN_INTERVAL = 20000;
 	private final int MOB_SPAWN_FIRST_INTERVAL = 5000;
-	private final int TOWER_BUILDING_INTERVAL = 15000;
-	private final int TOWER_UPGRADE_INTERVAL = 15000;
+	private final int TOWER_BUILDING_INTERVAL = 10000;
+	private final int TOWER_UPGRADE_INTERVAL = 10000;
 	private final int TOWER_UPGRADE_FIRST_INTERVAL = TOWER_BUILDING_INTERVAL / 2 + TOWER_BUILDING_INTERVAL * 7;
 	
 	private LinkedList<AiMazeInstruction> _aiMazeInstructions;
@@ -192,7 +190,7 @@ public class AiSubsystem implements Subsystem
 	@Override
 	public void start()
 	{
-		String mazeFileName = chooseMazeFile(MAZE_LIST_FILE_NAME);
+		String mazeFileName = BB.inst().chooseMazeFile();
 		readDataFile(mazeFileName);
 		for (int i = 0; i < _towerLists.length; i++)
 		{
@@ -278,36 +276,6 @@ public class AiSubsystem implements Subsystem
 		}
 		
 		return covering;
-	}
-
-	private String chooseMazeFile(String mazeListFileName)
-	{
-		ArrayList<String> listFileNames = new ArrayList<String>();
-		try
-		{
-			File mazeListFile = new File(mazeListFileName);
-			FileReader mazeListInputStream = new FileReader(mazeListFile);
-			BufferedReader br = new BufferedReader(mazeListInputStream);
-			String curFileName;
-			int i = 0;
-			
-			do
-			{
-				curFileName = br.readLine();
-				if (curFileName != null)
-				{
-					listFileNames.add(curFileName);
-				}
-			} while (curFileName != null);
-		}
-		catch (Exception e)
-		{
-			System.err.println("ERROR: Problem parsing CPU's maze list file - '" + mazeListFileName + "'");
-			e.printStackTrace(System.err);
-			return "";
-		}
-		
-		return MAZE_FILE_DIR_NAME + listFileNames.get((int) Math.round(Math.random() * (listFileNames.size() - 1)));
 	}
 
 	private MobObject.Type chooseMobType()

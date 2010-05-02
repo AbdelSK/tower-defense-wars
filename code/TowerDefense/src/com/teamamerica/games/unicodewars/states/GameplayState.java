@@ -179,6 +179,7 @@ public class GameplayState extends BHGameState
 		BB.inst().setDisplay(_feng.getDisplay());
 		particleSystem.removeAllEmitters();
 		listEmittersIndex = 0;
+		_themePosition = 0;
 	}
 	
 	public void end()

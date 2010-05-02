@@ -1,5 +1,8 @@
 package com.teamamerica.games.unicodewars.system;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -36,6 +39,9 @@ import com.teamamerica.games.unicodewars.utils.Variable;
  */
 public class BB
 {
+	private final String MAZE_LIST_FILE_NAME = "src/data/levels/MazeList.txt";
+	private final String MAZE_FILE_DIR_NAME = "src/data/levels/";
+
 	private static Logger logger = Logger.getLogger(BB.class);
 	private static BB _blackboard;
 	private Random _random;
@@ -57,34 +63,16 @@ public class BB
 	private boolean HUDLayedOut;
 	private Player players[];
 	private boolean bAiEnabled;
+	private int _gameLevel;
+	private int _numGameLevels;
+	private ArrayList<String> _listFileNames;
 
 	private BB()
 	{
-		_random = new Random(System.currentTimeMillis());
-		_timers = new ArrayList<Timer>();
-		_nextId = 0;
-		_variableMap = new HashMap<Variable, Object>();
-		
-		_objects = new ArrayList<HashMap<Location, Set<GameObject>>>();
-		_objects.add(new HashMap<Location, Set<GameObject>>()); // Player 1's
-		// objects
-		_objects.add(new HashMap<Location, Set<GameObject>>()); // Player 2's
-		// objects
-		
-		_keysPressed = new ArrayList<KeyListener>();
-		_mouseClicked = new ArrayList<MouseListener>();
-		_mouseClickedAtLocation = new HashMap<Location, MouseListener>();
+		initVarsForLevel();
+		_gameLevel = 0;
+		_listFileNames = null;
 		bAiEnabled = true;
-		towerSelection = null;
-		mobTypeSelection = null;
-		mobLevelSelection = 1;
-		players = new Player[2];
-		players[0] = new Player();
-		players[1] = new Player();
-		
-		currentHUD = new Button[3];
-		buttonPressedListeners = new IButtonPressedListener[3];
-		HUDLayedOut = false;
 	}
 	
 	public static void $delete()
@@ -120,6 +108,81 @@ public class BB
 	public int getNextId()
 	{
 		return _nextId++;
+	}
+	
+	/**
+	 * Returns the current level of the game
+	 * 
+	 * @return
+	 */
+	public int getGameLevel()
+	{
+		return _gameLevel;
+	}
+	
+	/**
+	 * Increments the game level
+	 */
+	public void incrementGameLevel()
+	{
+		_gameLevel++;
+		initVarsForLevel();
+	}
+	
+	/**
+	 * @return true if there is another game level available to play, false
+	 *         otherwise
+	 */
+	public boolean hasNextGameLevel()
+	{
+		return (_gameLevel > -1) && (_gameLevel + 1) < _numGameLevels;
+	}
+	
+	/**
+	 * @return the name of the maze file corresponding to the current level
+	 */
+	public String chooseMazeFile()
+	{
+		if (_listFileNames == null)
+		{
+			_listFileNames = new ArrayList<String>();
+			try
+			{
+				File mazeListFile = new File(MAZE_LIST_FILE_NAME);
+				FileReader mazeListInputStream = new FileReader(mazeListFile);
+				BufferedReader br = new BufferedReader(mazeListInputStream);
+				String curFileName;
+				int i = 0;
+				
+				do
+				{
+					curFileName = br.readLine();
+					if (curFileName != null)
+					{
+						_listFileNames.add(curFileName);
+					}
+				} while (curFileName != null);
+			}
+			catch (Exception e)
+			{
+				System.err.println("ERROR: Problem parsing CPU's maze list file - '" + MAZE_LIST_FILE_NAME + "'");
+				e.printStackTrace(System.err);
+				return "";
+			}
+			_numGameLevels = _listFileNames.size();
+		}
+		
+		int fileIndex;
+		if (BB.inst().getGameLevel() < 0)
+		{
+			fileIndex = (int) Math.round(Math.random() * (_listFileNames.size() - 1));
+		}
+		else
+		{
+			fileIndex = BB.inst().getGameLevel();
+		}
+		
+		return MAZE_FILE_DIR_NAME + _listFileNames.get(fileIndex);
 	}
 	
 	/**
@@ -534,4 +597,34 @@ public class BB
 		bAiEnabled = aiEnabled;
 	}
 
+	/**
+	 * initializes all of the variables that need to be set to start a new level
+	 */
+	private void initVarsForLevel()
+	{
+		_random = new Random(System.currentTimeMillis());
+		_timers = new ArrayList<Timer>();
+		_nextId = 0;
+		_variableMap = new HashMap<Variable, Object>();
+		
+		_objects = new ArrayList<HashMap<Location, Set<GameObject>>>();
+		_objects.add(new HashMap<Location, Set<GameObject>>()); // Player 1's
+		// objects
+		_objects.add(new HashMap<Location, Set<GameObject>>()); // Player 2's
+		// objects
+		
+		_keysPressed = new ArrayList<KeyListener>();
+		_mouseClicked = new ArrayList<MouseListener>();
+		_mouseClickedAtLocation = new HashMap<Location, MouseListener>();
+		towerSelection = null;
+		mobTypeSelection = null;
+		mobLevelSelection = 1;
+		players = new Player[2];
+		players[0] = new Player();
+		players[1] = new Player();
+		
+		currentHUD = new Button[3];
+		buttonPressedListeners = new IButtonPressedListener[3];
+		HUDLayedOut = false;
+	}
 }
