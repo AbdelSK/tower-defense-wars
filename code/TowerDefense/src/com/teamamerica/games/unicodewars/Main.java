@@ -8,6 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
 import com.teamamerica.games.unicodewars.gui.FengWrapper;
 import com.teamamerica.games.unicodewars.states.BHGameState;
+import com.teamamerica.games.unicodewars.states.CreditsState;
 import com.teamamerica.games.unicodewars.states.GameplayState;
 import com.teamamerica.games.unicodewars.states.LoseState;
 import com.teamamerica.games.unicodewars.states.MainMenuState;
@@ -23,7 +24,7 @@ public class Main extends StateBasedGame
 	
 	public enum States
 	{
-		SplashState, MainMenuState, GameplayState, LoseState, WinState, PauseState, OptionsState
+		SplashState, MainMenuState, GameplayState, LoseState, WinState, PauseState, OptionsState, CreditsState
 	};
 	
 	public States LastState;
@@ -45,6 +46,7 @@ public class Main extends StateBasedGame
 		addState(new WinState());
 		addState(new PauseState());
 		addState(new OptionsMenuState());
+		addState(new CreditsState());
 		for (States s : States.values())
 		{
 			GameState state = getState(s.ordinal());
