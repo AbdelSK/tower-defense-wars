@@ -626,5 +626,6 @@ public class BB
 		currentHUD = new Button[3];
 		buttonPressedListeners = new IButtonPressedListener[3];
 		HUDLayedOut = false;
+		HUD = null;
 	}
 }
