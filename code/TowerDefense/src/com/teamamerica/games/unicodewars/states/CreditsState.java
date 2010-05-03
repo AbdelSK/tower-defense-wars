@@ -50,7 +50,7 @@ public class CreditsState extends BHGameState
 		{
 			e.printStackTrace();
 		}
-		java.awt.Color fontColor = java.awt.Color.WHITE;
+		java.awt.Color fontColor = java.awt.Color.BLACK;
 		font.getEffects().add(new ColorEffect(fontColor));
 		font.addAsciiGlyphs();
 		try
@@ -117,7 +117,7 @@ public class CreditsState extends BHGameState
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException
 	{
-		g.setBackground(Color.black);
+		g.setBackground(Color.white);
 		
 		g.setFont(font);
 		float offset = font.getWidth("Credits") / 2;
