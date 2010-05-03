@@ -490,8 +490,11 @@ public abstract class TowerBase extends GameObject
 								handleTowerClick();
 								break;
 							case Input.MOUSE_RIGHT_BUTTON:
-								sellTower();
-
+								if (_team == Team.Player1 || !BB.inst().isAiEnabled())
+								{
+									sellTower();
+								}
+								break;
 						}
 					}
 					
