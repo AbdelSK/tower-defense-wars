@@ -62,7 +62,6 @@ public class CreditsState extends BHGameState
 			e.printStackTrace();
 		}
 		
-		System.out.println("Starting to read credits file.");
 		try
 		{
 			FileReader creditsFile = new FileReader("src/data/text/Credits.txt");
@@ -81,7 +80,6 @@ public class CreditsState extends BHGameState
 			e.printStackTrace(System.err);
 			return;
 		}
-		System.out.println("Read credits file.");
 	}
 	
 	@Override
