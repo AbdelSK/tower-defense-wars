@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 import com.teamamerica.games.unicodewars.Main;
+import com.teamamerica.games.unicodewars.system.BB;
 
 public class LoseState extends BHGameState {
 
@@ -52,6 +53,7 @@ public class LoseState extends BHGameState {
 		
 		if (!_loseTheme.playing())
 		{
+			BB.$delete();
 			game.enterState(Main.States.MainMenuState.ordinal(), 
 					new FadeOutTransition(), new FadeInTransition());
 		}
