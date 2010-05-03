@@ -19,6 +19,8 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import com.teamamerica.games.unicodewars.Main;
+import com.teamamerica.games.unicodewars.system.BB;
+import com.teamamerica.games.unicodewars.system.GameMap;
 
 public class MainMenuState extends BHGameState {
 
@@ -28,8 +30,11 @@ public class MainMenuState extends BHGameState {
 	private StateBasedGame _game;
 	private Image _backgroundImage;
 	private Music _menuTheme;
+	private boolean _bFirstGame;
 	
-	public MainMenuState() { 
+	public MainMenuState()
+	{
+		_bFirstGame = true;
 	}
 	
 	@Override
@@ -118,6 +123,12 @@ public class MainMenuState extends BHGameState {
 		btn.setSize(200, 50);
 		btn.addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0) {
+				if (!_bFirstGame)
+				{
+					GameMap.$delete();
+					BB.$delete();
+				}
+				_bFirstGame = false;
 				((GameplayState) _game.getState(Main.States.GameplayState.ordinal())).start();
 				_game.enterState(Main.States.GameplayState.ordinal());
 			} 
