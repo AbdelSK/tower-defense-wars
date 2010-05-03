@@ -70,6 +70,8 @@ public class BB
 	private BB()
 	{
 		initVarsForLevel();
+		_random = new Random(System.currentTimeMillis());
+		_timers = new ArrayList<Timer>();
 		_gameLevel = 0;
 		_listFileNames = null;
 		bAiEnabled = true;
@@ -602,8 +604,6 @@ public class BB
 	 */
 	private void initVarsForLevel()
 	{
-		_random = new Random(System.currentTimeMillis());
-		_timers = new ArrayList<Timer>();
 		_nextId = 0;
 		_variableMap = new HashMap<Variable, Object>();
 		

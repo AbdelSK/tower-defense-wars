@@ -1,5 +1,5 @@
-easy-1.txt
 maze1.txt
+easy-1.txt
 pjweird0.txt
 pjmix0.txt
 hard.txt
