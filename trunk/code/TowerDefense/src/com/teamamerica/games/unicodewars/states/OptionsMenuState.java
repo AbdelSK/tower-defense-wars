@@ -15,7 +15,9 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -27,7 +29,9 @@ public class OptionsMenuState extends BHGameState
 	private boolean leaving;
 	private int _centerX;
 	private int _centerY;
-	GameContainer container;
+	private Music _optionsMusic;
+	private Sound _optionSoundFX;
+
 
 	@Override
 	public int getID()
@@ -38,8 +42,8 @@ public class OptionsMenuState extends BHGameState
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
-		// TODO Auto-generated method stub
-		
+		_optionsMusic = new Music("src/data/sounds/Options Music.ogg");
+		_optionSoundFX = new Sound("src/data/sounds/click.wav");
 	}
 	
 	@Override
@@ -70,9 +74,8 @@ public class OptionsMenuState extends BHGameState
 			Main realGame = (Main) game;
 			stateToLeaveTo = realGame.LastState;
 		}
+		_optionsMusic.play();
 		leaving = false;
-		
-		this.container = container;
 	}
 	
 	@Override
@@ -80,6 +83,7 @@ public class OptionsMenuState extends BHGameState
 	{
 		super.leave(container, game);
 		_feng.getDisplay().removeAllWidgets();
+
 		leaving = false;
 	}
 	
@@ -87,7 +91,6 @@ public class OptionsMenuState extends BHGameState
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException
 	{
 		g.setBackground(Color.white);
-		
 		_feng.render(container, game, g);
 	}
 	
@@ -97,6 +100,7 @@ public class OptionsMenuState extends BHGameState
 		if (leaving)
 		{
 			arg1.enterState(stateToLeaveTo.ordinal(), new FadeOutTransition(), new FadeInTransition());
+			_optionsMusic.fade(300, .1f, true);
 		}
 		
 	}
@@ -135,6 +139,7 @@ public class OptionsMenuState extends BHGameState
 			{
 				try
 				{
+					_optionSoundFX.play();
 					container.setFullscreen(!container.isFullscreen());
 				}
 				catch (SlickException e)
@@ -153,6 +158,7 @@ public class OptionsMenuState extends BHGameState
 		btn.addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
+				_optionSoundFX.play();
 				container.setMusicOn(!container.isMusicOn());
 			}
 		});
@@ -166,6 +172,7 @@ public class OptionsMenuState extends BHGameState
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
 				container.setSoundOn(!container.isSoundOn());
+				_optionSoundFX.play();
 			}
 		});
 		display.addWidget(btn);
