@@ -181,6 +181,7 @@ public abstract class MobObject extends GameObject implements Mover
 	@Override
 	public void deleteObject()
 	{
+		currentHP = 0;
 		super.deleteObject();
 	}
 	
