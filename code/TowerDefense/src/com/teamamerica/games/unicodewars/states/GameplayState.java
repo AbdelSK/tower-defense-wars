@@ -1,7 +1,6 @@
 package com.teamamerica.games.unicodewars.states;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.fenggui.Container;
 import org.fenggui.Display;
@@ -18,7 +17,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.particles.ConfigurableEmitter;
-import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -48,12 +46,9 @@ public class GameplayState extends BHGameState
 		nobody, player1, player2;
 	}
 	
-	private final int MAX_GUARANTEED_EMITTERS = 100;
+	private final int EMITTER_REFRESH_COUNT = 300;
 	
 	private ParticleSystem particleSystem;
-	private ParticleIO particleIO;
-	private ArrayList<ConfigurableEmitter> listEmitters;
-	private int x = 0;
 
 	private static Logger logger = Logger.getLogger(GameplayState.class);
 	private GameSystem _gameSystem;
@@ -64,7 +59,6 @@ public class GameplayState extends BHGameState
 	private boolean bLayoutComplete;
 	private Winner winner;
 	private boolean paused;
-	private int listEmittersIndex;
 	private Music _gameTheme;
 	private float _themePosition = -1;
 	private final MobButton _mobButtons[][] = new MobButton[4][5];
@@ -76,7 +70,6 @@ public class GameplayState extends BHGameState
 		towerInterface = new Container(new GridLayout(2, 3));
 		bLayoutComplete = false;
 		winner = Winner.nobody;
-		listEmitters = new ArrayList<ConfigurableEmitter>(MAX_GUARANTEED_EMITTERS * 2);
 	}
 	
 	@Override
@@ -89,11 +82,9 @@ public class GameplayState extends BHGameState
 	public void init(GameContainer container, StateBasedGame game) throws SlickException
 	{
 		Image image = new Image("data/effects/fireball.png", false);
-		listEmittersIndex = 0;
 		particleSystem = new ParticleSystem(image);
 		particleSystem.setBlendingMode(ParticleSystem.BLEND_ADDITIVE);
 		particleSystem.setUsePoints(false);
-		particleSystem.setRemoveCompletedEmitters(false);
 		
 		_gameTheme = new Music("data/sounds/Game1.ogg");
 		_gameSystem = new GameSystem(container, container.getWidth(), container.getHeight());
@@ -137,23 +128,15 @@ public class GameplayState extends BHGameState
 			public void onEvent(Event e)
 			{
 				ConfigurableEmitter ce = (ConfigurableEmitter) e.getValue("configurableEmitter");
-				listEmitters.add(ce);
-				
-				//
-				// Remove old emitters. Save the last MAX_GUARANTEED_EMITTERS
-				// and remove the MAX_GUARANTEED_EMITTERS created prior to that.
-				// listEmittersIndex will loop around from zero to the size of
-				// listEmitters-1.
-				listEmittersIndex = (listEmittersIndex + 1) % (MAX_GUARANTEED_EMITTERS * 2);
-				if (listEmittersIndex == 0 || listEmittersIndex == 100)
-				{
-					for (int i = listEmittersIndex; i < listEmittersIndex + MAX_GUARANTEED_EMITTERS && i < listEmitters.size(); i++)
-					{
-						particleSystem.removeEmitter(listEmitters.get(i));
-						listEmitters.remove(i);
-					}
-				}
 				particleSystem.addEmitter(ce);
+				if (particleSystem.getEmitterCount() % EMITTER_REFRESH_COUNT == 0)
+				{
+					particleSystem.setRemoveCompletedEmitters(true);
+				}
+				else
+				{
+					particleSystem.setRemoveCompletedEmitters(false);
+				}
 			}
 		};
 		EventManager.inst().registerForAll(EventType.START_PARTICLE_EFFECT, emitterListener);
@@ -168,9 +151,8 @@ public class GameplayState extends BHGameState
 		_themePosition = _gameTheme.getPosition();
 		_gameTheme.stop();
 		particleSystem.removeAllEmitters();
-		particleSystem.reset();
-		particleSystem = particleSystem.duplicate();
-		listEmittersIndex = 0;
+		// particleSystem.reset();
+		// particleSystem = particleSystem.duplicate();
 	}
 	
 	public void start()
@@ -178,7 +160,6 @@ public class GameplayState extends BHGameState
 		_gameSystem.start();
 		BB.inst().setDisplay(_feng.getDisplay());
 		particleSystem.removeAllEmitters();
-		listEmittersIndex = 0;
 		_themePosition = 0;
 	}
 	
@@ -187,7 +168,7 @@ public class GameplayState extends BHGameState
 		_gameSystem.end();
 		_themePosition = -1;
 	}
-
+	
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException
 	{
@@ -215,11 +196,15 @@ public class GameplayState extends BHGameState
 	public void update(GameContainer container, StateBasedGame game, int millis) throws SlickException
 	{
 		_gameSystem.update(millis);
-		particleSystem.update(millis);
 		
 		if (this.paused)
 		{
+			particleSystem.removeAllEmitters();
 			game.enterState(Main.States.PauseState.ordinal(), new FadeOutTransition(), new FadeInTransition());
+		}
+		else
+		{
+			particleSystem.update(millis);
 		}
 		if (winner == Winner.player1)
 		{
