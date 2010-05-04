@@ -18,6 +18,7 @@ import org.fenggui.FengGUI;
 import org.fenggui.event.ButtonPressedEvent;
 import org.fenggui.event.IButtonPressedListener;
 import org.fenggui.util.Point;
+import com.teamamerica.games.unicodewars.factory.MobMaker;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
@@ -589,6 +590,29 @@ public class BB
 		return players[Team.Player1.index()];
 	}
 	
+	public boolean spawnUsersMob(MobObject.Type type, int level)
+	{
+		boolean bSpawned;
+		int price = MobObject.getMobPrice(type, level);
+		
+		if (getUsersPlayer().getGold() >= price)
+		{
+			bSpawned = true;
+			getUsersPlayer().addIncome(price / 2);
+			getUsersPlayer().purchase(price);
+			getUsersPlayer().addScore(level);
+			MobMaker.MakeMob(type, level, Team.Player1);
+			setMobTypeSelection(type);
+			setMobLevelSelection(level);
+		}
+		else
+		{
+			bSpawned = false;
+		}
+		
+		return bSpawned;
+	}
+
 	public boolean isAiEnabled()
 	{
 		return bAiEnabled;

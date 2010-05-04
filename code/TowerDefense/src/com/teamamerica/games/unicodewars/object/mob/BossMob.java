@@ -13,7 +13,6 @@ public class BossMob extends MobObject
 		this.defense = 64;
 		this.speed = 5;
 		this.attack = 1000;
-		this.vitality = 64;
 		
 		this.currentHP = this.totalHP = 250000;
 		this.price = 5000;

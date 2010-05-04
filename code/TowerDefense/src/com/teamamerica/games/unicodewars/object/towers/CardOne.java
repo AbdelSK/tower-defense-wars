@@ -7,7 +7,7 @@ import com.teamamerica.games.unicodewars.utils.Team;
 public class CardOne extends TowerBase
 {
 	
-	public static int price = 30;
+	public static int price = 250;
 	public static int BASE_ATTACK = 2;
 	public static int BASE_SPEED = 2;
 	public static int BASE_RADIUS = 4;
@@ -62,15 +62,15 @@ public class CardOne extends TowerBase
 	{
 		if (level == 1)
 		{
-			return 40;
+			return 500;
 		}
 		else if (level == 2)
 		{
-			return 50;
+			return 1000;
 		}
 		else if (level == 3)
 		{
-			return 100;
+			return 2000;
 		}
 		return 0;
 	}
