@@ -40,6 +40,7 @@ import com.teamamerica.games.unicodewars.utils.Variable;
  */
 public class BB
 {
+	private final String MAZE_LIST_FILE_DELIMITER = ",";
 	private final String MAZE_LIST_FILE_NAME = "src/data/levels/MazeList.txt";
 	private final String MAZE_FILE_DIR_NAME = "src/data/levels/";
 
@@ -66,14 +67,14 @@ public class BB
 	private boolean bAiEnabled;
 	private int _gameLevel;
 	private int _numGameLevels;
-	private ArrayList<String> _listFileNames;
+	private HashMap<Integer, ArrayList<String>> _listFileNames;
 
 	private BB()
 	{
 		initVarsForLevel();
 		_random = new Random(System.currentTimeMillis());
 		_timers = new ArrayList<Timer>();
-		_gameLevel = 0;
+		_gameLevel = -1;
 		_listFileNames = null;
 		bAiEnabled = true;
 	}
@@ -148,23 +149,29 @@ public class BB
 	{
 		if (_listFileNames == null)
 		{
-			_listFileNames = new ArrayList<String>();
+			_listFileNames = new HashMap<Integer, ArrayList<String>>();
 			try
 			{
 				File mazeListFile = new File(MAZE_LIST_FILE_NAME);
 				FileReader mazeListInputStream = new FileReader(mazeListFile);
 				BufferedReader br = new BufferedReader(mazeListInputStream);
-				String curFileName;
-				int i = 0;
+				String curLine;
+				Integer lvl;
 				
 				do
 				{
-					curFileName = br.readLine();
-					if (curFileName != null)
+					curLine = br.readLine();
+					if (curLine != null)
 					{
-						_listFileNames.add(curFileName);
+						String fields[] = curLine.split(MAZE_LIST_FILE_DELIMITER);
+						lvl = Integer.parseInt(fields[0]);
+						if (!_listFileNames.containsKey(lvl))
+						{
+							_listFileNames.put(lvl, new ArrayList<String>());
+						}
+						_listFileNames.get(lvl).add(fields[1]);
 					}
-				} while (curFileName != null);
+				} while (curLine != null);
 			}
 			catch (Exception e)
 			{
@@ -175,17 +182,24 @@ public class BB
 			_numGameLevels = _listFileNames.size();
 		}
 		
+		//
+		// Choose the appropriate level which will be random if the game level
+		// is set to <0 otherwise it's chosen sequentially.
+		// Then choose a random maze file within that level
+		//
 		int fileIndex;
+		int level;
 		if (BB.inst().getGameLevel() < 0)
 		{
-			fileIndex = (int) Math.round(Math.random() * (_listFileNames.size() - 1));
+			level = (int) Math.round(Math.random() * (_numGameLevels - 1));
 		}
 		else
 		{
-			fileIndex = BB.inst().getGameLevel();
+			level = BB.inst().getGameLevel();
 		}
+		fileIndex = (int) Math.round(Math.random() * (_listFileNames.get(level).size() - 1));
 		
-		return MAZE_FILE_DIR_NAME + _listFileNames.get(fileIndex);
+		return MAZE_FILE_DIR_NAME + _listFileNames.get(level).get(fileIndex);
 	}
 	
 	/**
