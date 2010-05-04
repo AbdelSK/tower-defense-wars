@@ -1,5 +1,6 @@
-maze1.txt
-easy-1.txt
-pjweird0.txt
-pjmix0.txt
-hard.txt
+2,cwcurve.txt
+0,maze1.txt
+0,easy-1.txt
+1,pjweird0.txt
+2,pjmix0.txt
+3,hard.txt
