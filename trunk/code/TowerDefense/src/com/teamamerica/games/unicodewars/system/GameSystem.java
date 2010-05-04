@@ -135,6 +135,7 @@ public class GameSystem
 			// gold and next income value
 			BB.inst().getUsersPlayer().addGold(BB.inst().getUsersPlayer().getIncome());
 		}
+		BB.inst().checkTowerUpgradability();
 	}
 
 	public void render(Graphics g)

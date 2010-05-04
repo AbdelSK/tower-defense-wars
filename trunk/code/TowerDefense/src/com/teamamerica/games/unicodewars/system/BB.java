@@ -552,11 +552,11 @@ public class BB
 		currentHUD[0].setPosition(new Point(384, 0));
 		if (this.getHUD().getUpgradePrice() > getUsersPlayer().getGold())
 		{
-			currentHUD[0].setEnabled(false);
+			currentHUD[0].setVisible(false);
 		}
 		else
 		{
-			currentHUD[0].setEnabled(true);
+			currentHUD[0].setVisible(true);
 		}
 
 		currentHUD[1].setPosition(new Point(512, 0));
@@ -585,6 +585,22 @@ public class BB
 			this.display.addWidget(currentHUD[2]);
 	}
 	
+	public void checkTowerUpgradability()
+	{
+		if ((this.getHUD() != null) && (currentHUD != null) && (currentHUD[0] != null))
+		{
+			if ((!currentHUD[0].isVisible()) && (this.getHUD().getUpgradePrice() <= getUsersPlayer().getGold()))
+			{
+				currentHUD[0].setVisible(true);
+			}
+			else if ((currentHUD[0].isVisible()) && (this.getHUD().getUpgradePrice() > getUsersPlayer().getGold()))
+			{
+				currentHUD[0].setVisible(false);
+			}
+
+		}
+	}
+
 	public Player getUsersPlayer()
 	{
 		return players[Team.Player1.index()];
