@@ -21,7 +21,6 @@ public abstract class MobObject extends GameObject implements Mover
 	int attack = 0;
 	int defense = 0;
 	int speed = 0;
-	int vitality = 0;
 	int currentHP = 0;
 	int totalHP = 0;
 	int level = 0;
@@ -30,6 +29,26 @@ public abstract class MobObject extends GameObject implements Mover
 	Type type;
 	String imagePath;
 	private boolean dead = false;
+	private static final int MOB_ATTACK_CHINESE = 1;
+	private static final int MOB_ATTACK_CYRILLIC = 1;
+	private static final int MOB_ATTACK_GREEK = 4;
+	private static final int MOB_ATTACK_LATIN = 2;
+	private static final int MOB_DEFENSE_CHINESE = 4;
+	private static final int MOB_DEFENSE_CYRILLIC = 1;
+	private static final int MOB_DEFENSE_GREEK = 2;
+	private static final int MOB_DEFENSE_LATIN = 1;
+	private static final int MOB_PRICE_CHINESE = 5;
+	private static final int MOB_PRICE_CYRILLIC = 8;
+	private static final int MOB_PRICE_GREEK = 7;
+	private static final int MOB_PRICE_LATIN = 6;
+	private static final int MOB_SPEED_CHINESE = 1;
+	private static final int MOB_SPEED_CYRILLIC = 2;
+	private static final int MOB_SPEED_GREEK = 1;
+	private static final int MOB_SPEED_LATIN = 4;
+	private static final int MOB_TOTAL_HP_CHINESE = 2;
+	private static final int MOB_TOTAL_HP_CYRILLIC = 4;
+	private static final int MOB_TOTAL_HP_GREEK = 1;
+	private static final int MOB_TOTAL_HP_LATIN = 1;
 
 	public MobObject(String name, int id, int renderPriority, Location loc, Team side, int level, Type type, String imgLoc)
 	{
@@ -38,7 +57,7 @@ public abstract class MobObject extends GameObject implements Mover
 		
 		this.level = level;
 		this.type = type;
-		this.price = determinePrice(type, level);
+		this.price = MobObject.getMobPrice(type, level);
 		this.refund = this.price / 2;
 		this.imagePath = imgLoc;
 	}
@@ -66,11 +85,6 @@ public abstract class MobObject extends GameObject implements Mover
 	public int getSpeed()
 	{
 		return speed;
-	}
-	
-	public int getVitality()
-	{
-		return vitality;
 	}
 	
 	public int getPrice()
@@ -112,72 +126,6 @@ public abstract class MobObject extends GameObject implements Mover
 			return true;
 	}
 	
-	public static int determinePrice(MobObject.Type type, int locLevel)
-	{
-		int basePrice;
-		switch (type)
-		{
-			case chinese:
-				basePrice = 1;
-				break;
-			case latin:
-				basePrice = 2;
-				break;
-			case greek:
-				basePrice = 3;
-				break;
-			case cyrillic:
-				basePrice = 4;
-				break;
-			default:
-				basePrice = 0;
-				break;
-		}
-		return (int) (basePrice * Math.pow(2, locLevel - 1));
-	}
-
-	// returns in format [Defense, Speed, Attack, Total HP, Price]
-	public static int[] getStats(Type type, int level)
-	{
-		int[] stats = new int[5];
-		
-		switch (type)
-		{
-			case chinese:
-				stats[0] = 4 * level;
-				stats[1] = 1 * level;
-				stats[2] = 1 * level;
-				stats[3] = 2 * level * 20;
-				break;
-			case latin:
-				stats[0] = 1 * level;
-				stats[1] = 4 * level;
-				stats[2] = 2 * level;
-				stats[3] = 1 * level * 20;
-				break;
-			case greek:
-				stats[0] = 2 * level;
-				stats[1] = 1 * level;
-				stats[2] = 4 * level;
-				stats[3] = 1 * level * 20;
-				break;
-			case cyrillic:
-				stats[0] = 1 * level;
-				stats[1] = 2 * level;
-				stats[2] = 1 * level;
-				stats[3] = 4 * level * 20;
-				break;
-			default:
-				stats[0] = 0;
-				stats[1] = 0;
-				stats[2] = 0;
-				stats[3] = 0;
-				break;
-		}
-		stats[4] = 20 * level;
-		return stats;
-	}
-
 	@Override
 	public void deleteObject()
 	{
@@ -214,5 +162,160 @@ public abstract class MobObject extends GameObject implements Mover
 		{
 			System.err.println("WARNING: Mob being killed multiple times!!");
 		}
+	}
+
+	private static int getAttackFactor(int level)
+	{
+		return (int) Math.pow(2, level - 1);
+	}
+
+	private static int getDefenseFactor(int level)
+	{
+		return (int) Math.pow(2, level - 1);
+	}
+
+	public static int getMobAttack(MobObject.Type type, int level)
+	{
+		int mobAttack;
+		
+		switch (type)
+		{
+			case chinese:
+				mobAttack = MOB_ATTACK_CHINESE * getAttackFactor(level);
+				break;
+			case latin:
+				mobAttack = MOB_ATTACK_LATIN * getAttackFactor(level);
+				break;
+			case greek:
+				mobAttack = MOB_ATTACK_GREEK * getAttackFactor(level);
+				break;
+			case cyrillic:
+				mobAttack = MOB_ATTACK_CYRILLIC * getAttackFactor(level);
+				break;
+			default:
+				mobAttack = 0;
+				break;
+		}
+		
+		return mobAttack;
+	}
+
+	public static int getMobDefense(MobObject.Type type, int level)
+	{
+		int mobDefense;
+		
+		switch (type)
+		{
+			case chinese:
+				mobDefense = MOB_DEFENSE_CHINESE * getDefenseFactor(level);
+				break;
+			case latin:
+				mobDefense = MOB_DEFENSE_LATIN * getDefenseFactor(level);
+				break;
+			case greek:
+				mobDefense = MOB_DEFENSE_GREEK * getDefenseFactor(level);
+				break;
+			case cyrillic:
+				mobDefense = MOB_DEFENSE_CYRILLIC * getDefenseFactor(level);
+				break;
+			default:
+				mobDefense = 0;
+				break;
+		}
+		
+		return mobDefense;
+	}
+
+	public static int getMobPrice(MobObject.Type type, int level)
+	{
+		int mobPrice;
+	
+		switch (type)
+		{
+			case chinese:
+				mobPrice = MOB_PRICE_CHINESE * getPriceFactor(level);
+				break;
+			case latin:
+				mobPrice = MOB_PRICE_LATIN * getPriceFactor(level);
+				break;
+			case greek:
+				mobPrice = MOB_PRICE_GREEK * getPriceFactor(level);
+				break;
+			case cyrillic:
+				mobPrice = MOB_PRICE_CYRILLIC * getPriceFactor(level);
+				break;
+			default:
+				mobPrice = 0;
+				break;
+		}
+		
+		return mobPrice;
+	}
+
+	public static int getMobSpeed(MobObject.Type type, int level)
+	{
+		int mobSpeed;
+		
+		switch (type)
+		{
+			case chinese:
+				mobSpeed = MOB_SPEED_CHINESE * getSpeedFactor(level);
+				break;
+			case latin:
+				mobSpeed = MOB_SPEED_LATIN * getSpeedFactor(level);
+				break;
+			case greek:
+				mobSpeed = MOB_SPEED_GREEK * getSpeedFactor(level);
+				break;
+			case cyrillic:
+				mobSpeed = MOB_SPEED_CYRILLIC * getSpeedFactor(level);
+				break;
+			default:
+				mobSpeed = 0;
+				break;
+		}
+		
+		return mobSpeed;
+	}
+
+	public static int getMobTotalHp(MobObject.Type type, int level)
+	{
+		int mobTotalHp;
+		
+		switch (type)
+		{
+			case chinese:
+				mobTotalHp = MOB_TOTAL_HP_CHINESE * getTotalHpFactor(level);
+				break;
+			case latin:
+				mobTotalHp = MOB_TOTAL_HP_LATIN * getTotalHpFactor(level);
+				break;
+			case greek:
+				mobTotalHp = MOB_TOTAL_HP_GREEK * getTotalHpFactor(level);
+				break;
+			case cyrillic:
+				mobTotalHp = MOB_TOTAL_HP_CYRILLIC * getTotalHpFactor(level);
+				break;
+			default:
+				mobTotalHp = 0;
+				break;
+		}
+		
+		return mobTotalHp;
+	}
+
+	private static int getPriceFactor(int level)
+	{
+		return (int) Math.pow(4, level - 1);
+	}
+
+	private static int getSpeedFactor(int level)
+	{
+		return (int) Math.pow(2, level - 1);
+	}
+
+	private static int getTotalHpFactor(int level)
+	{
+		return 25 * (int) Math.pow(2, level - 1);
 	}
 }

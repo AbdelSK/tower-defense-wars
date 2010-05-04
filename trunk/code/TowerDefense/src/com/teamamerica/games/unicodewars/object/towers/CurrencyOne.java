@@ -7,7 +7,7 @@ import com.teamamerica.games.unicodewars.utils.Team;
 public class CurrencyOne extends TowerBase
 {
 	
-	public static int price = 60;
+	public static int price = 1000;
 	public static int BASE_ATTACK = 5;
 	public static int BASE_SPEED = 5;
 	public static int BASE_RADIUS = 3;
@@ -62,15 +62,15 @@ public class CurrencyOne extends TowerBase
 	{
 		if (level == 1)
 		{
-			return 90;
+			return 2000;
 		}
 		else if (level == 2)
 		{
-			return 130;
+			return 4000;
 		}
 		else if (level == 3)
 		{
-			return 150;
+			return 8000;
 		}
 		return 0;
 	}

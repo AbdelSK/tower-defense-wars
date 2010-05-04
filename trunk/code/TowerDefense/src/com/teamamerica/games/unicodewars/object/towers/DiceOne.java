@@ -108,19 +108,19 @@ public class DiceOne extends TowerBase
 		}
 		else if (level == 2)
 		{
-			return 20;
+			return 40;
 		}
 		else if (level == 3)
 		{
-			return 30;
+			return 80;
 		}
 		else if (level == 4)
 		{
-			return 40;
+			return 160;
 		}
 		else if (level == 5)
 		{
-			return 60;
+			return 240;
 		}
 		return 0;
 	}
