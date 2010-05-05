@@ -29,7 +29,7 @@ public class AiSubsystem implements Subsystem
 	private final int MAZE_FILE_YLOC_INDEX = 2;
 	private final int MOB_SPAWN_INTERVAL = 20000;
 	private final int MOB_SPAWN_FIRST_INTERVAL = 5000;
-	private final int STANDARD_MOB_SIZE = 30;
+	private final int STANDARD_MOB_SIZE = 5;
 	private final int TOWER_BUILDING_INTERVAL = 10000;
 	private final int TOWER_UPGRADE_INTERVAL = 10000;
 	private final int TOWER_UPGRADE_FIRST_INTERVAL = TOWER_BUILDING_INTERVAL / 2 + TOWER_BUILDING_INTERVAL * 7;
@@ -331,15 +331,7 @@ public class AiSubsystem implements Subsystem
 	{
 		int maxOppMobLevel = getHighestOppMobLevel();
 		// TODO: take level into account when deciding to skip mob level type
-		if (maxOppMobLevel > _curMobLevel)
-		{
-			// gotta keep up with the joneses
-			_oldMobLevel = _curMobLevel;
-			_oldMobTypeIndex = _curMobTypeIndex;
-			_curMobLevel = maxOppMobLevel;
-			_curMobTypeIndex = (int) Math.round(Math.random() * (Constants.MAX_MOB_LEVEL - 1));
-		}
-		else if (_oldMobLevel >= 0)
+		if (_oldMobLevel >= 0)
 		{
 			// resume where we left off before trying to keep up with the
 			// joneses
@@ -348,18 +340,24 @@ public class AiSubsystem implements Subsystem
 			_oldMobLevel = UNDEFINED;
 			_oldMobTypeIndex = UNDEFINED;
 		}
-		else
+		else if (maxOppMobLevel > _curMobLevel)
 		{
-			// loop through all mobs except for the boss
-			if (_curMobTypeIndex >= (MobObject.Type.values().length - 1))
+			// gotta keep up with the joneses
+			_oldMobLevel = _curMobLevel;
+			_oldMobTypeIndex = _curMobTypeIndex;
+			_curMobLevel = maxOppMobLevel;
+			_curMobTypeIndex = (int) Math.round(Math.random() * (Constants.MAX_MOB_LEVEL - 1));
+		}
+		// loop through all mobs except for the boss
+		if (_curMobTypeIndex >= (MobObject.Type.values().length - 1))
+		{
+			_curMobTypeIndex = 0;
+			if (_curMobLevel < Constants.MAX_MOB_LEVEL)
 			{
-				_curMobTypeIndex = 0;
-				if (_curMobLevel < Constants.MAX_MOB_LEVEL)
-				{
-					_curMobLevel++;
-				}
+				_curMobLevel++;
 			}
 		}
+
 		return MobObject.Type.values()[_curMobTypeIndex++];
 	}
 	
@@ -378,6 +376,15 @@ public class AiSubsystem implements Subsystem
 		{
 			int level = getHighestOppMobLevel();
 			mobSize = BB.inst().getNumMobsSpawned(level) - _aNumMobsSpawned[level - 1];
+			_aNumMobsSpawned[level - 1] = BB.inst().getNumMobsSpawned(level);
+			if (level <= BB.inst().getNumGameLevels() / 2)
+			{
+				
+			}
+			else
+			{
+				
+			}
 		}
 		return mobSize;
 	}

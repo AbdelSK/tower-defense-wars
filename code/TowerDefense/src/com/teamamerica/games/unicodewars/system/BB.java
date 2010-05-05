@@ -137,6 +137,14 @@ public class BB
 	}
 	
 	/**
+	 * @return the number of game levels
+	 */
+	public int getNumGameLevels()
+	{
+		return _numGameLevels;
+	}
+
+	/**
 	 * @return true if there is another game level available to play, false
 	 *         otherwise
 	 */
