@@ -74,7 +74,7 @@ public class BB
 		initVarsForLevel();
 		_random = new Random(System.currentTimeMillis());
 		_timers = new ArrayList<Timer>();
-		_gameLevel = -1;
+		_gameLevel = 0;
 		_listFileNames = null;
 		bAiEnabled = true;
 	}
