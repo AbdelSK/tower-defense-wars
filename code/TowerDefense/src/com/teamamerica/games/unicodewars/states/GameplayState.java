@@ -227,7 +227,7 @@ public class GameplayState extends BHGameState
 		{
 			if (_towerButtons[i].getType().price > BB.inst().getUsersPlayer().getGold())
 			{
-				_towerButtons[i].setVisible(false);
+				_towerButtons[i].setEnabled(false);
 			}
 			else
 			{
@@ -241,11 +241,11 @@ public class GameplayState extends BHGameState
 			{
 				if (_mobButtons[i][j].getPrice() > BB.inst().getUsersPlayer().getGold())
 				{
-					_mobButtons[i][j].setVisible(false);
+					_mobButtons[i][j].setEnabled(false);
 				}
 				else
 				{
-					_mobButtons[i][j].setVisible(true);
+					_mobButtons[i][j].setEnabled(true);
 				}
 			}
 		}
