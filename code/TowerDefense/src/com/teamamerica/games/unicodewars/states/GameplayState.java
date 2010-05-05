@@ -261,103 +261,15 @@ public class GameplayState extends BHGameState
 	@Override
 	public void keyReleased(int key, char c)
 	{
-		MobObject.Type type = null;
-		int level = 0;
-		
 		switch (key)
 		{
 			case Input.KEY_P:
 				_gameSystem.pause();
 				this.paused = true;
 				break;
-			case Input.KEY_1:
-				type = MobObject.Type.chinese;
-				level = 1;
-				break;
-			case Input.KEY_2:
-				type = MobObject.Type.chinese;
-				level = 2;
-				break;
-			case Input.KEY_3:
-				type = MobObject.Type.chinese;
-				level = 3;
-				break;
-			case Input.KEY_4:
-				type = MobObject.Type.chinese;
-				level = 4;
-				break;
-			case Input.KEY_5:
-				type = MobObject.Type.chinese;
-				level = 5;
-				break;
-			case Input.KEY_Q:
-				type = MobObject.Type.latin;
-				level = 1;
-				break;
-			case Input.KEY_W:
-				type = MobObject.Type.latin;
-				level = 2;
-				break;
-			case Input.KEY_E:
-				type = MobObject.Type.latin;
-				level = 3;
-				break;
-			case Input.KEY_R:
-				type = MobObject.Type.latin;
-				level = 4;
-				break;
-			case Input.KEY_T:
-				type = MobObject.Type.latin;
-				level = 5;
-				break;
-			case Input.KEY_A:
-				type = MobObject.Type.greek;
-				level = 1;
-				break;
-			case Input.KEY_S:
-				type = MobObject.Type.greek;
-				level = 2;
-				break;
-			case Input.KEY_D:
-				type = MobObject.Type.greek;
-				level = 3;
-				break;
-			case Input.KEY_F:
-				type = MobObject.Type.greek;
-				level = 4;
-				break;
-			case Input.KEY_G:
-				type = MobObject.Type.greek;
-				level = 5;
-				break;
-			case Input.KEY_Z:
-				type = MobObject.Type.cyrillic;
-				level = 1;
-				break;
-			case Input.KEY_X:
-				type = MobObject.Type.cyrillic;
-				level = 2;
-				break;
-			case Input.KEY_C:
-				type = MobObject.Type.cyrillic;
-				level = 3;
-				break;
-			case Input.KEY_V:
-				type = MobObject.Type.cyrillic;
-				level = 4;
-				break;
-			case Input.KEY_B:
-				type = MobObject.Type.cyrillic;
-				level = 5;
-				break;
 			default:
 				BB.inst().keyReleased(key);
 				break;
-		}
-		
-		if (type != null)
-		{
-			BB.inst().spawnUsersMob(type, level);
 		}
 	}
 	
@@ -463,8 +375,8 @@ public class GameplayState extends BHGameState
 		for (int i = 0; i < 4; i++)
 			for (int j = 0; j < 5; j++)
 			{
-				String label2 = "HP: " + MobObject.getMobTotalHp(MobObject.Type.values()[i], j + 1) + "\nDef: " + MobObject.getMobDefense(MobObject.Type.values()[i], j + 1) + "\nAtk: " + MobObject.getMobAttack(MobObject.Type.values()[i], j + 1)
-						+ "\nSpd: " + MobObject.getMobSpeed(MobObject.Type.values()[i], j + 1);
+				String label2 = "HP: " + MobObject.getMobTotalHp(MobObject.Type.values()[i], j + 1) + "\nDef: " + MobObject.getMobDefense(MobObject.Type.values()[i], j + 1) + "\nAtk: "
+						+ MobObject.getMobAttack(MobObject.Type.values()[i], j + 1) + "\nSpd: " + MobObject.getMobSpeed(MobObject.Type.values()[i], j + 1);
 				Container buttonContainer = new Container(new GridLayout(1, 1));
 				_mobButtons[i][j] = FengGUI.createWidget(MobButton.class);
 				_mobButtons[i][j].setSize(64, 64);
