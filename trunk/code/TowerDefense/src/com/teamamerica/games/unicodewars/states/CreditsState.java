@@ -1,7 +1,8 @@
 package com.teamamerica.games.unicodewars.states;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -39,7 +40,7 @@ public class CreditsState extends BHGameState
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
 		credits = new ArrayList<String>();
-		_creditsMusic = new Music("src/data/sounds/Credits Music.ogg");
+		_creditsMusic = new Music("data/sounds/Credits Music.ogg");
 		
 		try
 		{
@@ -63,8 +64,9 @@ public class CreditsState extends BHGameState
 		
 		try
 		{
-			FileReader creditsFile = new FileReader("src/data/text/Credits.txt");
-			BufferedReader br = new BufferedReader(creditsFile);
+			URL path = this.getClass().getResource("/data/text/Credits.txt");
+			InputStreamReader creditsStream = new InputStreamReader(path.openStream());
+			BufferedReader br = new BufferedReader(creditsStream);
 			String curLine;
 			curLine = br.readLine();
 			while (curLine != null)

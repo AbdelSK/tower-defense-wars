@@ -1,6 +1,6 @@
 package com.teamamerica.games.unicodewars.object.mob;
 
-import java.io.File;
+import java.net.URL;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.util.pathfinding.Mover;
@@ -141,8 +141,8 @@ public abstract class MobObject extends GameObject implements Mover
 			ConfigurableEmitter emitter = null;
 			try
 			{
-				File xmlFile = new File("src/data/effects/explode.xml");
-				emitter = ParticleIO.loadEmitter(xmlFile);
+				URL xmlFile = this.getClass().getResource("/data/effects/explode.xml");
+				emitter = ParticleIO.loadEmitter(xmlFile.openStream());
 			}
 			catch (Exception e)
 			{

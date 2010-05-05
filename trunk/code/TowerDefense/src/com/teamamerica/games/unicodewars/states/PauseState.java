@@ -47,7 +47,7 @@ public class PauseState extends BHGameState
 	public void init(GameContainer container, StateBasedGame game) throws SlickException
 	{
 		_pauseImage = new Image("data/images/paused.png");
-		_pauseMusic = new Music("src/data/sounds/Pause Music.ogg");
+		_pauseMusic = new Music("data/sounds/Pause Music.ogg");
 	}
 	
 	@Override
