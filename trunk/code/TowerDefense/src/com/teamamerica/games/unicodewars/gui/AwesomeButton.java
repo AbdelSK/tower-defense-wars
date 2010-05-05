@@ -31,11 +31,13 @@ public abstract class AwesomeButton extends Button implements IButtonPressedList
 
 	public void mouseEntered(MouseEnteredEvent arg0)
 	{
+		super.mouseEntered(arg0);
 		this.setText(this.tooltipText);
 	}
 	
 	public void mouseExited(MouseExitedEvent arg0)
 	{
+		super.mouseExited(arg0);
 		this.setText(this.defaultText);
 	}
 
