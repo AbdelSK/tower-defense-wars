@@ -60,7 +60,6 @@ public class AiSubsystem implements Subsystem
 		_curMobMemberWaitTime = 0;
 		_curMobMembersSpawned = 0;
 		_curMobLevel = 1;
-		_curMobTypeIndex = 0;
 		_curMobSize = 0;
 		_curMobWaitTime = MOB_SPAWN_INTERVAL - MOB_SPAWN_FIRST_INTERVAL;
 		_curTowerBuildWaitTime = 0;
@@ -69,6 +68,14 @@ public class AiSubsystem implements Subsystem
 		for (int i = 0; i < _towerLists.length; i++)
 		{
 			_towerLists[i] = new LinkedList<TowerBase>();
+		}
+		if (BB.inst().getGameLevel() < 0)
+		{
+			_curMobTypeIndex = (int) Math.round(Math.random() * (MobObject.Type.values().length - 2));
+		}
+		else
+		{
+			_curMobTypeIndex = BB.inst().getGameLevel() % 4;
 		}
 	}
 	
