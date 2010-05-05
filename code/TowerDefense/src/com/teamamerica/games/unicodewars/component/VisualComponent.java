@@ -82,7 +82,7 @@ public class VisualComponent extends Component
 			if (this._parent instanceof MobObject)
 			{
 				MobObject temp = (MobObject) this._parent;
-				float healthPercent = ((float) temp.getCurrentHP()) / ((float) temp.getTotalHP());
+				float healthPercent = ((float) temp.getCurrentHP()) / ((float) temp.getTotalHP()) * 0.85f + .15f;
 				img.setAlpha(healthPercent);
 				switch (temp.getType())
 				{
