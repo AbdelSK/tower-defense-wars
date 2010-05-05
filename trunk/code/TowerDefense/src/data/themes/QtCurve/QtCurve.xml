@@ -264,25 +264,19 @@
 
 			<!-- define backgrounds -->
 			<BackgroundDecorators>
-				<GradientBackground label="default" enabled="true">
-					<TopLeftColor rgba="0, 0, 0, 255"/>
-					<TopRightColor rgba="0, 0, 0, 255"/>
-					<BottomLeftColor rgba="0, 0, 0, 255"/>
-					<BottomRightColor rgba="0, 0, 0, 255"/>
-				</GradientBackground>
+				<PlainBackground label="default" enabled="true">
+					<Color rgba="0, 0, 0, 255"/>
+				</PlainBackground>
 				
-				<GradientBackground label="pressed" enabled="false">
-					<TopLeftColor rgba="255, 255, 255, 255"/>
-					<TopRightColor rgba="255, 255, 255, 255"/>
-					<BottomLeftColor rgba="255, 255, 255, 255"/>
-					<BottomRightColor rgba="255, 255, 255, 255"/>
-				</GradientBackground>
+				<PlainBackground label="pressed" enabled="false">
+					<Color rgba="255, 255, 255, 255"/>
+				</PlainBackground>
 				
-				<PlainBackground label="hovered" enabled="false">
+				<PlainBackground label="disabled" enabled="false">
 					<Color rgba="200, 200, 200, 200"/>
 				</PlainBackground>
 				
-	    		</BackgroundDecorators>
+	    	</BackgroundDecorators>
 
 			<!-- define foregrounds -->
 			<ForegroundDecorators>
