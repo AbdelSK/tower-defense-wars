@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.InputListener;
 import com.teamamerica.games.unicodewars.factory.TowerMaker;
+import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.Team;
@@ -104,8 +105,99 @@ public class BuildSubsystem implements Subsystem
 				
 				if (key == Input.KEY_ESCAPE)
 				{
-					
 					BB.inst().setTowerSelection(null);
+				}
+				
+				MobObject.Type type = null;
+				int level = 0;
+				
+				switch (key)
+				{
+					case Input.KEY_1:
+						type = MobObject.Type.chinese;
+						level = 1;
+						break;
+					case Input.KEY_2:
+						type = MobObject.Type.chinese;
+						level = 2;
+						break;
+					case Input.KEY_3:
+						type = MobObject.Type.chinese;
+						level = 3;
+						break;
+					case Input.KEY_4:
+						type = MobObject.Type.chinese;
+						level = 4;
+						break;
+					case Input.KEY_5:
+						type = MobObject.Type.chinese;
+						level = 5;
+						break;
+					case Input.KEY_Q:
+						type = MobObject.Type.latin;
+						level = 1;
+						break;
+					case Input.KEY_W:
+						type = MobObject.Type.latin;
+						level = 2;
+						break;
+					case Input.KEY_E:
+						type = MobObject.Type.latin;
+						level = 3;
+						break;
+					case Input.KEY_R:
+						type = MobObject.Type.latin;
+						level = 4;
+						break;
+					case Input.KEY_T:
+						type = MobObject.Type.latin;
+						level = 5;
+						break;
+					case Input.KEY_A:
+						type = MobObject.Type.greek;
+						level = 1;
+						break;
+					case Input.KEY_S:
+						type = MobObject.Type.greek;
+						level = 2;
+						break;
+					case Input.KEY_D:
+						type = MobObject.Type.greek;
+						level = 3;
+						break;
+					case Input.KEY_F:
+						type = MobObject.Type.greek;
+						level = 4;
+						break;
+					case Input.KEY_G:
+						type = MobObject.Type.greek;
+						level = 5;
+						break;
+					case Input.KEY_Z:
+						type = MobObject.Type.cyrillic;
+						level = 1;
+						break;
+					case Input.KEY_X:
+						type = MobObject.Type.cyrillic;
+						level = 2;
+						break;
+					case Input.KEY_C:
+						type = MobObject.Type.cyrillic;
+						level = 3;
+						break;
+					case Input.KEY_V:
+						type = MobObject.Type.cyrillic;
+						level = 4;
+						break;
+					case Input.KEY_B:
+						type = MobObject.Type.cyrillic;
+						level = 5;
+						break;
+				}
+				
+				if (type != null)
+				{
+					BB.inst().spawnUsersMob(type, level);
 				}
 			}
 			
