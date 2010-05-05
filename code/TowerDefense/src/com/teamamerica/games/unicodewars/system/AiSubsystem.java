@@ -1,8 +1,8 @@
 package com.teamamerica.games.unicodewars.system;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -314,11 +314,10 @@ public class AiSubsystem implements Subsystem
 	{
 		try
 		{
-			File mazeDataFile = new File(mazeDataFileName);
-			FileReader mazeDataFileInputStream = new FileReader(mazeDataFile);
-			BufferedReader br = new BufferedReader(mazeDataFileInputStream);
+			URL mazeFile = this.getClass().getResource(mazeDataFileName);
+			InputStreamReader mazeInputStream = new InputStreamReader(mazeFile.openStream());
+			BufferedReader br = new BufferedReader(mazeInputStream);
 			String curLine;
-			int i = 0;
 			
 			_aiMazeInstructions = new LinkedList<AiMazeInstruction>();
 			do

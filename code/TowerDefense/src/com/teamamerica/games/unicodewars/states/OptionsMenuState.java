@@ -42,8 +42,8 @@ public class OptionsMenuState extends BHGameState
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
-		_optionsMusic = new Music("src/data/sounds/Options Music.ogg");
-		_optionSoundFX = new Sound("src/data/sounds/click.wav");
+		_optionsMusic = new Music("data/sounds/Options Music.ogg");
+		_optionSoundFX = new Sound("data/sounds/click.wav");
 	}
 	
 	@Override

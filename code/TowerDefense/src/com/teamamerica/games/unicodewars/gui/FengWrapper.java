@@ -38,7 +38,7 @@ public class FengWrapper implements InputListener
 		
 		// try
 		// {
-			//awtFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File("src/data/font/Friz_Quadrata_TT.ttf"));
+			//awtFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File("data/font/Friz_Quadrata_TT.ttf"));
 			awtFont = new java.awt.Font("Friz_Quadrata_TT",java.awt.Font.TRUETYPE_FONT, 12);
 		// }
 	/*	catch (FontFormatException e)

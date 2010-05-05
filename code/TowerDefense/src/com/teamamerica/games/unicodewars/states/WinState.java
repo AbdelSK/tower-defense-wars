@@ -26,7 +26,7 @@ public class WinState extends BHGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		_winImage = new Image("data/images/playerWins.png");
+		_winImage = new Image("data/images/playerWins.PNG");
 		_winTheme = new Music("data/sounds/You win.ogg");
 	}
 	

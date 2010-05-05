@@ -1,8 +1,8 @@
 package com.teamamerica.games.unicodewars.system;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -41,8 +41,8 @@ import com.teamamerica.games.unicodewars.utils.Variable;
 public class BB
 {
 	private final String MAZE_LIST_FILE_DELIMITER = ",";
-	private final String MAZE_LIST_FILE_NAME = "src/data/levels/MazeList.txt";
-	private final String MAZE_FILE_DIR_NAME = "src/data/levels/";
+	private final String MAZE_LIST_FILE_NAME = "/data/levels/MazeList.txt";
+	private final String MAZE_FILE_DIR_NAME = "/data/levels/";
 
 	private static Logger logger = Logger.getLogger(BB.class);
 	private static BB _blackboard;
@@ -152,8 +152,8 @@ public class BB
 			_listFileNames = new HashMap<Integer, ArrayList<String>>();
 			try
 			{
-				File mazeListFile = new File(MAZE_LIST_FILE_NAME);
-				FileReader mazeListInputStream = new FileReader(mazeListFile);
+				URL mazeListFile = this.getClass().getResource(MAZE_LIST_FILE_NAME);
+				InputStreamReader mazeListInputStream = new InputStreamReader(mazeListFile.openStream());
 				BufferedReader br = new BufferedReader(mazeListInputStream);
 				String curLine;
 				Integer lvl;

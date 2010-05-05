@@ -201,7 +201,7 @@ public abstract class TowerBase extends GameObject
 			// {
 			// try
 			// {
-			// File xml = new File("src/data/effects/blue_beam.xml");
+			// File xml = new File("data/effects/blue_beam.xml");
 			// this.part_sys = ParticleIO.loadConfiguredSystem(xml);
 			// emitter = new
 			// ConfigurableEmitter[this.part_sys.getEmitterCount()];
