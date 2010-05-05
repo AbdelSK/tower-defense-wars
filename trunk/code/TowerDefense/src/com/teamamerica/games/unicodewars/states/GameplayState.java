@@ -231,7 +231,7 @@ public class GameplayState extends BHGameState
 			}
 			else
 			{
-				_towerButtons[i].setVisible(true);
+				_towerButtons[i].setEnabled(true);
 			}
 		}
 

@@ -273,7 +273,7 @@
 				</PlainBackground>
 				
 				<PlainBackground label="disabled" enabled="false">
-					<Color rgba="200, 200, 200, 200"/>
+					<Color rgba="128, 0, 0, 255"/>
 				</PlainBackground>
 				
 	    	</BackgroundDecorators>
