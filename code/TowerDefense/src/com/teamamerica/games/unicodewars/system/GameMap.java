@@ -156,6 +156,9 @@ public class GameMap implements TileBasedMap
 	@Override
 	public boolean blocked(PathFindingContext context, int tx, int ty)
 	{
+		if (context == null)
+			return false;
+
 		if (tx < 0 && tx >= columns && ty < 0 && ty >= rows)
 			return true;
 
@@ -197,7 +200,9 @@ public class GameMap implements TileBasedMap
 	@Override
 	public float getCost(PathFindingContext context, int tx, int ty)
 	{
-		if (context.getMover() instanceof MobObject)
+		if (context == null)
+			return 1;
+		else if (context.getMover() instanceof MobObject)
 			return this.costMap[tx][ty];
 		else
 			return 1;
@@ -317,7 +322,28 @@ public class GameMap implements TileBasedMap
 
 		if (updateDefaultMobPath(obj.getTeam().opponent()) == null)
 		{
-			return false;
+			// Get a path from spawn to base to clear a path
+			Location spawn = this.getTeamSpawnPoint(obj.getTeam().opponent());
+			Location base = this.getTeamBaseLocation(obj.getTeam());
+			Path path = this.pathFinder.findPath(null, spawn.x, spawn.y, base.x, base.y);
+			if (path != null)
+			{
+				for (int i = 0; i < path.getLength(); i++)
+				{
+					for (GameObject o : BB.inst().getTeamObjectsAtLocation(obj.getTeam(), new Location(path.getX(i), path.getY(i))))
+					{
+						if (o instanceof TowerBase)
+						{
+							// Its clobbering time
+							((TowerBase) o).deleteObject();
+						}
+					}
+				}
+			}
+			if (updateDefaultMobPath(obj.getTeam().opponent()) == null)
+			{
+				return false;
+			}
 		}
 		return true;
 	}
