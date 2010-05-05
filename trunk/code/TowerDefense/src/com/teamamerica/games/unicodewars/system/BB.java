@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,6 +23,7 @@ import com.teamamerica.games.unicodewars.factory.MobMaker;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
+import com.teamamerica.games.unicodewars.utils.Constants;
 import com.teamamerica.games.unicodewars.utils.KeyListener;
 import com.teamamerica.games.unicodewars.utils.Location;
 import com.teamamerica.games.unicodewars.utils.MouseListener;
@@ -68,6 +70,7 @@ public class BB
 	private int _gameLevel;
 	private int _numGameLevels;
 	private HashMap<Integer, ArrayList<String>> _listFileNames;
+	private int _aNumMobsSpawned[];
 
 	private BB()
 	{
@@ -620,6 +623,15 @@ public class BB
 		return players[Team.Player1.index()];
 	}
 	
+	/**
+	 * @param level
+	 * @return the number of mobs spawned at the specified level
+	 */
+	public int getNumMobsSpawned(int level)
+	{
+		return _aNumMobsSpawned[level - 1];
+	}
+
 	public boolean spawnUsersMob(MobObject.Type type, int level)
 	{
 		boolean bSpawned;
@@ -628,6 +640,7 @@ public class BB
 		if (getUsersPlayer().getGold() >= price)
 		{
 			bSpawned = true;
+			_aNumMobsSpawned[level - 1]++;
 			getUsersPlayer().addIncome(price / 2);
 			getUsersPlayer().purchase(price);
 			getUsersPlayer().addScore(level);
@@ -681,5 +694,7 @@ public class BB
 		buttonPressedListeners = new IButtonPressedListener[3];
 		HUDLayedOut = false;
 		HUD = null;
+		_aNumMobsSpawned = new int[Constants.MAX_MOB_LEVEL];
+		Arrays.fill(_aNumMobsSpawned, 0);
 	}
 }

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
@@ -20,6 +21,7 @@ import com.teamamerica.games.unicodewars.utils.AiMazeInstruction.Action;
 
 public class AiSubsystem implements Subsystem
 {
+	private final int UNDEFINED = -1;
 	private final int MAX_MOB_MEMBER_INTERVAL = 3000;
 	private final String MAZE_FILE_DELIMITER = ",";
 	private final int MAZE_FILE_TYPE_INDEX = 0;
@@ -27,11 +29,14 @@ public class AiSubsystem implements Subsystem
 	private final int MAZE_FILE_YLOC_INDEX = 2;
 	private final int MOB_SPAWN_INTERVAL = 20000;
 	private final int MOB_SPAWN_FIRST_INTERVAL = 5000;
+	private final int STANDARD_MOB_SIZE = 30;
 	private final int TOWER_BUILDING_INTERVAL = 10000;
 	private final int TOWER_UPGRADE_INTERVAL = 10000;
 	private final int TOWER_UPGRADE_FIRST_INTERVAL = TOWER_BUILDING_INTERVAL / 2 + TOWER_BUILDING_INTERVAL * 7;
 	
 	private LinkedList<AiMazeInstruction> _aiMazeInstructions;
+	/* counts of mobs spawned by AI separated by level */
+	private int _aNumMobsSpawned[];
 	/* current level to be used for spawning mobs */
 	private int _curMobLevel;
 	/* interval to spawn next member, chosen randomly each time */
@@ -52,6 +57,11 @@ public class AiSubsystem implements Subsystem
 	private int _curTowerBuildWaitTime;
 	/* current amount of time that has passed since upgrading the last tower */
 	private int _curTowerUpgradeWaitTime;
+	/* old level used to spawn mobs */
+	private int _oldMobLevel;
+	/* old index of the Type enum of mob to spawn */
+	private int _oldMobTypeIndex;
+	/* list of towers created by AI separated by level, used for upgrades */
 	private LinkedList<TowerBase> _towerLists[];
 	
 	public AiSubsystem()
@@ -64,7 +74,11 @@ public class AiSubsystem implements Subsystem
 		_curMobWaitTime = MOB_SPAWN_INTERVAL - MOB_SPAWN_FIRST_INTERVAL;
 		_curTowerBuildWaitTime = 0;
 		_curTowerUpgradeWaitTime = TOWER_UPGRADE_INTERVAL - TOWER_UPGRADE_FIRST_INTERVAL;
+		_oldMobLevel = UNDEFINED;
+		_oldMobTypeIndex = UNDEFINED;
 		_towerLists = new LinkedList[Constants.MAX_TOWER_LEVEL];
+		_aNumMobsSpawned = new int[Constants.MAX_MOB_LEVEL];
+		Arrays.fill(_aNumMobsSpawned, 0);
 		for (int i = 0; i < _towerLists.length; i++)
 		{
 			_towerLists[i] = new LinkedList<TowerBase>();
@@ -128,8 +142,8 @@ public class AiSubsystem implements Subsystem
     		}
     		else if (_curMobSize == 0)
     		{
+				_curMobType = chooseMobType();
     			_curMobSize = chooseMobSize();
-    			_curMobType = chooseMobType();
     		}
 
     		
@@ -284,16 +298,66 @@ public class AiSubsystem implements Subsystem
 		
 		return covering;
 	}
+	
+	/**
+	 * Return the highest mob level spawned by the user. This method will figure
+	 * out if the user is sending higher level mobs than the AI and if so will
+	 * return that level. The AI will use this information to in turn send mobs
+	 * at that level. Once the AI sends a comparable number of mobs at that
+	 * level then it will continue to follow it's regular pattern for choosing
+	 * the mob type.
+	 * 
+	 * @return level which is the highest level of mobs where the user has sent
+	 *         more mobs at that level than the AI
+	 */
+	private int getHighestOppMobLevel()
+	{
+		int highestLevel = 0;
+		
+		for (int i = 1; i < Constants.MAX_MOB_LEVEL; i++)
+		{
+			// TODO: need to somehow reset after sending highest in case we need
+			// to send second, third, or fourth highest also
+			if (_aNumMobsSpawned[i] < BB.inst().getNumMobsSpawned(i + 1))
+			{
+				highestLevel = i;
+			}
+		}
+		
+		return highestLevel + 1;
+	}
 
 	private MobObject.Type chooseMobType()
 	{
-		// loop through all mobs except for the boss
-		if (_curMobTypeIndex >= (MobObject.Type.values().length - 1))
+		int maxOppMobLevel = getHighestOppMobLevel();
+		// TODO: take level into account when deciding to skip mob level type
+		if (maxOppMobLevel > _curMobLevel)
 		{
-			_curMobTypeIndex = 0;
-			if (_curMobLevel < Constants.MAX_MOB_LEVEL)
+			// gotta keep up with the joneses
+			_oldMobLevel = _curMobLevel;
+			_oldMobTypeIndex = _curMobTypeIndex;
+			_curMobLevel = maxOppMobLevel;
+			_curMobTypeIndex = (int) Math.round(Math.random() * (Constants.MAX_MOB_LEVEL - 1));
+		}
+		else if (_oldMobLevel >= 0)
+		{
+			// resume where we left off before trying to keep up with the
+			// joneses
+			_curMobLevel = _oldMobLevel;
+			_curMobTypeIndex = _oldMobTypeIndex;
+			_oldMobLevel = UNDEFINED;
+			_oldMobTypeIndex = UNDEFINED;
+		}
+		else
+		{
+			// loop through all mobs except for the boss
+			if (_curMobTypeIndex >= (MobObject.Type.values().length - 1))
 			{
-				_curMobLevel++;
+				_curMobTypeIndex = 0;
+				if (_curMobLevel < Constants.MAX_MOB_LEVEL)
+				{
+					_curMobLevel++;
+				}
 			}
 		}
 		return MobObject.Type.values()[_curMobTypeIndex++];
@@ -305,7 +369,17 @@ public class AiSubsystem implements Subsystem
 	 */
 	private int chooseMobSize()
 	{
-		return 30;
+		int mobSize;
+		if (_oldMobLevel < 0)
+		{
+			mobSize = STANDARD_MOB_SIZE;
+		}
+		else
+		{
+			int level = getHighestOppMobLevel();
+			mobSize = BB.inst().getNumMobsSpawned(level) - _aNumMobsSpawned[level - 1];
+		}
+		return mobSize;
 	}
 	
 	/**
