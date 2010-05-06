@@ -31,6 +31,7 @@ diceOne,36,4
 diceOne,36,6
 diceOne,36,8
 diceOne,38,10
+chessOne,58,14
 chessOne,39,12
 chessOne,39,14
 chessOne,39,16
