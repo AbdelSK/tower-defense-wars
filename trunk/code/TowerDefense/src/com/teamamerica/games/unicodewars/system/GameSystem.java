@@ -160,6 +160,10 @@ public class GameSystem
 
 		g.setColor(Color.white);
 		String tickCountdown = "";
+		int xpos = 384;
+		int ypos = 520;
+		g.drawString("Match " + (BB.inst().getGameLevel() + 1), xpos, ypos);
+		ypos += 20;
 		if (!this.tickTimer.paused())
 		{
 			tickCountdown = "Next income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
@@ -168,10 +172,13 @@ public class GameSystem
 		{
 			tickCountdown = "PAUSED!";
 		}
-		g.drawString(tickCountdown, 384, 520);
-		g.drawString("Gold: " + BB.inst().getUsersPlayer().getGold(), 384, 540);
-		g.drawString("Income: " + BB.inst().getUsersPlayer().getIncome(), 384, 560);
-		g.drawString("Score: " + BB.inst().getUsersPlayer().getScore(), 384, 580);
+		g.drawString(tickCountdown, xpos, ypos);
+		ypos += 20;
+		g.drawString("Gold: " + BB.inst().getUsersPlayer().getGold(), xpos, ypos);
+		ypos += 20;
+		g.drawString("Income: " + BB.inst().getUsersPlayer().getIncome(), xpos, ypos);
+		ypos += 20;
+		g.drawString("Score: " + BB.inst().getUsersPlayer().getScore(), xpos, ypos);
 		g.popTransform();
 	}
 }
