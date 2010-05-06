@@ -139,7 +139,7 @@ public class VisualComponent extends Component
 			}
 			else
 			{
-				g.setColor(Color.red);
+				g.setColor(Color.white);
 			}
 			int health = ((BaseObject) this._parent).getHealth();
 			g.drawRect(renderLocTL.x + 5, renderLocTL.y + 5, size - 10, 5);
