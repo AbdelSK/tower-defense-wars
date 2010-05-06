@@ -577,11 +577,11 @@ public class BB
 		currentHUD[0].setPosition(new Point(384, 0));
 		if (this.getHUD().getUpgradePrice() > getUsersPlayer().getGold())
 		{
-			currentHUD[0].setVisible(false);
+			currentHUD[0].setEnabled(false);
 		}
 		else
 		{
-			currentHUD[0].setVisible(true);
+			currentHUD[0].setEnabled(true);
 		}
 
 		currentHUD[1].setPosition(new Point(512, 0));
@@ -614,13 +614,13 @@ public class BB
 	{
 		if ((this.getHUD() != null) && (currentHUD != null) && (currentHUD[0] != null))
 		{
-			if ((!currentHUD[0].isVisible()) && (this.getHUD().getUpgradePrice() <= getUsersPlayer().getGold()))
+			if (this.getHUD().getUpgradePrice() <= getUsersPlayer().getGold())
 			{
-				currentHUD[0].setVisible(true);
+				currentHUD[0].setEnabled(true);
 			}
-			else if ((currentHUD[0].isVisible()) && (this.getHUD().getUpgradePrice() > getUsersPlayer().getGold()))
+			else if (this.getHUD().getUpgradePrice() > getUsersPlayer().getGold())
 			{
-				currentHUD[0].setVisible(false);
+				currentHUD[0].setEnabled(false);
 			}
 
 		}
