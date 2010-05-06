@@ -362,7 +362,7 @@ public abstract class TowerBase extends GameObject
 			{
 				if (mob.getTeam() == Team.Player2)
 				{
-					BB.inst().getUsersPlayer().addGold((int) (Math.pow(2, mob.getLevel())));
+					BB.inst().getUsersPlayer().addGold(mob.getPrice() / 3);
 				}
 				// for (int i = 0; i < emitter.length; i++)
 				// {
