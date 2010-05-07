@@ -104,7 +104,7 @@ public class DiceOne extends TowerBase
 	{
 		if (level == 1)
 		{
-			return 15;
+			return 20;
 		}
 		else if (level == 2)
 		{
@@ -120,7 +120,7 @@ public class DiceOne extends TowerBase
 		}
 		else if (level == 5)
 		{
-			return 240;
+			return 320;
 		}
 		return 0;
 	}

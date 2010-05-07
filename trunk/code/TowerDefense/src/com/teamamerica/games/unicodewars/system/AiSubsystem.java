@@ -29,8 +29,8 @@ public class AiSubsystem implements Subsystem
 	private final int MAZE_FILE_YLOC_INDEX = 2;
 	private final int MOB_SPAWN_INTERVAL = 20000;
 	private final int MOB_SPAWN_FIRST_INTERVAL = 5000;
-	private final int STANDARD_MOB_SIZE = 30;
-	private final int TOWER_BUILDING_INTERVAL = 10000;
+	private final int STANDARD_MOB_SIZE = 10;
+	private final int TOWER_BUILDING_INTERVAL = 20000;
 	private final int TOWER_UPGRADE_INTERVAL = 10000;
 	private final int TOWER_UPGRADE_FIRST_INTERVAL = TOWER_BUILDING_INTERVAL / 2 + TOWER_BUILDING_INTERVAL * 7;
 	

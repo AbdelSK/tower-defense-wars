@@ -7,7 +7,7 @@ import com.teamamerica.games.unicodewars.utils.Team;
 public class MusicOne extends TowerBase
 {
 	
-	public static int price = 500;
+	public static int price = 50;
 	public static int BASE_ATTACK = 2;
 	public static int BASE_SPEED = 5;
 	public static int BASE_RADIUS = 2;
@@ -62,15 +62,15 @@ public class MusicOne extends TowerBase
 	{
 		if (level == 1)
 		{
-			return 1000;
+			return 100;
 		}
 		else if (level == 2)
 		{
-			return 2000;
+			return 200;
 		}
 		else if (level == 3)
 		{
-			return 4000;
+			return 400;
 		}
 		return 0;
 	}
