@@ -1,5 +1,7 @@
 package com.teamamerica.games.unicodewars.component;
 
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.util.pathfinding.Path;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
@@ -23,6 +25,7 @@ public class MoverComponent extends Component
 	private EventListener towerListener;
 	private EventType towerBuildListenerType;
 	private EventType towerSoldListenerType;
+	private Sound buzzer;
 	
 	public MoverComponent(GameObject owner)
 	{
@@ -70,6 +73,16 @@ public class MoverComponent extends Component
 			this.speedFactor = ((MobObject) owner).getSpeed();
 		else
 			this.speedFactor = 20;
+		
+		try
+		{
+			this.buzzer = new Sound("data/sounds/buzzer.wav");
+		}
+		catch (SlickException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -143,6 +156,7 @@ public class MoverComponent extends Component
 	{
 		if (obj.coversLocation(_parent.getPosition()))
 		{
+			this.buzzer.play();
 			obj.deleteObject();
 			return;
 		}
@@ -170,6 +184,7 @@ public class MoverComponent extends Component
 				{
 					if (i < this.pathStep)
 						return;
+					this.buzzer.play();
 					obj.deleteObject();
 					this.pathStep = oldPathStep;
 					this.path = oldPath;

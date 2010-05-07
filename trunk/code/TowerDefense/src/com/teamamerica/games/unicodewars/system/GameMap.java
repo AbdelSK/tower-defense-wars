@@ -5,6 +5,8 @@ import java.util.HashSet;
 import org.apache.log4j.Logger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFinder;
@@ -43,6 +45,7 @@ public class GameMap implements TileBasedMap
 	private Timer colorTimer;
 	private int colorStage;
 	private int alphaStage;
+	private Sound buzzer;
 
 	public final int rows = 32; // height
 	public final int columns = 64; // width
@@ -72,6 +75,16 @@ public class GameMap implements TileBasedMap
 		this.colorTimer = BB.inst().getNewTimer();
 		this.colorStage = 0;
 		this.alphaStage = 0;
+		
+		try
+		{
+			this.buzzer = new Sound("data/sounds/buzzer.wav");
+		}
+		catch (SlickException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static void $delete()
@@ -322,6 +335,8 @@ public class GameMap implements TileBasedMap
 
 		if (updateDefaultMobPath(obj.getTeam().opponent()) == null)
 		{
+			// Play buzzer
+			this.buzzer.play();
 			// Get a path from spawn to base to clear a path
 			Location spawn = this.getTeamSpawnPoint(obj.getTeam().opponent());
 			Location base = this.getTeamBaseLocation(obj.getTeam());
