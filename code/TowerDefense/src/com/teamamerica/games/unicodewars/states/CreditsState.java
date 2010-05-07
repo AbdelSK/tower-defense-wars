@@ -90,15 +90,16 @@ public class CreditsState extends BHGameState
 
 		_centerX = container.getWidth() / 2;
 
-		if (game instanceof Main)
-		{
-			Main realGame = (Main) game;
-			stateToLeaveTo = realGame.LastState;
-		}
-		else
-		{
-			stateToLeaveTo = Main.States.MainMenuState;
-		}
+// if (game instanceof Main)
+		// {
+		// Main realGame = (Main) game;
+		// stateToLeaveTo = realGame.LastState;
+		// }
+		// else
+		// {
+		// stateToLeaveTo = Main.States.MainMenuState;
+		// }
+		stateToLeaveTo = Main.States.MainMenuState;
 		_creditsMusic.play();
 		topCreditsLine = font.getHeight("Credits") + 60;
 		leaving = false;

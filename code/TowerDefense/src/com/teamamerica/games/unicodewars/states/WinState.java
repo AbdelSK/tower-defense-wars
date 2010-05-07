@@ -60,7 +60,7 @@ public class WinState extends BHGameState {
 			}
 			else
 			{
-				game.enterState(Main.States.MainMenuState.ordinal(), new FadeOutTransition(), new FadeInTransition());
+				game.enterState(Main.States.CreditsState.ordinal(), new FadeOutTransition(), new FadeInTransition());
 			}
 		}
 	}
