@@ -2,6 +2,7 @@ package com.teamamerica.games.unicodewars.factory;
 
 import com.teamamerica.games.unicodewars.component.MoverComponent;
 import com.teamamerica.games.unicodewars.component.VisualComponent;
+import com.teamamerica.games.unicodewars.object.mob.BossMob;
 import com.teamamerica.games.unicodewars.object.mob.ChineseChar;
 import com.teamamerica.games.unicodewars.object.mob.CyrillicChar;
 import com.teamamerica.games.unicodewars.object.mob.GreekChar;
@@ -40,6 +41,10 @@ public class MobMaker
 			case latin:
 				imgLoc = "data/images/mobs/Latin" + getImageSuffix(level);
 				temp = new LatinChar(loc, team, level, type, imgLoc);
+				break;
+			case boss:
+				imgLoc = "data/images/mobs/Boss.png";
+				temp = new BossMob(loc, team, level, type, imgLoc);
 				break;
 			default:
 				imgLoc = "data/images/mobs/Latin" + getImageSuffix(level);
