@@ -10,12 +10,14 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 import com.teamamerica.games.unicodewars.object.GameObject;
+import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.utils.Timer;
 
 public class GameSystem
 {
 	private static Logger logger = Logger.getLogger(GameSystem.class);
 	private static final long tickTime = 30000;
+	private static final long bossTime = 300000;
 	private UnicodeFont font;
 	
 	public enum Systems
@@ -26,6 +28,8 @@ public class GameSystem
 	public long _frameCount;
 	private Map<Systems, Subsystem> _systems;
 	private Timer tickTimer;
+	private Timer bossTimer;
+	private boolean playerBossSent = false;
 	private GameContainer _container;
 	
 	public GameSystem(GameContainer container, int width, int height)
@@ -61,6 +65,7 @@ public class GameSystem
 		_systems.put(Systems.BuildSubsystem, new BuildSubsystem(_container));
 		_systems.put(Systems.AiSubsystem, new AiSubsystem());
 		this.tickTimer = BB.inst().getNewTimer();
+		this.bossTimer = BB.inst().getNewTimer();
 		for (Subsystem s : _systems.values())
 		{
 			s.start();
@@ -135,6 +140,14 @@ public class GameSystem
 			// gold and next income value
 			BB.inst().getUsersPlayer().addGold(BB.inst().getUsersPlayer().getIncome());
 		}
+		
+		if (this.bossTimer.xMilisecondsPassed(GameSystem.bossTime) && !this.playerBossSent)
+		{
+			// Boss is being released
+			BB.inst().spawnUsersMob(MobObject.Type.boss, 1);
+			this.playerBossSent = true;
+		}
+
 		BB.inst().checkTowerUpgradability();
 	}
 
@@ -146,7 +159,6 @@ public class GameSystem
 		
 		GameMap.inst().render(g);
 		
-
 		for (GameObject obj : BB.inst().getAll())
 		{
 			obj.render(g);
@@ -157,9 +169,9 @@ public class GameSystem
 			s.render(g);
 		}
 
-
 		g.setColor(Color.white);
 		String tickCountdown = "";
+		String bossCountdown = "";
 		int xpos = 384;
 		int ypos = 520;
 		g.drawString("Match " + (BB.inst().getGameLevel() + 1), xpos, ypos);
@@ -168,7 +180,7 @@ public class GameSystem
 		{
 			tickCountdown = "Next income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
 		}
-		else
+		else if (this.playerBossSent)
 		{
 			tickCountdown = "PAUSED!";
 		}
@@ -179,6 +191,20 @@ public class GameSystem
 		g.drawString("Income: " + BB.inst().getUsersPlayer().getIncome(), xpos, ypos);
 		ypos += 20;
 		g.drawString("Score: " + BB.inst().getUsersPlayer().getScore(), xpos, ypos);
+		ypos += 20;
+		if (!this.bossTimer.paused() && !this.playerBossSent)
+		{
+			bossCountdown = "Time left: " + Math.round(this.bossTimer.timeUntilXMilisecondsPass(GameSystem.bossTime) / 1000);
+		}
+		else if (!this.bossTimer.paused() && this.playerBossSent)
+		{
+			bossCountdown = "Boss Released!";
+		}
+		else
+		{
+			bossCountdown = "PAUSED!";
+		}
+		g.drawString(bossCountdown, xpos, ypos);
 		g.popTransform();
 	}
 }
