@@ -10,13 +10,13 @@ public class BossMob extends MobObject
 	{
 		super("Boss Mob", BB.inst().getNextId(), 10, loc, side, level, MobObject.Type.boss, imgLoc);
 		
-		this.defense = 64;
-		this.speed = 5;
+		this.defense = 25;
+		this.speed = 1;
 		this.attack = 1000;
 		
 		this.currentHP = this.totalHP = 250000;
-		this.price = 5000;
-		this.refund = 0;
+		this.price = 10;
+		this.refund = 5;
 	}
 }
 
