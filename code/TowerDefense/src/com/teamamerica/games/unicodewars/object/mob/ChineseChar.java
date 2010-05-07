@@ -11,8 +11,9 @@ public class ChineseChar extends MobObject
 		super("Chinese Mob", BB.inst().getNextId(), 10, loc, side, level, MobObject.Type.chinese, imgLoc);
 		
 		this.defense = 4 * (int) Math.pow(2, this.level - 1);
-		this.speed = this.attack = 1 * (int) Math.pow(2, this.level - 1);
+		this.attack = 1 * (int) Math.pow(2, this.level - 1);
+		this.speed = this.attack;
 		
-		this.currentHP = this.totalHP = this.attack * 50;
+		this.currentHP = this.totalHP = this.attack * 100;
 	}
 }
