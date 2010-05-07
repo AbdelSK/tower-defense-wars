@@ -46,6 +46,7 @@ public class BaseObject extends GameObject
 			temp.deleteObject();
 			if (this.health <= 0)
 			{
+				this.health = 0;
 				Event e = new Event(EventType.BASE_DESTROYED);
 				e.addParameter("teamDestroyed", this.getTeam());
 				EventManager.inst().dispatch(e);
