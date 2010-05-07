@@ -33,6 +33,7 @@ import com.teamamerica.games.unicodewars.object.towers.MusicOne;
 import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.system.EventManager;
+import com.teamamerica.games.unicodewars.system.GameMap;
 import com.teamamerica.games.unicodewars.system.GameSystem;
 import com.teamamerica.games.unicodewars.utils.Event;
 import com.teamamerica.games.unicodewars.utils.EventListener;
@@ -166,6 +167,9 @@ public class GameplayState extends BHGameState
 	public void end()
 	{
 		_gameSystem.end();
+		EventManager.$delete();
+		GameMap.$delete();
+		BB.$delete();
 		_themePosition = -1;
 	}
 	
