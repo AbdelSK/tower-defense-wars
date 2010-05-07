@@ -371,6 +371,18 @@ public abstract class TowerBase extends GameObject
 				// emitter[i].wrapUp();
 				// emitter[i] = null;
 				// }
+				if (mob.getTeam() == Team.Player1 && mob.getType() == MobObject.Type.boss)
+				{
+					Event e = new Event(EventType.BASE_DESTROYED);
+					e.addParameter("teamDestroyed", Team.Player1);
+					EventManager.inst().dispatch(e);
+				}
+				else if (mob.getTeam() == Team.Player2 && mob.getType() == MobObject.Type.boss)
+				{
+					Event e = new Event(EventType.BASE_DESTROYED);
+					e.addParameter("teamDestroyed", Team.Player2);
+					EventManager.inst().dispatch(e);
+				}
 				mob.die();
 				numKills++;
 				target = null;
