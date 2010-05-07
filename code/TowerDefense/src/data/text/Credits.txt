@@ -2,11 +2,42 @@ Unicode Wars
 
 
 Created By:
+Paul Jennas
+Ethan Anderson
+Tommy Solsten
 Coby White
 Chris Wozny
+
+AI:
 Paul Jennas
+
+Mobs:
 Tommy Solsten
+
+Towers:
 Ethan Anderson
 
-Example by:
-Blah Blah Blah
+Map:
+Coby White
+
+GUI:
+Chris Wozny
+
+Particle Effects:
+Paul Jennas
+
+Build System:
+Coby White
+
+Music:
+Tommy Solsten
+Chris Wozny
+Coby White
+
+Sound Effects:
+Tommy Solsten
+Coby White
+
+Special Thanks To:
+Wes Kerr
+8bitpeoples
