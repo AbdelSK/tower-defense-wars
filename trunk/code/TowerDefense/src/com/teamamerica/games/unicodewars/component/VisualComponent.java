@@ -141,11 +141,10 @@ public class VisualComponent extends Component
 			{
 				g.setColor(Color.white);
 			}
-			int health = ((BaseObject) this._parent).getHealth();
 			g.drawRect(renderLocTL.x + 5, renderLocTL.y + 5, size - 10, 5);
-			float barLength = (size - 10) * (health / 200.0f);
+			float barLength = (size - 10) * ((BaseObject) this._parent).getHealthPercent();
 			g.fillRect(renderLocTL.x + 5, renderLocTL.y + 5, barLength, 5);
-			g.drawString("" + health, renderLocTL.x + 10, renderLocTL.y + 45);
+			g.drawString("" + ((BaseObject) this._parent).getHealth(), renderLocTL.x + 10, renderLocTL.y + 45);
 		}
 
 	}
