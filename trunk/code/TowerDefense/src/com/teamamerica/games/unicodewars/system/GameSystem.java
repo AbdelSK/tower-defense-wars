@@ -9,8 +9,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
+import com.teamamerica.games.unicodewars.factory.MobMaker;
 import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
+import com.teamamerica.games.unicodewars.utils.Team;
 import com.teamamerica.games.unicodewars.utils.Timer;
 
 public class GameSystem
@@ -64,6 +66,7 @@ public class GameSystem
 		loadLevel("");
 		_systems.put(Systems.BuildSubsystem, new BuildSubsystem(_container));
 		_systems.put(Systems.AiSubsystem, new AiSubsystem());
+		this.playerBossSent = false;
 		this.tickTimer = BB.inst().getNewTimer();
 		this.bossTimer = BB.inst().getNewTimer();
 		for (Subsystem s : _systems.values())
@@ -143,9 +146,10 @@ public class GameSystem
 		
 		if (this.bossTimer.xMilisecondsPassed(GameSystem.bossTime) && !this.playerBossSent)
 		{
-			// Boss is being released
+			// Bosses being released
 			BB.inst().spawnUsersMob(MobObject.Type.boss, 1);
 			this.playerBossSent = true;
+			MobMaker.MakeMob(MobObject.Type.boss, 1, Team.Player2);
 		}
 
 		BB.inst().checkTowerUpgradability();
