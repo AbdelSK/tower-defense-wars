@@ -81,8 +81,6 @@ public class GameSystem
 		{
 			s.end();
 		}
-		EventManager.$delete();
-		GameMap.$delete();
 		_systems.clear();
 	}
 	
