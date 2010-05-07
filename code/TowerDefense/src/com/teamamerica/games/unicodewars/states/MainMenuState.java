@@ -45,7 +45,7 @@ public class MainMenuState extends BHGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		_game = game;
-		_backgroundImage = new Image("data/images/main-menu.png");
+		_backgroundImage = new Image("data/images/Main Menu.png");
 		_menuTheme = new Music("data/sounds/Main.ogg");
 		
 		_centerX = container.getWidth() / 2;
@@ -119,7 +119,7 @@ public class MainMenuState extends BHGameState {
 
 		Button btn = FengGUI.createWidget(Button.class);
 		btn.setText("Play Game");
-		btn.setPosition(new Point(800, _centerY));
+		btn.setPosition(new Point(800, _centerY + 75));
 		btn.setSize(200, 50);
 		btn.addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0) {
@@ -137,7 +137,7 @@ public class MainMenuState extends BHGameState {
 		
 		btn = FengGUI.createWidget(Button.class);
 		btn.setText("Exit Game");
-		btn.setPosition(new Point(800, _centerY - 50));
+		btn.setPosition(new Point(800, _centerY + 25));
 		btn.setSize(200, 50);
 		btn.addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0) {
@@ -148,7 +148,7 @@ public class MainMenuState extends BHGameState {
 		
 		btn = FengGUI.createWidget(Button.class);
 		btn.setText("Options");
-		btn.setPosition(new Point(800, _centerY - 100));
+		btn.setPosition(new Point(800, _centerY - 25));
 		btn.setSize(200, 50);
 		btn.addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0)
@@ -160,7 +160,7 @@ public class MainMenuState extends BHGameState {
 		
 		btn = FengGUI.createWidget(Button.class);
 		btn.setText("Credits");
-		btn.setPosition(new Point(800, _centerY - 150));
+		btn.setPosition(new Point(800, _centerY - 75));
 		btn.setSize(200, 50);
 		btn.addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0)
