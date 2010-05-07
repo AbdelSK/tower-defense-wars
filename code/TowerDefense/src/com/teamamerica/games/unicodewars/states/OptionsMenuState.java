@@ -31,6 +31,9 @@ public class OptionsMenuState extends BHGameState
 	private int _centerY;
 	private Music _optionsMusic;
 	private Sound _optionSoundFX;
+	private Button _fullscreenBtn;
+	private Button _musicBtn;
+	private Button _soundFxBtn;
 
 
 	@Override
@@ -130,17 +133,20 @@ public class OptionsMenuState extends BHGameState
 		}
 		display.setLayoutManager(new StaticLayout());
 		
-		Button btn = FengGUI.createWidget(Button.class);
-		btn.setText("Toggle Fullscreen");
-		btn.setPosition(new Point(_centerX - 100, _centerY + 75));
-		btn.setSize(200, 50);
-		btn.addButtonPressedListener(new IButtonPressedListener() {
+		_fullscreenBtn = FengGUI.createWidget(Button.class);
+		String strOnOff = (container.isFullscreen()) ? "off" : "on";
+		_fullscreenBtn.setText("Toggle Fullscreen " + strOnOff);
+		_fullscreenBtn.setPosition(new Point(_centerX - 100, _centerY + 75));
+		_fullscreenBtn.setSize(200, 50);
+		_fullscreenBtn.addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
 				try
 				{
 					_optionSoundFX.play();
 					container.setFullscreen(!container.isFullscreen());
+					String strOnOff = (container.isFullscreen()) ? "off" : "on";
+					_fullscreenBtn.setText("Toggle Fullscreen " + strOnOff);
 				}
 				catch (SlickException e)
 				{
@@ -149,35 +155,41 @@ public class OptionsMenuState extends BHGameState
 				}
 			}
 		});
-		display.addWidget(btn);
+		display.addWidget(_fullscreenBtn);
 		
-		btn = FengGUI.createWidget(Button.class);
-		btn.setText("Toggle Music");
-		btn.setPosition(new Point(_centerX - 100, _centerY + 25));
-		btn.setSize(200, 50);
-		btn.addButtonPressedListener(new IButtonPressedListener() {
+		_musicBtn = FengGUI.createWidget(Button.class);
+		strOnOff = (container.isMusicOn()) ? "off" : "on";
+		_musicBtn.setText("Toggle Music " + strOnOff);
+		_musicBtn.setPosition(new Point(_centerX - 100, _centerY + 25));
+		_musicBtn.setSize(200, 50);
+		_musicBtn.addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
 				_optionSoundFX.play();
 				container.setMusicOn(!container.isMusicOn());
+				String strOnOff = (container.isMusicOn()) ? "off" : "on";
+				_musicBtn.setText("Toggle Music " + strOnOff);
 			}
 		});
-		display.addWidget(btn);
+		display.addWidget(_musicBtn);
 		
-		btn = FengGUI.createWidget(Button.class);
-		btn.setText("Toggle Sound");
-		btn.setPosition(new Point(_centerX - 100, _centerY - 25));
-		btn.setSize(200, 50);
-		btn.addButtonPressedListener(new IButtonPressedListener() {
+		_soundFxBtn = FengGUI.createWidget(Button.class);
+		strOnOff = (container.isSoundOn()) ? "off" : "on";
+		_soundFxBtn.setText("Toggle Sound FX " + strOnOff);
+		_soundFxBtn.setPosition(new Point(_centerX - 100, _centerY - 25));
+		_soundFxBtn.setSize(200, 50);
+		_soundFxBtn.addButtonPressedListener(new IButtonPressedListener() {
 			public void buttonPressed(ButtonPressedEvent arg0)
 			{
 				container.setSoundOn(!container.isSoundOn());
 				_optionSoundFX.play();
+				String strOnOff = (container.isSoundOn()) ? "off" : "on";
+				_soundFxBtn.setText("Toggle Sound FX " + strOnOff);
 			}
 		});
-		display.addWidget(btn);
+		display.addWidget(_soundFxBtn);
 		
-		btn = FengGUI.createWidget(Button.class);
+		Button btn = FengGUI.createWidget(Button.class);
 		btn.setText("Exit Menu");
 		btn.setPosition(new Point(_centerX - 100, _centerY - 75));
 		btn.setSize(200, 50);
