@@ -71,6 +71,9 @@ public class BB
 	private int _numGameLevels;
 	private HashMap<Integer, ArrayList<String>> _listFileNames;
 	private int _aNumMobsSpawned[];
+	private int _boss1Speed;
+	private int _boss2Speed;
+	private boolean _playerBossSent;
 
 	private BB()
 	{
@@ -639,27 +642,69 @@ public class BB
 	{
 		return _aNumMobsSpawned[level - 1];
 	}
-
-	public boolean spawnUsersMob(MobObject.Type type, int level)
+	
+	/**
+	 * sets the speed of the specified player's boss
+	 */
+	public void setBossSpeed(Team locTeam, int locSpeed)
 	{
-		boolean bSpawned;
+		if (!_playerBossSent)
+		{
+			if (locTeam == Team.Player1)
+			{
+				_boss1Speed = locSpeed;
+			}
+			else
+			{
+				_boss2Speed = locSpeed;
+			}
+		}
+	}
+
+	/**
+	 * @return the speed of the specified player's boss
+	 */
+	public int getBossSpeed(Team locTeam)
+	{
+		int locSpeed;
+		
+		if (locTeam == Team.Player1)
+		{
+			locSpeed = _boss1Speed;
+		}
+		else
+		{
+			locSpeed = _boss2Speed;
+		}
+		
+		return locSpeed;
+	}
+	
+	public boolean isBossSpawned()
+	{
+		return _playerBossSent;
+	}
+
+	public void setBossSpawned(boolean spawned)
+	{
+		_playerBossSent = spawned;
+	}
+
+	public MobObject spawnUsersMob(MobObject.Type type, int level)
+	{
+		MobObject newMob = null;
 		int price = MobObject.getMobPrice(type, level);
 		
 		if (getUsersPlayer().getGold() >= price)
 		{
-			bSpawned = true;
 			_aNumMobsSpawned[level - 1]++;
 			getUsersPlayer().purchase(price);
-			MobMaker.MakeMob(type, level, Team.Player1);
+			newMob = MobMaker.MakeMob(type, level, Team.Player1);
 			setMobTypeSelection(type);
 			setMobLevelSelection(level);
 		}
-		else
-		{
-			bSpawned = false;
-		}
 		
-		return bSpawned;
+		return newMob;
 	}
 
 	public boolean isAiEnabled()
@@ -695,6 +740,9 @@ public class BB
 		players = new Player[2];
 		players[0] = new Player();
 		players[1] = new Player();
+		_boss1Speed = MobObject.MOB_SPEED_BOSS;
+		_boss2Speed = MobObject.MOB_SPEED_BOSS;
+		_playerBossSent = false;
 		
 		currentHUD = new Button[3];
 		buttonPressedListeners = new IButtonPressedListener[3];

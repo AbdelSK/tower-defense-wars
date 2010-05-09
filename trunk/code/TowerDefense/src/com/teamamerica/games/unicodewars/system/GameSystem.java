@@ -11,12 +11,15 @@ import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 import com.teamamerica.games.unicodewars.factory.MobMaker;
 import com.teamamerica.games.unicodewars.object.GameObject;
+import com.teamamerica.games.unicodewars.object.mob.BossMob;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.utils.Team;
 import com.teamamerica.games.unicodewars.utils.Timer;
 
 public class GameSystem
 {
+	public static final int BASE_POINTS_PER_BOSS_SPEED = 25;
+
 	private static Logger logger = Logger.getLogger(GameSystem.class);
 	private static final long tickTime = 30000;
 	private static final long bossTime = 315000;
@@ -31,7 +34,6 @@ public class GameSystem
 	private Map<Systems, Subsystem> _systems;
 	private Timer tickTimer;
 	private Timer bossTimer;
-	private boolean playerBossSent = false;
 	private GameContainer _container;
 	
 	public GameSystem(GameContainer container, int width, int height)
@@ -66,7 +68,6 @@ public class GameSystem
 		loadLevel("");
 		_systems.put(Systems.BuildSubsystem, new BuildSubsystem(_container));
 		_systems.put(Systems.AiSubsystem, new AiSubsystem());
-		this.playerBossSent = false;
 		this.tickTimer = BB.inst().getNewTimer();
 		this.bossTimer = BB.inst().getNewTimer();
 		for (Subsystem s : _systems.values())
@@ -142,12 +143,14 @@ public class GameSystem
 			BB.inst().getUsersPlayer().addGold(BB.inst().getUsersPlayer().getIncome());
 		}
 		
-		if (this.bossTimer.xMilisecondsPassed(GameSystem.bossTime) && !this.playerBossSent)
+		if (this.bossTimer.xMilisecondsPassed(GameSystem.bossTime) && !BB.inst().isBossSpawned())
 		{
 			// Bosses being released
-			BB.inst().spawnUsersMob(MobObject.Type.boss, 1);
-			this.playerBossSent = true;
-			MobMaker.MakeMob(MobObject.Type.boss, 1, Team.Player2);
+			MobObject temp1 = BB.inst().spawnUsersMob(MobObject.Type.boss, 1);
+			MobObject temp2 = MobMaker.MakeMob(MobObject.Type.boss, 1, Team.Player2);
+			BB.inst().setBossSpawned(true);
+			((BossMob) temp1).setSpeed(BB.inst().getBossSpeed(Team.Player1));
+			((BossMob) temp2).setSpeed(BB.inst().getBossSpeed(Team.Player2));
 		}
 
 		BB.inst().checkTowerUpgradability();
@@ -174,40 +177,43 @@ public class GameSystem
 		g.setColor(Color.white);
 		String tickCountdown = "";
 		String bossCountdown = "";
-		int xpos = 384;
-		int ypos = 520;
-		g.drawString("Match " + (BB.inst().getGameLevel() + 1), xpos, ypos);
-		ypos += 20;
-		if (!this.tickTimer.paused())
-		{
-			tickCountdown = "Next income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
-		}
-		else if (this.playerBossSent)
-		{
-			tickCountdown = "PAUSED!";
-		}
-		g.drawString(tickCountdown, xpos, ypos);
-		ypos += 20;
-		g.drawString("Gold: " + BB.inst().getUsersPlayer().getGold(), xpos, ypos);
-		ypos += 20;
-		g.drawString("Income: " + BB.inst().getUsersPlayer().getIncome(), xpos, ypos);
-		ypos += 20;
-		g.drawString("Score: " + BB.inst().getUsersPlayer().getScore(), xpos, ypos);
-		ypos += 20;
-		if (!this.bossTimer.paused() && !this.playerBossSent)
+		int xpos1 = 325;
+		int xpos2 = 510;
+		int ypos = 515;
+		if (!this.bossTimer.paused() && !BB.inst().isBossSpawned())
 		{
 			int timeLeftSecs = Math.round(this.bossTimer.timeUntilXMilisecondsPass(GameSystem.bossTime) / 1000);
-			bossCountdown = "Time left: " + (timeLeftSecs / 60) + ":" + ((timeLeftSecs % 60 < 10) ? "0" : "") + (timeLeftSecs % 60);
+			// bossCountdown = "Time left: " + (timeLeftSecs / 60) + ":" +
+			// ((timeLeftSecs % 60 < 10) ? "0" : "") + (timeLeftSecs % 60);
+			bossCountdown = "Time left: " + (timeLeftSecs / 60) + ":" + String.format("%02d", (timeLeftSecs % 60));
 		}
-		else if (!this.bossTimer.paused() && this.playerBossSent)
+		else if (!this.bossTimer.paused() && BB.inst().isBossSpawned())
 		{
-			bossCountdown = "Boss Released!";
+			bossCountdown = "Bosses Released!";
 		}
 		else
 		{
 			bossCountdown = "PAUSED!";
 		}
-		g.drawString(bossCountdown, xpos, ypos);
+		tickCountdown = "Next income: " + Math.round(this.tickTimer.timeUntilXMilisecondsPass(GameSystem.tickTime) / 1000);
+
+		g.drawString("Match " + (BB.inst().getGameLevel() + 1), xpos1, ypos);
+		g.drawString(bossCountdown, xpos2, ypos);
+		ypos += 20;
+		g.drawString("Gold: " + BB.inst().getUsersPlayer().getGold(), xpos1, ypos);
+		ypos += 20;
+		g.drawString("Income: " + BB.inst().getUsersPlayer().getIncome(), xpos1, ypos);
+		g.drawString(tickCountdown, xpos2, ypos);
+		ypos += 20;
+		g.drawString("Score: " + BB.inst().getUsersPlayer().getScore(), xpos1, ypos);
+		ypos += 20;
+		// g.drawString("Boss Speed: PLR1=" +
+		// BB.inst().getBossSpeed(Team.Player1) + " PLR2=" +
+		// BB.inst().getBossSpeed(Team.Player2), xpos1, ypos);
+		g.drawString("Player 1 Boss Speed: " + BB.inst().getBossSpeed(Team.Player1), xpos1, ypos);
+		ypos += 20;
+		g.drawString("Player 2 Boss Speed: " + BB.inst().getBossSpeed(Team.Player2), xpos1, ypos);
+		ypos += 20;
 		g.popTransform();
 	}
 }
