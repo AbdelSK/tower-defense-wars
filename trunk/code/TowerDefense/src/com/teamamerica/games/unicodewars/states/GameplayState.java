@@ -169,7 +169,6 @@ public class GameplayState extends BHGameState
 		_gameSystem.end();
 		EventManager.$delete();
 		GameMap.$delete();
-		BB.$delete();
 		_themePosition = -1;
 	}
 	
