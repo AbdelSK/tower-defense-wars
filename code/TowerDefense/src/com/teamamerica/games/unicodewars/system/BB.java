@@ -649,9 +649,7 @@ public class BB
 		{
 			bSpawned = true;
 			_aNumMobsSpawned[level - 1]++;
-			getUsersPlayer().addIncome(price / 2);
 			getUsersPlayer().purchase(price);
-			getUsersPlayer().addScore(level);
 			MobMaker.MakeMob(type, level, Team.Player1);
 			setMobTypeSelection(type);
 			setMobLevelSelection(level);
