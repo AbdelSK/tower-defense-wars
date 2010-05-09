@@ -90,6 +90,10 @@ public class MoverComponent extends Component
 	{
 		if (this.path != null)
 		{
+			if (_owner instanceof MobObject)
+			{ // just in case the speed changes
+				this.speedFactor = ((MobObject) _owner).getSpeed();
+			}
 			if (stopwatch.xMilisecondsPassed(100 / this.speedFactor))
 			{
 				Location nextStepLoc = GameMap.inst().getLocationInPixels(this.path.getStep(this.pathStep + 1));

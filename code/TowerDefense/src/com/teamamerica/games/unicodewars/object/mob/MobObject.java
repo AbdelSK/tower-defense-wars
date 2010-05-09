@@ -29,26 +29,31 @@ public abstract class MobObject extends GameObject implements Mover
 	Type type;
 	String imagePath;
 	private boolean dead = false;
-	private static final int MOB_ATTACK_CHINESE = 1;
-	private static final int MOB_ATTACK_CYRILLIC = 1;
-	private static final int MOB_ATTACK_GREEK = 4;
-	private static final int MOB_ATTACK_LATIN = 2;
-	private static final int MOB_DEFENSE_CHINESE = 4;
-	private static final int MOB_DEFENSE_CYRILLIC = 1;
-	private static final int MOB_DEFENSE_GREEK = 2;
-	private static final int MOB_DEFENSE_LATIN = 1;
-	private static final int MOB_PRICE_CHINESE = 5;
-	private static final int MOB_PRICE_CYRILLIC = 8;
-	private static final int MOB_PRICE_GREEK = 7;
-	private static final int MOB_PRICE_LATIN = 6;
-	private static final int MOB_SPEED_CHINESE = 1;
-	private static final int MOB_SPEED_CYRILLIC = 2;
-	private static final int MOB_SPEED_GREEK = 1;
-	private static final int MOB_SPEED_LATIN = 4;
-	private static final int MOB_TOTAL_HP_CHINESE = 2;
-	private static final int MOB_TOTAL_HP_CYRILLIC = 4;
-	private static final int MOB_TOTAL_HP_GREEK = 1;
-	private static final int MOB_TOTAL_HP_LATIN = 1;
+	public static final int MOB_ATTACK_CHINESE = 1;
+	public static final int MOB_ATTACK_CYRILLIC = 1;
+	public static final int MOB_ATTACK_GREEK = 4;
+	public static final int MOB_ATTACK_LATIN = 2;
+	public static final int MOB_ATTACK_BOSS = 1000;
+	public static final int MOB_DEFENSE_CHINESE = 4;
+	public static final int MOB_DEFENSE_CYRILLIC = 1;
+	public static final int MOB_DEFENSE_GREEK = 2;
+	public static final int MOB_DEFENSE_LATIN = 1;
+	public static final int MOB_DEFENSE_BOSS = 20;
+	public static final int MOB_PRICE_CHINESE = 5;
+	public static final int MOB_PRICE_CYRILLIC = 8;
+	public static final int MOB_PRICE_GREEK = 7;
+	public static final int MOB_PRICE_LATIN = 6;
+	public static final int MOB_PRICE_BOSS = 0;
+	public static final int MOB_SPEED_CHINESE = 1;
+	public static final int MOB_SPEED_CYRILLIC = 2;
+	public static final int MOB_SPEED_GREEK = 1;
+	public static final int MOB_SPEED_LATIN = 4;
+	public static final int MOB_SPEED_BOSS = 3;
+	public static final int MOB_TOTAL_HP_CHINESE = 2;
+	public static final int MOB_TOTAL_HP_CYRILLIC = 4;
+	public static final int MOB_TOTAL_HP_GREEK = 1;
+	public static final int MOB_TOTAL_HP_LATIN = 1;
+	public static final int MOB_TOTAL_HP_BOSS = 500000;
 
 	public MobObject(String name, int id, int renderPriority, Location loc, Team side, int level, Type type, String imgLoc)
 	{
@@ -243,6 +248,9 @@ public abstract class MobObject extends GameObject implements Mover
 				break;
 			case cyrillic:
 				mobPrice = MOB_PRICE_CYRILLIC * getPriceFactor(level);
+				break;
+			case boss:
+				mobPrice = MOB_PRICE_BOSS * getPriceFactor(level);
 				break;
 			default:
 				mobPrice = 0;

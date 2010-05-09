@@ -15,8 +15,13 @@ public class BossMob extends MobObject
 		this.attack = 1000;
 		
 		this.currentHP = this.totalHP = 500000;
-		this.price = 10;
-		this.refund = 5;
+		this.price = 0;
+		this.refund = 0;
+	}
+	
+	public void setSpeed(int locSpeed)
+	{
+		speed = locSpeed;
 	}
 }
 

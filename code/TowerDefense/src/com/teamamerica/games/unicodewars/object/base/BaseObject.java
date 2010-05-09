@@ -8,6 +8,7 @@ import com.teamamerica.games.unicodewars.object.GameObject;
 import com.teamamerica.games.unicodewars.object.mob.MobObject;
 import com.teamamerica.games.unicodewars.system.BB;
 import com.teamamerica.games.unicodewars.system.EventManager;
+import com.teamamerica.games.unicodewars.system.GameSystem;
 import com.teamamerica.games.unicodewars.utils.Event;
 import com.teamamerica.games.unicodewars.utils.EventType;
 import com.teamamerica.games.unicodewars.utils.Location;
@@ -63,6 +64,7 @@ public class BaseObject extends GameObject
 			this.hitSound.play();
 			MobObject temp = (MobObject) obj;
 			this.health -= temp.getAttack();
+			BB.inst().setBossSpeed(_team.opponent(), (totalHealth - health) / GameSystem.BASE_POINTS_PER_BOSS_SPEED + MobObject.MOB_SPEED_BOSS);
 			if (_team == Team.Player2)
 			{
 				BB.inst().getUsersPlayer().addGold((int) Math.round(MobObject.getMobPrice(temp.getType(), temp.getLevel()) * 0.67));

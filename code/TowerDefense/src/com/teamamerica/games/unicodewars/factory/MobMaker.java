@@ -19,7 +19,7 @@ public class MobMaker
 	{
 	}
 	
-	public static void MakeMob(MobObject.Type type, int level, Team team)
+	public static MobObject MakeMob(MobObject.Type type, int level, Team team)
 	{
 		Location loc = GameMap.inst().getTeamSpawnPoint(team);
 		MobObject temp;
@@ -58,6 +58,8 @@ public class MobMaker
 		VisualComponent visualPart = new VisualComponent(temp, imgLoc);
 		temp.addComponent(visualPart);
 		BB.inst().addTeamObject(temp, team);
+		
+		return temp;
 	}
 	
 	private static String getImageSuffix(int level)
