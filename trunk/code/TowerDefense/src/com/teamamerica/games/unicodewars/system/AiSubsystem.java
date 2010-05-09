@@ -29,14 +29,17 @@ public class AiSubsystem implements Subsystem
 	private final int MAZE_FILE_YLOC_INDEX = 2;
 	private final int MOB_SPAWN_INTERVAL = 20000;
 	private final int MOB_SPAWN_FIRST_INTERVAL = 5000;
-	private final int STANDARD_MOB_SIZE = 10;
-	private final int TOWER_BUILDING_INTERVAL = 20000;
-	private final int TOWER_UPGRADE_INTERVAL = 10000;
+	private final int STANDARD_MOB_SIZE = 25;
+	private final int TOWER_BUILDING_INTERVAL = 10000;
+	private final int TOWER_UPGRADE_INTERVAL = 15000;
+	/* start upgrade after 7 mobs are built */
 	private final int TOWER_UPGRADE_FIRST_INTERVAL = TOWER_BUILDING_INTERVAL / 2 + TOWER_BUILDING_INTERVAL * 7;
 	
 	private LinkedList<AiMazeInstruction> _aiMazeInstructions;
 	/* counts of mobs spawned by AI separated by level */
 	private int _aNumMobsSpawned[];
+	/* number of times we've cycled all of the highest level mobs */
+	private int _curMaxMobCycle;
 	/* current level to be used for spawning mobs */
 	private int _curMobLevel;
 	/* interval to spawn next member, chosen randomly each time */
@@ -66,6 +69,7 @@ public class AiSubsystem implements Subsystem
 	
 	public AiSubsystem()
 	{
+		_curMaxMobCycle = 0;
 		_curMobMemberIntervalTime = determineMobMemberInterval();
 		_curMobMemberWaitTime = 0;
 		_curMobMembersSpawned = 0;
@@ -356,6 +360,10 @@ public class AiSubsystem implements Subsystem
 			if (_curMobLevel < Constants.MAX_MOB_LEVEL)
 			{
 				_curMobLevel++;
+			}
+			else
+			{
+				_curMaxMobCycle++;
 			}
 		}
 

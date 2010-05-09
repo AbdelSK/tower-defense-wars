@@ -63,6 +63,11 @@ public class BaseObject extends GameObject
 			this.hitSound.play();
 			MobObject temp = (MobObject) obj;
 			this.health -= temp.getAttack();
+			if (_team == Team.Player2)
+			{
+				BB.inst().getUsersPlayer().addGold((int) Math.round(MobObject.getMobPrice(temp.getType(), temp.getLevel()) * 0.67));
+				BB.inst().getUsersPlayer().addScore(temp.getLevel());
+			}
 			temp.deleteObject();
 			if (this.health <= 0)
 			{

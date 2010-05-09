@@ -19,7 +19,7 @@ public class GameSystem
 {
 	private static Logger logger = Logger.getLogger(GameSystem.class);
 	private static final long tickTime = 30000;
-	private static final long bossTime = 300000;
+	private static final long bossTime = 315000;
 	private UnicodeFont font;
 	
 	public enum Systems
@@ -196,7 +196,8 @@ public class GameSystem
 		ypos += 20;
 		if (!this.bossTimer.paused() && !this.playerBossSent)
 		{
-			bossCountdown = "Time left: " + Math.round(this.bossTimer.timeUntilXMilisecondsPass(GameSystem.bossTime) / 1000);
+			int timeLeftSecs = Math.round(this.bossTimer.timeUntilXMilisecondsPass(GameSystem.bossTime) / 1000);
+			bossCountdown = "Time left: " + (timeLeftSecs / 60) + ":" + ((timeLeftSecs % 60 < 10) ? "0" : "") + (timeLeftSecs % 60);
 		}
 		else if (!this.bossTimer.paused() && this.playerBossSent)
 		{
