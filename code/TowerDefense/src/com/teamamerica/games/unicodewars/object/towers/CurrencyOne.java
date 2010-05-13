@@ -7,10 +7,10 @@ import com.teamamerica.games.unicodewars.utils.Team;
 public class CurrencyOne extends TowerBase
 {
 	
-	public static int price = 60;
-	public static int BASE_ATTACK = 5;
-	public static int BASE_SPEED = 5;
-	public static int BASE_RADIUS = 3;
+	public static int price = 1000;
+	public static int BASE_ATTACK = 8;
+	public static int BASE_SPEED = 6;
+	public static int BASE_RADIUS = 4;
 	
 	public CurrencyOne(Location loc, Team team, String imgLoc)
 	{
@@ -30,22 +30,22 @@ public class CurrencyOne extends TowerBase
 		
 		if (level == 2)
 		{
-			this.attack = 10;
-			this.speed = 9;
-			this.radius = 4;
+			this.attack = 13;
+			this.speed = 12;
+			this.radius = 5;
 			this.getVisualComponent().updateImage("data/images/towers/Currency-2.png");
 		}
 		else if (level == 3)
 		{
-			this.attack = 15;
-			this.speed = 13;
-			this.radius = 6;
+			this.attack = 16;
+			this.speed = 15;
+			this.radius = 7;
 			this.getVisualComponent().updateImage("data/images/towers/Currency-3.png");
 		}
 		else if (level == 4)
 		{
 			this.attack = 20;
-			this.speed = 17;
+			this.speed = 20;
 			this.radius = 7;
 			this.getVisualComponent().updateImage("data/images/towers/Currency-4.png");
 		}
@@ -62,15 +62,15 @@ public class CurrencyOne extends TowerBase
 	{
 		if (level == 1)
 		{
-			return 120;
+			return 1200;
 		}
 		else if (level == 2)
 		{
-			return 240;
+			return 1500;
 		}
 		else if (level == 3)
 		{
-			return 480;
+			return 2000;
 		}
 		return 0;
 	}

@@ -7,8 +7,8 @@ import com.teamamerica.games.unicodewars.utils.Team;
 public class CardOne extends TowerBase
 {
 	
-	public static int price = 40;
-	public static int BASE_ATTACK = 2;
+	public static int price = 250;
+	public static int BASE_ATTACK = 4;
 	public static int BASE_SPEED = 2;
 	public static int BASE_RADIUS = 4;
 	
@@ -30,23 +30,23 @@ public class CardOne extends TowerBase
 		
 		if (level == 2)
 		{
-			this.attack = 4;
-			this.speed = 4;
+			this.attack = 6;
+			this.speed = 3;
 			this.radius = 5;
 			this.getVisualComponent().updateImage("data/images/towers/Card-2.png");
 		}
 		else if (level == 3)
 		{
 			this.attack = 8;
-			this.speed = 8;
-			this.radius = 7;
+			this.speed = 5;
+			this.radius = 6;
 			this.getVisualComponent().updateImage("data/images/towers/Card-3.png");
 		}
 		else if (level == 4)
 		{
-			this.attack = 16;
-			this.speed = 16;
-			this.radius = 8;
+			this.attack = 10;
+			this.speed = 6;
+			this.radius = 7;
 			this.getVisualComponent().updateImage("data/images/towers/Card-4.png");
 		}
 		super.doUpgrade();
@@ -62,15 +62,15 @@ public class CardOne extends TowerBase
 	{
 		if (level == 1)
 		{
-			return 80;
+			return 350;
 		}
 		else if (level == 2)
 		{
-			return 160;
+			return 500;
 		}
 		else if (level == 3)
 		{
-			return 320;
+			return 750;
 		}
 		return 0;
 	}

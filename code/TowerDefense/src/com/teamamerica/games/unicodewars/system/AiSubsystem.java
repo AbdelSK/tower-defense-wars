@@ -22,12 +22,12 @@ import com.teamamerica.games.unicodewars.utils.AiMazeInstruction.Action;
 public class AiSubsystem implements Subsystem
 {
 	private final int UNDEFINED = -1;
-	private final int MAX_MOB_MEMBER_INTERVAL = 3000;
+	private final int MAX_MOB_MEMBER_INTERVAL = 6000;
 	private final String MAZE_FILE_DELIMITER = ",";
 	private final int MAZE_FILE_TYPE_INDEX = 0;
 	private final int MAZE_FILE_XLOC_INDEX = 1;
 	private final int MAZE_FILE_YLOC_INDEX = 2;
-	private final int MOB_SPAWN_INTERVAL = 20000;
+	private final int MOB_SPAWN_INTERVAL = 30000;
 	private final int MOB_SPAWN_FIRST_INTERVAL = 5000;
 	private final int STANDARD_MOB_SIZE = 25;
 	private final int TOWER_BUILDING_INTERVAL = 10000;
@@ -134,7 +134,7 @@ public class AiSubsystem implements Subsystem
     				{ // time to spawn next member
     					MobMaker.MakeMob(_curMobType, _curMobLevel, Team.Player2);
     					_curMobMembersSpawned++;
-    					_curMobMemberIntervalTime = determineMobMemberInterval();
+						_curMobMemberIntervalTime = determineMobMemberInterval(_curMobType, _curMobLevel);
     					_curMobMemberWaitTime = 0;
     				}
     			}
@@ -405,6 +405,20 @@ public class AiSubsystem implements Subsystem
 	private int determineMobMemberInterval()
 	{
 		return (int) Math.round(Math.random() * MAX_MOB_MEMBER_INTERVAL);
+	}
+	
+	/**
+	 * Determines what the interval will be for spawning the next member of a
+	 * mob
+	 */
+	private int determineMobMemberInterval(MobObject.Type type, int level)
+	{
+		int speedFactor = MobObject.getMobSpeed(type, level);
+		if (speedFactor == 0)
+		{
+			speedFactor = 1;
+		}
+		return determineMobMemberInterval() / speedFactor;
 	}
 
 	private void readDataFile(String mazeDataFileName)

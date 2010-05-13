@@ -97,21 +97,30 @@ public class MoverComponent extends Component
 			if (stopwatch.xMilisecondsPassed(100 / this.speedFactor))
 			{
 				Location nextStepLoc = GameMap.inst().getLocationInPixels(this.path.getStep(this.pathStep + 1));
+				int pixelsToMove;
+				if (this.speedFactor > 8)
+				{
+					pixelsToMove = 2;
+				}
+				else
+				{
+					pixelsToMove = 1;
+				}
 				if (nextStepLoc.x - _parent.getPositionInPixels().x > 0)
 				{
-					_parent.getPositionInPixels().x++;
+					_parent.getPositionInPixels().x += pixelsToMove;
 				}
 				else if (nextStepLoc.x - _parent.getPositionInPixels().x < 0)
 				{
-					_parent.getPositionInPixels().x--;
+					_parent.getPositionInPixels().x -= pixelsToMove;
 				}
 				if (nextStepLoc.y - _parent.getPositionInPixels().y > 0)
 				{
-					_parent.getPositionInPixels().y++;
+					_parent.getPositionInPixels().y += pixelsToMove;
 				}
 				else if (nextStepLoc.y - _parent.getPositionInPixels().y < 0)
 				{
-					_parent.getPositionInPixels().y--;
+					_parent.getPositionInPixels().y -= pixelsToMove;
 				}
 				
 				if ((_parent.getPositionInPixels().x == nextStepLoc.x) && (_parent.getPositionInPixels().y == nextStepLoc.y))

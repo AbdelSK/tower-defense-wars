@@ -21,8 +21,8 @@ public class GameSystem
 	public static final int BASE_POINTS_PER_BOSS_SPEED = 25;
 
 	private static Logger logger = Logger.getLogger(GameSystem.class);
-	private static final long tickTime = 30000;
-	private static final long bossTime = 315000;
+	private static final long tickTime = 25000;
+	private static final long bossTime = 1200000;
 	private UnicodeFont font;
 	
 	public enum Systems
