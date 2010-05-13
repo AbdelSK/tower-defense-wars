@@ -97,11 +97,11 @@ public class DiceOne extends TowerBase
 		
 		int speedAdd = (this.speed <= MAX_SPEED) ? gen.nextInt(totalAtt - (attkAdd - 1)) + 1 : 0; // 0-total+1
 		this.speed += speedAdd;
-		
+
 		//
 		// Check to see if tower has been maxed out
 		//
-		if (attkAdd >= MAX_ATTACK && speedAdd >= MAX_SPEED)
+		if (level < 6 && this.attack >= MAX_ATTACK && this.speed >= MAX_SPEED)
 		{
 			level = 6;
 			this.getVisualComponent().updateImage("data/images/towers/Dice-6.png");
@@ -131,19 +131,19 @@ public class DiceOne extends TowerBase
 		}
 		else if (level == 2)
 		{
-			return 15;
+			return 20;
 		}
 		else if (level == 3)
 		{
-			return 30;
+			return 40;
 		}
 		else if (level == 4)
 		{
-			return 60;
+			return 80;
 		}
 		else if (level == 5)
 		{
-			return 120;
+			return 160;
 		}
 		return 0;
 	}

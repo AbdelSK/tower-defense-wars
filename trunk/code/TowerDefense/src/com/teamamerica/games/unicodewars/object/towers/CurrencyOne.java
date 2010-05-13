@@ -62,15 +62,15 @@ public class CurrencyOne extends TowerBase
 	{
 		if (level == 1)
 		{
-			return 1200;
+			return 2000;
 		}
 		else if (level == 2)
 		{
-			return 1500;
+			return 4000;
 		}
 		else if (level == 3)
 		{
-			return 2000;
+			return 10000;
 		}
 		return 0;
 	}
