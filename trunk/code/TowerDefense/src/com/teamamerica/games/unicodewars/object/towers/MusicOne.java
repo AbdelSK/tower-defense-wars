@@ -7,9 +7,9 @@ import com.teamamerica.games.unicodewars.utils.Team;
 public class MusicOne extends TowerBase
 {
 	
-	public static int price = 50;
-	public static int BASE_ATTACK = 2;
-	public static int BASE_SPEED = 5;
+	public static int price = 500;
+	public static int BASE_ATTACK = 6;
+	public static int BASE_SPEED = 6;
 	public static int BASE_RADIUS = 2;
 	
 	public MusicOne(Location loc, Team team, String imgLoc)
@@ -30,23 +30,23 @@ public class MusicOne extends TowerBase
 		
 		if (level == 2)
 		{
-			this.attack = 4;
-			this.speed = 10;
-			this.radius = 3;
+			this.attack = 8;
+			this.speed = 9;
+			this.radius = 2;
 			this.getVisualComponent().updateImage("data/images/towers/Music-2.png");
 		}
 		else if (level == 3)
 		{
-			this.attack = 8;
-			this.speed = 15;
-			this.radius = 4;
+			this.attack = 10;
+			this.speed = 12;
+			this.radius = 3;
 			this.getVisualComponent().updateImage("data/images/towers/Music-3.png");
 		}
 		else if (level == 4)
 		{
-			this.attack = 16;
-			this.speed = 20;
-			this.radius = 5;
+			this.attack = 14;
+			this.speed = 15;
+			this.radius = 3;
 			this.getVisualComponent().updateImage("data/images/towers/Music-4.png");
 		}
 		super.doUpgrade();
@@ -62,15 +62,15 @@ public class MusicOne extends TowerBase
 	{
 		if (level == 1)
 		{
-			return 100;
+			return 750;
 		}
 		else if (level == 2)
 		{
-			return 200;
+			return 1000;
 		}
 		else if (level == 3)
 		{
-			return 400;
+			return 1500;
 		}
 		return 0;
 	}

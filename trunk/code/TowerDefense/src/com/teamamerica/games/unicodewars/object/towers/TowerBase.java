@@ -35,6 +35,7 @@ public abstract class TowerBase extends GameObject
 	}
 	
 	public static final short size = 2;
+	private static final int ATTACK_FACTOR = 3;
 	ConfigurableEmitter emitter[] = null;
 	private ParticleSystem part_sys = null;
 	
@@ -42,10 +43,10 @@ public abstract class TowerBase extends GameObject
 
 	int level = 1;
 	int radius = 0;
-	int attack = 0;
 	int speed = 0;
 	int price = 0;
 	int currentDamage = 0;
+	protected int attack = 0;
 	private int numAttacks = 0;
 	private int numKills = 0;
 	private Timer stopWatch;
@@ -66,6 +67,7 @@ public abstract class TowerBase extends GameObject
 		this.type = type;
 		this._size = size;
 		this.imagePath = imgLoc;
+		this.attack = attack;
 		stopWatch = BB.inst().getNewTimer();
 		locsInRange = new HashSet<Location>();
 		try
@@ -110,7 +112,6 @@ public abstract class TowerBase extends GameObject
 		}
 		
 		this.radius = radius;
-		this.attack = attack;
 		this.speed = speed;
 		
 		EventType buildType;
@@ -353,7 +354,16 @@ public abstract class TowerBase extends GameObject
 				}
 			}
 			
-			this.currentDamage = ((this.attack * 5) - mob.getDefense());
+			int mobDefense;
+			if (this.type == mob.getDefenseType())
+			{
+				mobDefense = mob.getDefense();
+			}
+			else
+			{
+				mobDefense = 0;
+			}
+			this.currentDamage = (int) Math.round((1 - mobDefense / 100.0) * getAttack());
 			// the defense mitigated all of the damage
 			if (this.currentDamage < 0)
 				this.currentDamage = 0;
@@ -411,7 +421,7 @@ public abstract class TowerBase extends GameObject
 	
 	public int getAttack()
 	{
-		return attack;
+		return attack * ATTACK_FACTOR;
 	}
 	
 	public int getSpeed()

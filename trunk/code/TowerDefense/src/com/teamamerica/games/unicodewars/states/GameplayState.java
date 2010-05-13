@@ -377,7 +377,7 @@ public class GameplayState extends BHGameState
 		for (int i = 0; i < 4; i++)
 			for (int j = 0; j < 5; j++)
 			{
-				String label2 = "HP: " + MobObject.getMobTotalHp(MobObject.Type.values()[i], j + 1) + "\nDef: " + MobObject.getMobDefense(MobObject.Type.values()[i], j + 1) + "\nAtk: "
+				String label2 = "HP: " + MobObject.getMobTotalHp(MobObject.Type.values()[i], j + 1) + "\nD: " + MobObject.getMobDefense(MobObject.Type.values()[i], j + 1) + "%\nAtk: "
 						+ MobObject.getMobAttack(MobObject.Type.values()[i], j + 1) + "\nSpd: " + MobObject.getMobSpeed(MobObject.Type.values()[i], j + 1);
 				Container buttonContainer = new Container(new GridLayout(1, 1));
 				_mobButtons[i][j] = FengGUI.createWidget(MobButton.class);
@@ -385,10 +385,39 @@ public class GameplayState extends BHGameState
 				_mobButtons[i][j].setMultiline(true);
 				_mobButtons[i][j].setShrinkable(false);
 				_mobButtons[i][j].setPosition(new Point(j * 64, i * 64));
-				_mobButtons[i][j].init(text[i] + " " + (j + 1) + "\n$" + MobObject.getMobPrice(type[i], j + 1), label2, 64, 64, type[i], (j + 1));
+				_mobButtons[i][j].init(text[i] + " " + (j + 1) + "\n(" + getTowerNickname(MobObject.getMobDefenseType(type[i], j + 1)) + ")\n$" + MobObject.getMobPrice(type[i], j + 1), label2, 64, 64, type[i], (j + 1));
 				_mobButtons[i][j].addButtonPressedListener(_mobButtons[i][j]);
 				buttonContainer.addWidget(_mobButtons[i][j]);
 				mobInterface.addWidget(buttonContainer);
 			}
+	}
+	
+	private String getTowerNickname(TowerBase.Type type)
+	{
+		String nickname;
+		
+		switch (type)
+		{
+			case diceOne:
+				nickname = "dice";
+				break;
+			case chessOne:
+				nickname = "chess";
+				break;
+			case cardOne:
+				nickname = "card";
+				break;
+			case musicOne:
+				nickname = "music";
+				break;
+			case currencyOne:
+				nickname = "curr";
+				break;
+			default:
+				nickname = "";
+				break;
+		}
+		
+		return nickname;
 	}
 }

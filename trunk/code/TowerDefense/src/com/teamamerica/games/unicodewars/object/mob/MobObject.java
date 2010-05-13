@@ -5,7 +5,9 @@ import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.util.pathfinding.Mover;
 import com.teamamerica.games.unicodewars.object.GameObject;
+import com.teamamerica.games.unicodewars.object.towers.TowerBase;
 import com.teamamerica.games.unicodewars.system.EventManager;
+import com.teamamerica.games.unicodewars.utils.Constants;
 import com.teamamerica.games.unicodewars.utils.Event;
 import com.teamamerica.games.unicodewars.utils.EventType;
 import com.teamamerica.games.unicodewars.utils.Location;
@@ -27,33 +29,34 @@ public abstract class MobObject extends GameObject implements Mover
 	int price = 0;
 	int refund = 0;
 	Type type;
+	TowerBase.Type defenseType;
 	String imagePath;
 	private boolean dead = false;
 	public static final int MOB_ATTACK_CHINESE = 1;
-	public static final int MOB_ATTACK_CYRILLIC = 1;
-	public static final int MOB_ATTACK_GREEK = 4;
-	public static final int MOB_ATTACK_LATIN = 2;
+	public static final int MOB_ATTACK_CYRILLIC = 3;
+	public static final int MOB_ATTACK_GREEK = 3;
+	public static final int MOB_ATTACK_LATIN = 1;
 	public static final int MOB_ATTACK_BOSS = 1000;
-	public static final int MOB_DEFENSE_CHINESE = 4;
-	public static final int MOB_DEFENSE_CYRILLIC = 1;
-	public static final int MOB_DEFENSE_GREEK = 2;
-	public static final int MOB_DEFENSE_LATIN = 1;
-	public static final int MOB_DEFENSE_BOSS = 20;
+	public static final int MOB_DEFENSE_CHINESE[] = { 40, 60, 80, 100, 120 };
+	public static final int MOB_DEFENSE_CYRILLIC[] = { 10, 30, 55, 70, 90 };
+	public static final int MOB_DEFENSE_GREEK[] = { 30, 50, 70, 90, 100 };
+	public static final int MOB_DEFENSE_LATIN[] = { 30, 50, 70, 90, 100 };
+	public static final int MOB_DEFENSE_BOSS = 0;
 	public static final int MOB_PRICE_CHINESE = 5;
 	public static final int MOB_PRICE_CYRILLIC = 8;
 	public static final int MOB_PRICE_GREEK = 7;
 	public static final int MOB_PRICE_LATIN = 6;
 	public static final int MOB_PRICE_BOSS = 0;
-	public static final int MOB_SPEED_CHINESE = 1;
-	public static final int MOB_SPEED_CYRILLIC = 2;
-	public static final int MOB_SPEED_GREEK = 1;
-	public static final int MOB_SPEED_LATIN = 4;
+	public static final int MOB_SPEED_CHINESE[] = { 2, 4, 8, 8, 16 };
+	public static final int MOB_SPEED_CYRILLIC[] = { 4, 6, 8, 8, 16 };
+	public static final int MOB_SPEED_GREEK[] = { 3, 4, 6, 8, 8 };
+	public static final int MOB_SPEED_LATIN[] = { 4, 6, 8, 8, 8 };
 	public static final int MOB_SPEED_BOSS = 3;
-	public static final int MOB_TOTAL_HP_CHINESE = 2;
-	public static final int MOB_TOTAL_HP_CYRILLIC = 4;
-	public static final int MOB_TOTAL_HP_GREEK = 1;
-	public static final int MOB_TOTAL_HP_LATIN = 1;
-	public static final int MOB_TOTAL_HP_BOSS = 500000;
+	public static final int MOB_TOTAL_HP_CHINESE = 200; // 100
+	public static final int MOB_TOTAL_HP_CYRILLIC = 400; // 300
+	public static final int MOB_TOTAL_HP_GREEK = 400; // 150
+	public static final int MOB_TOTAL_HP_LATIN = 200; // 200
+	public static final int MOB_TOTAL_HP_BOSS = 600000;
 
 	public MobObject(String name, int id, int renderPriority, Location loc, Team side, int level, Type type, String imgLoc)
 	{
@@ -63,6 +66,11 @@ public abstract class MobObject extends GameObject implements Mover
 		this.level = level;
 		this.type = type;
 		this.price = MobObject.getMobPrice(type, level);
+		this.speed = MobObject.getMobSpeed(type, level);
+		this.attack = MobObject.getMobAttack(type, level);
+		this.currentHP = this.totalHP = MobObject.getMobTotalHp(type, level);
+		this.defense = MobObject.getMobDefense(type, level);
+		this.defenseType = MobObject.getMobDefenseType(type, level);
 		this.refund = this.price / 2;
 		this.imagePath = imgLoc;
 	}
@@ -87,6 +95,11 @@ public abstract class MobObject extends GameObject implements Mover
 		return defense;
 	}
 	
+	public TowerBase.Type getDefenseType()
+	{
+		return defenseType;
+	}
+
 	public int getSpeed()
 	{
 		return speed;
@@ -126,9 +139,18 @@ public abstract class MobObject extends GameObject implements Mover
 	{
 		currentHP += amount;
 		if (currentHP <= 0)
+		{
 			return false;
-		else
+		}
+		else if (currentHP > totalHP)
+		{
+			currentHP = totalHP;
 			return true;
+		}
+		else
+		{
+			return true;
+		}
 	}
 	
 	@Override
@@ -169,16 +191,6 @@ public abstract class MobObject extends GameObject implements Mover
 		}
 	}
 
-	private static int getAttackFactor(int level)
-	{
-		return (int) Math.pow(2, level - 1);
-	}
-
-	private static int getDefenseFactor(int level)
-	{
-		return (int) Math.pow(2, level - 1);
-	}
-
 	public static int getMobAttack(MobObject.Type type, int level)
 	{
 		int mobAttack;
@@ -209,26 +221,59 @@ public abstract class MobObject extends GameObject implements Mover
 	{
 		int mobDefense;
 		
-		switch (type)
+		if (level > 0 && level <= Constants.MAX_MOB_LEVEL)
 		{
-			case chinese:
-				mobDefense = MOB_DEFENSE_CHINESE * getDefenseFactor(level);
-				break;
-			case latin:
-				mobDefense = MOB_DEFENSE_LATIN * getDefenseFactor(level);
-				break;
-			case greek:
-				mobDefense = MOB_DEFENSE_GREEK * getDefenseFactor(level);
-				break;
-			case cyrillic:
-				mobDefense = MOB_DEFENSE_CYRILLIC * getDefenseFactor(level);
-				break;
-			default:
-				mobDefense = 0;
-				break;
+			switch (type)
+			{
+				case chinese:
+					mobDefense = MOB_DEFENSE_CHINESE[level - 1];
+					break;
+				case latin:
+					mobDefense = MOB_DEFENSE_LATIN[level - 1];
+					break;
+				case greek:
+					mobDefense = MOB_DEFENSE_GREEK[level - 1];
+					break;
+				case cyrillic:
+					mobDefense = MOB_DEFENSE_CYRILLIC[level - 1];
+					break;
+				default:
+					mobDefense = 0;
+					break;
+			}
+		}
+		else
+		{
+			mobDefense = 0;
 		}
 		
 		return mobDefense;
+	}
+
+	public static TowerBase.Type getMobDefenseType(MobObject.Type type, int level)
+	{
+		TowerBase.Type mobDefenseType;
+		
+		switch (type)
+		{
+			case chinese:
+				mobDefenseType = TowerBase.Type.musicOne;
+				break;
+			case latin:
+				mobDefenseType = TowerBase.Type.cardOne;
+				break;
+			case greek:
+				mobDefenseType = TowerBase.Type.chessOne;
+				break;
+			case cyrillic:
+				mobDefenseType = TowerBase.Type.diceOne;
+				break;
+			default:
+				mobDefenseType = null;
+				break;
+		}
+		
+		return mobDefenseType;
 	}
 
 	public static int getMobPrice(MobObject.Type type, int level)
@@ -264,23 +309,30 @@ public abstract class MobObject extends GameObject implements Mover
 	{
 		int mobSpeed;
 		
-		switch (type)
+		if (level > 0 && level <= Constants.MAX_MOB_LEVEL)
 		{
-			case chinese:
-				mobSpeed = MOB_SPEED_CHINESE * getSpeedFactor(level);
-				break;
-			case latin:
-				mobSpeed = MOB_SPEED_LATIN * getSpeedFactor(level);
-				break;
-			case greek:
-				mobSpeed = MOB_SPEED_GREEK * getSpeedFactor(level);
-				break;
-			case cyrillic:
-				mobSpeed = MOB_SPEED_CYRILLIC * getSpeedFactor(level);
-				break;
-			default:
-				mobSpeed = 0;
-				break;
+			switch (type)
+			{
+				case chinese:
+					mobSpeed = MOB_SPEED_CHINESE[level - 1];
+					break;
+				case latin:
+					mobSpeed = MOB_SPEED_LATIN[level - 1];
+					break;
+				case greek:
+					mobSpeed = MOB_SPEED_GREEK[level - 1];
+					break;
+				case cyrillic:
+					mobSpeed = MOB_SPEED_CYRILLIC[level - 1];
+					break;
+				default:
+					mobSpeed = 0;
+					break;
+			}
+		}
+		else
+		{
+			mobSpeed = 0;
 		}
 		
 		return mobSpeed;
@@ -317,13 +369,14 @@ public abstract class MobObject extends GameObject implements Mover
 		return (int) Math.pow(4, level - 1);
 	}
 
-	private static int getSpeedFactor(int level)
+	private static int getTotalHpFactor(int level)
 	{
 		return (int) Math.pow(2, level - 1);
 	}
-
-	private static int getTotalHpFactor(int level)
+	
+	private static int getAttackFactor(int level)
 	{
-		return 25 * (int) Math.pow(2, level - 1);
+		return (int) Math.pow(2, level - 1);
 	}
+	
 }

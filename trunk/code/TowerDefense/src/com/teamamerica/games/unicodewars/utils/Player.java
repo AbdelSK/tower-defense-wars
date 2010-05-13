@@ -8,8 +8,8 @@ public class Player
 	
 	public Player()
 	{
-		this.gold = 200;
-		this.income = 5;
+		this.gold = 300;
+		this.income = 100;
 		this.score = 0;
 	}
 	
