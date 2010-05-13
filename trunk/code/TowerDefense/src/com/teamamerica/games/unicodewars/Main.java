@@ -31,7 +31,7 @@ public class Main extends StateBasedGame
 
 	public Main()
 	{
-		super("Unicode Wars - Beta");
+		super("Unicode Wars");
 	}
 	
 	@Override
@@ -75,7 +75,8 @@ public class Main extends StateBasedGame
 			app.setDisplayMode(1024, 768, false);
 			app.setMaximumLogicUpdateInterval(20);
 			app.setMinimumLogicUpdateInterval(16);
-			app.setTargetFrameRate(80);
+			app.setTargetFrameRate(60);
+			app.setShowFPS(false);
 			app.start();
 		}
 		catch (SlickException e)

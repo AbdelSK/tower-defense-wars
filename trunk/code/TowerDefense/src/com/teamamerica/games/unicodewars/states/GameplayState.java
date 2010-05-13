@@ -182,7 +182,6 @@ public class GameplayState extends BHGameState
 		g.setAntiAlias(true);
 		g.setBackground(Color.black);
 		g.setColor(Color.black);
-		g.drawString(container.getFPS() + "", 2, 2);
 		
 		try
 		{
