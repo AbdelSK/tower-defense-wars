@@ -22,7 +22,7 @@ public class GameSystem
 
 	private static Logger logger = Logger.getLogger(GameSystem.class);
 	private static final long tickTime = 25000;
-	private static final long bossTime = 1200000;
+	private long bossTime;
 	private UnicodeFont font;
 	
 	public enum Systems
@@ -60,7 +60,6 @@ public class GameSystem
 			e.printStackTrace();
 		}
 		_systems = new TreeMap<Systems, Subsystem>();
-
 	}
 	
 	public void start()
@@ -119,6 +118,14 @@ public class GameSystem
 		BB.inst();
 		EventManager.inst();
 		GameMap.inst().LoadMap();
+		if (BB.inst().getGameLevel() < 2)
+		{ // make the first 2 matches shorter so user can get a feel for it
+			bossTime = 600000;
+		}
+		else
+		{
+			bossTime = 1200000;
+		}
 	}
 	
 	public void update(int elapsed)
@@ -143,7 +150,7 @@ public class GameSystem
 			BB.inst().getUsersPlayer().addGold(BB.inst().getUsersPlayer().getIncome());
 		}
 		
-		if (this.bossTimer.xMilisecondsPassed(GameSystem.bossTime) && !BB.inst().isBossSpawned())
+		if (this.bossTimer.xMilisecondsPassed(bossTime) && !BB.inst().isBossSpawned())
 		{
 			// Bosses being released
 			MobObject temp1 = BB.inst().spawnUsersMob(MobObject.Type.boss, 1);
@@ -182,7 +189,7 @@ public class GameSystem
 		int ypos = 515;
 		if (!this.bossTimer.paused() && !BB.inst().isBossSpawned())
 		{
-			int timeLeftSecs = Math.round(this.bossTimer.timeUntilXMilisecondsPass(GameSystem.bossTime) / 1000);
+			int timeLeftSecs = Math.round(this.bossTimer.timeUntilXMilisecondsPass(bossTime) / 1000);
 			// bossCountdown = "Time left: " + (timeLeftSecs / 60) + ":" +
 			// ((timeLeftSecs % 60 < 10) ? "0" : "") + (timeLeftSecs % 60);
 			bossCountdown = "Time left: " + (timeLeftSecs / 60) + ":" + String.format("%02d", (timeLeftSecs % 60));

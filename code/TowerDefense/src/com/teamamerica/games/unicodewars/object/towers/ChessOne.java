@@ -66,11 +66,11 @@ public class ChessOne extends TowerBase
 		}
 		else if (level == 2)
 		{
-			return 200;
+			return 250;
 		}
 		else if (level == 3)
 		{
-			return 400;
+			return 500;
 		}
 		return 0;
 	}

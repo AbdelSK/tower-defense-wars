@@ -66,11 +66,11 @@ public class CardOne extends TowerBase
 		}
 		else if (level == 2)
 		{
-			return 500;
+			return 650;
 		}
 		else if (level == 3)
 		{
-			return 750;
+			return 1000;
 		}
 		return 0;
 	}

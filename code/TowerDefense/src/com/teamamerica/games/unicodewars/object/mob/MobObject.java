@@ -47,11 +47,11 @@ public abstract class MobObject extends GameObject implements Mover
 	public static final int MOB_PRICE_GREEK = 7;
 	public static final int MOB_PRICE_LATIN = 6;
 	public static final int MOB_PRICE_BOSS = 0;
-	public static final int MOB_SPEED_CHINESE[] = { 2, 4, 8, 8, 16 };
-	public static final int MOB_SPEED_CYRILLIC[] = { 4, 6, 8, 8, 16 };
+	public static final int MOB_SPEED_CHINESE[] = { 2, 4, 6, 8, 8 };
+	public static final int MOB_SPEED_CYRILLIC[] = { 4, 6, 8, 8, 8 };
 	public static final int MOB_SPEED_GREEK[] = { 3, 4, 6, 8, 8 };
 	public static final int MOB_SPEED_LATIN[] = { 4, 6, 8, 8, 8 };
-	public static final int MOB_SPEED_BOSS = 3;
+	public static final int MOB_SPEED_BOSS = 1;
 	public static final int MOB_TOTAL_HP_CHINESE = 200; // 100
 	public static final int MOB_TOTAL_HP_CYRILLIC = 400; // 300
 	public static final int MOB_TOTAL_HP_GREEK = 400; // 150

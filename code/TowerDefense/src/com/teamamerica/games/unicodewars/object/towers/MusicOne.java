@@ -66,11 +66,11 @@ public class MusicOne extends TowerBase
 		}
 		else if (level == 2)
 		{
-			return 1000;
+			return 1500;
 		}
 		else if (level == 3)
 		{
-			return 1500;
+			return 3000;
 		}
 		return 0;
 	}
