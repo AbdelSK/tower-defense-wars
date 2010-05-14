@@ -1,0 +1,12 @@
+0,pjweird1.txt
+0,pjweird2.txt
+0,maze1.txt
+0,easy-1.txt
+1,pjweird4.txt
+1,pjweird3.txt
+1,pjcorners0.txt
+2,pjdiags0.txt
+2,pjmix0.txt
+3,pjweird0.txt
+3,cwcurve.txt
+4,hard.txt
