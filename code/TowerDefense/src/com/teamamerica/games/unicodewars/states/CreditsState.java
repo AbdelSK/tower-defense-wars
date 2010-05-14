@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
@@ -35,7 +34,6 @@ public class CreditsState extends BHGameState
 		return Main.States.CreditsState.ordinal();
 	}
 	
-
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
@@ -89,8 +87,8 @@ public class CreditsState extends BHGameState
 		super.enter(container, game);
 
 		_centerX = container.getWidth() / 2;
-
-// if (game instanceof Main)
+		
+		// if (game instanceof Main)
 		// {
 		// Main realGame = (Main) game;
 		// stateToLeaveTo = realGame.LastState;
@@ -157,8 +155,7 @@ public class CreditsState extends BHGameState
 	@Override
 	public void keyReleased(int key, char c)
 	{
-		if (key != Input.KEY_LSHIFT && key != Input.KEY_RSHIFT && key != Input.KEY_RCONTROL && key != Input.KEY_LCONTROL && key != Input.KEY_LALT && key != Input.KEY_RALT)
-			leaving = true;
+		leaving = true;
 	}
 
 }

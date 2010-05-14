@@ -17,7 +17,7 @@ import com.teamamerica.games.unicodewars.utils.Team;
 public class BaseObject extends GameObject
 {
 	public static final short size = 4;
-	public static final int totalHealth = 200;
+	public static final int totalHealth = 500;
 	private int health;
 	private ArrayList<Location> locations;
 	private Sound hitSound;
