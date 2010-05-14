@@ -43,7 +43,8 @@ public class MobMaker
 				temp = new LatinChar(loc, team, level, type, imgLoc);
 				break;
 			case boss:
-				imgLoc = "data/images/mobs/Boss.png";
+				// imgLoc = "data/images/mobs/Boss.png";
+				imgLoc = "data/images/towers/Special-3.png";
 				temp = new BossMob(loc, team, level, type, imgLoc);
 				break;
 			default:
