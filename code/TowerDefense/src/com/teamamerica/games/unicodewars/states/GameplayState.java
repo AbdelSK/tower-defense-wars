@@ -361,10 +361,10 @@ public class GameplayState extends BHGameState
 	{
 		String text[] = new String[4];
 		MobObject.Type type[] = new MobObject.Type[4];
-		text[0] = "Chn";
-		text[1] = "Lat";
-		text[2] = "Grk";
-		text[3] = "Cyr";
+		text[0] = "Chinese";
+		text[1] = "Latin";
+		text[2] = "Greek";
+		text[3] = "Cyrillic";
 		type[0] = MobObject.Type.chinese;
 		type[1] = MobObject.Type.latin;
 		type[2] = MobObject.Type.greek;
